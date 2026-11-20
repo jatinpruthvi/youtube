@@ -1,0 +1,630 @@
+{
+  "project": "Automated Data Documentary Network",
+  "mission": "$1,000-$2,000+/day ($30k-$60k+/month) pure platform ad revenue in 24-36 months",
+  "version": "1.0.0",
+  "tracks": [
+    {
+      "id": "T01",
+      "name": "Infrastructure, GPU VPS & Cost Guardrails",
+      "description": "Single-GPU VPS setup, CUDA/NVENC runtime, storage, secrets, and ~$100/mo budget controls."
+    },
+    {
+      "id": "T02",
+      "name": "Fact-Grounded Economic Data Layer (ETL)",
+      "description": "Free public API connectors (World Bank, FRED, OECD, IMF, OWID), DuckDB warehouse, and deterministic DataBrief generator."
+    },
+    {
+      "id": "T03",
+      "name": "Topic Intelligence & Editorial Queue",
+      "description": "High-CPM niche scoring, YouTube outlier/autocomplete research, and packaging-first episode queue."
+    },
+    {
+      "id": "T04",
+      "name": "Claude Narrative Script & Fact-Audit Engine",
+      "description": "Prompt-cached Claude API storyboard generation, retention pacing schema, and zero-hallucination numeric audit."
+    },
+    {
+      "id": "T05",
+      "name": "Voiceover, Forced Alignment & Audio Mastering",
+      "description": "Zero-marginal-cost GPU TTS, pronunciation lexicon, WhisperX word timestamps, BGM ducking, SFX sync, and -14 LUFS mastering."
+    },
+    {
+      "id": "T06",
+      "name": "4K 60FPS GPU Rendering & Visual Template Library",
+      "description": "Design system, 8 core animated chart templates, atomic scene parallelism, static caching, and direct NVENC encoding."
+    },
+    {
+      "id": "T07",
+      "name": "Thumbnail Factory & A/B Packaging",
+      "description": "Programmatic 3-variant 1080p thumbnail generator via Playwright + mobile legibility checks for YouTube Test & Compare."
+    },
+    {
+      "id": "T08",
+      "name": "Automated QA Gate & Mobile Approval Bot",
+      "description": "Automated ffprobe/blackdetect/loudness/overlap linting and 3-minute Telegram/Discord founder approval workflow."
+    },
+    {
+      "id": "T09",
+      "name": "Localization & Multi-Platform Publishing",
+      "description": "YouTube Data API v3 upload, ES/PT/HI/AR localized metadata & SRT captions, and Facebook In-Stream burned-caption cut."
+    },
+    {
+      "id": "T10",
+      "name": "Pipeline Orchestrator & Crash-Resumable DAG",
+      "description": "Idempotent scene-level state machine, job retries, disk cleanup, and daily batch runner."
+    },
+    {
+      "id": "T11",
+      "name": "Compliance, Monetization & India Payout Setup",
+      "description": "Anti-demonetization guardrails, Content ID license ledger, YPP/FB monetization, and India USD tax/export setup."
+    },
+    {
+      "id": "T12",
+      "name": "Analytics Feedback Loop & Multi-Channel Scale",
+      "description": "YouTube/FB analytics ETL, retention drop-off diagnostics, RPM optimization, annual refreshes, and multi-channel cloning."
+    }
+  ],
+  "items": [
+    {
+      "id": "INF-01",
+      "track": "T01",
+      "phase": "P0_MVP_DAYS_1_7",
+      "priority": "P0",
+      "status": "todo",
+      "effort_hours": 2,
+      "title": "Provision Single-GPU VPS (or Control Plane + Spot GPU) within ~$100/mo budget",
+      "dependencies": [],
+      "acceptance_criteria": "Ubuntu 24.04 server accessible over SSH with NVIDIA GPU visible via nvidia-smi and >=200GB NVMe free."
+    },
+    {
+      "id": "INF-02",
+      "track": "T01",
+      "phase": "P0_MVP_DAYS_1_7",
+      "priority": "P0",
+      "status": "todo",
+      "effort_hours": 2,
+      "title": "Install Python 3.11+, CUDA Toolkit, FFmpeg with NVENC (hevc_nvenc/h264_nvenc), and ManimGL/Cairo deps",
+      "dependencies": ["INF-01"],
+      "acceptance_criteria": "ffmpeg -encoders shows h264_nvenc and hevc_nvenc; test 4K60 5-second GPU encode completes in <3 seconds."
+    },
+    {
+      "id": "INF-03",
+      "track": "T01",
+      "phase": "P0_MVP_DAYS_1_7",
+      "priority": "P0",
+      "status": "todo",
+      "effort_hours": 1.5,
+      "title": "Initialize Python project skeleton, pyproject.toml, .env secrets template, and logging config",
+      "dependencies": ["INF-02"],
+      "acceptance_criteria": "Virtual environment builds cleanly; structured JSON logging writes to logs/ with secrets loaded strictly from .env."
+    },
+    {
+      "id": "INF-04",
+      "track": "T01",
+      "phase": "P1_SPRINT_DAYS_8_30",
+      "priority": "P1",
+      "status": "todo",
+      "effort_hours": 1.5,
+      "title": "Configure Cloudflare R2 (or Backblaze B2) archive sync & NVMe auto-pruning policy",
+      "dependencies": ["INF-03"],
+      "acceptance_criteria": "Published masters and Parquet snapshots sync to R2; local scratch scene cache auto-cleans after 7 days."
+    },
+    {
+      "id": "INF-05",
+      "track": "T01",
+      "phase": "P1_SPRINT_DAYS_8_30",
+      "priority": "P1",
+      "status": "todo",
+      "effort_hours": 1,
+      "title": "Set up API spend guardrails & monthly cost telemetry (Claude API + GPU runtime + R2)",
+      "dependencies": ["INF-03"],
+      "acceptance_criteria": "Hard Anthropic monthly spend cap set; daily cost summary logged to DuckDB and sent via Telegram if >$4/day."
+    },
+
+    {
+      "id": "DAT-01",
+      "track": "T02",
+      "phase": "P0_MVP_DAYS_1_7",
+      "priority": "P0",
+      "status": "todo",
+      "effort_hours": 2.5,
+      "title": "Design DuckDB warehouse schema (dim_countries, fact_observations, episode_snapshots)",
+      "dependencies": ["INF-03"],
+      "acceptance_criteria": "DuckDB initializes idempotently with 217 ISO-3 countries, regions, currencies, flag paths, and GeoJSON IDs."
+    },
+    {
+      "id": "DAT-02",
+      "track": "T02",
+      "phase": "P0_MVP_DAYS_1_7",
+      "priority": "P0",
+      "status": "todo",
+      "effort_hours": 3,
+      "title": "Build World Bank API v2 connector with pagination, retry backoff, and indicator caching",
+      "dependencies": ["DAT-01"],
+      "acceptance_criteria": "Fetches full multi-decade history for NY.GDP.PCAP.PP.KD and writes clean rows to fact_observations in <10s."
+    },
+    {
+      "id": "DAT-03",
+      "track": "T02",
+      "phase": "P0_MVP_DAYS_1_7",
+      "priority": "P0",
+      "status": "todo",
+      "effort_hours": 2.5,
+      "title": "Build FRED API connector for US/global macro, CPI, wages, housing, and interest rates",
+      "dependencies": ["DAT-01"],
+      "acceptance_criteria": "Fetches FRED series with metadata units and frequency normalization into DuckDB."
+    },
+    {
+      "id": "DAT-04",
+      "track": "T02",
+      "phase": "P0_MVP_DAYS_1_7",
+      "priority": "P0",
+      "status": "todo",
+      "effort_hours": 3,
+      "title": "Build OECD SDMX API connector for Tier-1 average wages, tax wedge, and hours worked",
+      "dependencies": ["DAT-01"],
+      "acceptance_criteria": "Successfully parses OECD SDMX JSON/CSV payloads and maps all OECD members to ISO-3 codes."
+    },
+    {
+      "id": "DAT-05",
+      "track": "T02",
+      "phase": "P1_SPRINT_DAYS_8_30",
+      "priority": "P1",
+      "status": "todo",
+      "effort_hours": 2.5,
+      "title": "Build IMF DataMapper & Our World in Data (OWID) secondary connectors",
+      "dependencies": ["DAT-01"],
+      "acceptance_criteria": "Ingests IMF debt-to-GDP / inflation forecasts and OWID long-run historical CSVs into unified schema."
+    },
+    {
+      "id": "DAT-06",
+      "track": "T02",
+      "phase": "P0_MVP_DAYS_1_7",
+      "priority": "P0",
+      "status": "todo",
+      "effort_hours": 3,
+      "title": "Build Data Normalizer (ISO-3 reconciliation, PPP vs Nominal tagging, missing-year handling)",
+      "dependencies": ["DAT-02", "DAT-03", "DAT-04"],
+      "acceptance_criteria": "Zero orphan country names; explicitly flags latest available year per country and rejects unaligned units."
+    },
+    {
+      "id": "DAT-07",
+      "track": "T02",
+      "phase": "P0_MVP_DAYS_1_7",
+      "priority": "P0",
+      "status": "todo",
+      "effort_hours": 3.5,
+      "title": "Build Deterministic Statistical Analyzer & DataBrief JSON + Fact-ID Ledger generator",
+      "dependencies": ["DAT-06"],
+      "acceptance_criteria": "Generates immutable Parquet snapshot + DataBrief JSON with Top/Bottom N, medians, CAGRs, outliers, and F001..Fxxx IDs."
+    },
+
+    {
+      "id": "TOP-01",
+      "track": "T03",
+      "phase": "P0_MVP_DAYS_1_7",
+      "priority": "P0",
+      "status": "todo",
+      "effort_hours": 2,
+      "title": "Create Editorial Queue DB & seed initial 30-Video Launch Slate mapped to real API indicators",
+      "dependencies": ["DAT-01"],
+      "acceptance_criteria": "30 high-CPM topics stored with status, target indicator codes, title candidates, and thumbnail concepts."
+    },
+    {
+      "id": "TOP-02",
+      "track": "T03",
+      "phase": "P1_SPRINT_DAYS_8_30",
+      "priority": "P1",
+      "status": "todo",
+      "effort_hours": 3,
+      "title": "Build YouTube Autocomplete & Outlier Competitor Video Miner",
+      "dependencies": ["TOP-01"],
+      "acceptance_criteria": "Discovers high views-to-subscriber outlier videos in economics/rankings niche and extracts title patterns."
+    },
+    {
+      "id": "TOP-03",
+      "track": "T03",
+      "phase": "P1_SPRINT_DAYS_8_30",
+      "priority": "P1",
+      "status": "todo",
+      "effort_hours": 2,
+      "title": "Implement automated Topic Scorer (Tier-1 demand, CPM weight, data completeness, curiosity gap)",
+      "dependencies": ["TOP-02"],
+      "acceptance_criteria": "Ranks candidate topics 0-100 and auto-promotes top-scoring unused topics into the daily pipeline queue."
+    },
+
+    {
+      "id": "SCR-01",
+      "track": "T04",
+      "phase": "P0_MVP_DAYS_1_7",
+      "priority": "P0",
+      "status": "todo",
+      "effort_hours": 3,
+      "title": "Define Pydantic SceneGraph JSON Schema (acts, scenes, visual templates, data bindings, SFX cues)",
+      "dependencies": ["DAT-07"],
+      "acceptance_criteria": "Schema validates 10-18 min episodes, enforces visual-template entropy (no consecutive duplicates), and links every scene to fact IDs."
+    },
+    {
+      "id": "SCR-02",
+      "track": "T04",
+      "phase": "P0_MVP_DAYS_1_7",
+      "priority": "P0",
+      "status": "todo",
+      "effort_hours": 4,
+      "title": "Engineer Versioned Claude API Documentary Prompts with Prompt Caching enabled",
+      "dependencies": ["SCR-01"],
+      "acceptance_criteria": "Generates 1,700-2,600 word causal documentary scripts + SceneGraph JSON at <$0.35/video with cache hit rate >70%."
+    },
+    {
+      "id": "SCR-03",
+      "track": "T04",
+      "phase": "P0_MVP_DAYS_1_7",
+      "priority": "P0",
+      "status": "todo",
+      "effort_hours": 3,
+      "title": "Build Zero-Hallucination Automated Fact-Audit Gate & targeted auto-repair loop",
+      "dependencies": ["SCR-02"],
+      "acceptance_criteria": "Extracts every number/rank/percentage in narration, cross-checks against DataBrief (+-0.5% tolerance), and auto-repairs mismatches."
+    },
+    {
+      "id": "SCR-04",
+      "track": "T04",
+      "phase": "P1_SPRINT_DAYS_8_30",
+      "priority": "P1",
+      "status": "todo",
+      "effort_hours": 2,
+      "title": "Add Retention Pacing Linter (0-35s hook, open loops, pattern interrupts every <=55s, end-screen bridge)",
+      "dependencies": ["SCR-03"],
+      "acceptance_criteria": "Scores script retention structure and rejects scripts lacking a hook contrast, mid-video inversion, or bridge."
+    },
+
+    {
+      "id": "AUD-01",
+      "track": "T05",
+      "phase": "P0_MVP_DAYS_1_7",
+      "priority": "P0",
+      "status": "todo",
+      "effort_hours": 3,
+      "title": "Deploy Local GPU TTS Engine (Kokoro-82M / Chatterbox / F5-TTS) with locked documentary voice profile",
+      "dependencies": ["INF-02"],
+      "acceptance_criteria": "Synthesizes clean 48kHz broadcast-quality narration per scene at >10x real-time speed with $0 marginal API cost."
+    },
+    {
+      "id": "AUD-02",
+      "track": "T05",
+      "phase": "P0_MVP_DAYS_1_7",
+      "priority": "P0",
+      "status": "todo",
+      "effort_hours": 1.5,
+      "title": "Build Pronunciation Lexicon & SSML/Pause Preprocessor for countries, currencies, and acronyms",
+      "dependencies": ["AUD-01"],
+      "acceptance_criteria": "Correctly pronounces 100+ tricky terms (Gini, PPP, OECD, Liechtenstein, Luxembourg, CHF, UAE, etc.) with natural pauses."
+    },
+    {
+      "id": "AUD-03",
+      "track": "T05",
+      "phase": "P0_MVP_DAYS_1_7",
+      "priority": "P0",
+      "status": "todo",
+      "effort_hours": 2.5,
+      "title": "Integrate WhisperX / stable-ts Forced Word-Level Alignment",
+      "dependencies": ["AUD-01"],
+      "acceptance_criteria": "Outputs per-scene word timestamp JSON (start_ms, end_ms) accurate within +-40ms to drive visual animation triggers."
+    },
+    {
+      "id": "AUD-04",
+      "track": "T05",
+      "phase": "P0_MVP_DAYS_1_7",
+      "priority": "P0",
+      "status": "todo",
+      "effort_hours": 2,
+      "title": "Curate royalty-free ambient documentary BGM stems & micro-SFX library with license manifest",
+      "dependencies": ["INF-03"],
+      "acceptance_criteria": "At least 6 loopable BGM tracks + 15 crisp SFX stored in assets/ with documented commercial licenses in assets/licenses.json."
+    },
+    {
+      "id": "AUD-05",
+      "track": "T05",
+      "phase": "P0_MVP_DAYS_1_7",
+      "priority": "P0",
+      "status": "todo",
+      "effort_hours": 3,
+      "title": "Build FFmpeg Audio Mixer (sidechain BGM ducking, timestamped SFX injection, 2-pass -14 LUFS mastering)",
+      "dependencies": ["AUD-03", "AUD-04"],
+      "acceptance_criteria": "Master audio hits -14.0 +- 0.5 LUFS, <= -1.0 dBTP true peak, smooth BGM ducking, and exact frame-synced SFX hits."
+    },
+
+    {
+      "id": "REN-01",
+      "track": "T06",
+      "phase": "P0_MVP_DAYS_1_7",
+      "priority": "P0",
+      "status": "todo",
+      "effort_hours": 3,
+      "title": "Establish 4K 60FPS Documentary Visual Design System (palette, typography, safe margins, source footer)",
+      "dependencies": ["INF-03"],
+      "acceptance_criteria": "style_guide.yaml + font/flag/Natural Earth GeoJSON asset pack verified legible at both 4K TV and 360px mobile sizes."
+    },
+    {
+      "id": "REN-02",
+      "track": "T06",
+      "phase": "P0_MVP_DAYS_1_7",
+      "priority": "P0",
+      "status": "todo",
+      "effort_hours": 4,
+      "title": "Build Core 4K60 Render Engine (atomic scene worker pool + static texture cache + direct NVENC pipe)",
+      "dependencies": ["INF-02", "REN-01"],
+      "acceptance_criteria": "Streams raw 3840x2160 60fps RGB frames directly to hevc_nvenc/h264_nvenc with zero intermediate PNG bloat; benchmark >=25fps."
+    },
+    {
+      "id": "REN-03",
+      "track": "T06",
+      "phase": "P0_MVP_DAYS_1_7",
+      "priority": "P0",
+      "status": "todo",
+      "effort_hours": 4,
+      "title": "Implement Template 1: BarChartRace (interpolated rankings, flags, rolling year counter, spotlight glow)",
+      "dependencies": ["REN-02"],
+      "acceptance_criteria": "Renders buttery-smooth 4K60 Top-15 bar race synchronized to WhisperX word highlights."
+    },
+    {
+      "id": "REN-04",
+      "track": "T06",
+      "phase": "P0_MVP_DAYS_1_7",
+      "priority": "P0",
+      "status": "todo",
+      "effort_hours": 4.5,
+      "title": "Implement Template 2: WorldChoroplethMap (Natural Earth vectors, camera zoom/pan, animated color scale)",
+      "dependencies": ["REN-02"],
+      "acceptance_criteria": "Renders crisp vector world map with smooth zoom onto target regions and animated country callout pins."
+    },
+    {
+      "id": "REN-05",
+      "track": "T06",
+      "phase": "P0_MVP_DAYS_1_7",
+      "priority": "P0",
+      "status": "todo",
+      "effort_hours": 3,
+      "title": "Implement Template 3: SpotlightCountryCard & Template 4: ChapterTitleCard",
+      "dependencies": ["REN-02"],
+      "acceptance_criteria": "High-contrast KPI card with animated rolling counters, sparkline, rank badge, plus 3-second kinetic chapter transition."
+    },
+    {
+      "id": "REN-06",
+      "track": "T06",
+      "phase": "P0_MVP_DAYS_1_7",
+      "priority": "P0",
+      "status": "todo",
+      "effort_hours": 3.5,
+      "title": "Implement Template 5: DualSplitComparison (e.g., Nominal vs PPP or Country A vs Country B)",
+      "dependencies": ["REN-02"],
+      "acceptance_criteria": "Animated split-screen comparison with synced delta callout and zero label overlap."
+    },
+    {
+      "id": "REN-07",
+      "track": "T06",
+      "phase": "P1_SPRINT_DAYS_8_30",
+      "priority": "P1",
+      "status": "todo",
+      "effort_hours": 4,
+      "title": "Implement Template 6: HistoricalLineRace & Template 7: AnimatedBubbleScatter",
+      "dependencies": ["REN-02"],
+      "acceptance_criteria": "Multi-line time series with historical event pins + multi-axis animated bubble scatter with trails."
+    },
+    {
+      "id": "REN-08",
+      "track": "T06",
+      "phase": "P1_SPRINT_DAYS_8_30",
+      "priority": "P1",
+      "status": "todo",
+      "effort_hours": 3,
+      "title": "Implement Template 8: DistributionHistogram + Pre-Baked 4K60 Ambient Motion Backgrounds",
+      "dependencies": ["REN-02"],
+      "acceptance_criteria": "Bell-curve percentile visualizer + 3 reusable 4K60 subtle dark-mode animated backdrop loops."
+    },
+    {
+      "id": "REN-09",
+      "track": "T06",
+      "phase": "P0_MVP_DAYS_1_7",
+      "priority": "P0",
+      "status": "todo",
+      "effort_hours": 2.5,
+      "title": "Build Scene Concatenator, Master Audio-Video Muxer & YouTube 4K60 Export Preset",
+      "dependencies": ["AUD-05", "REN-03", "REN-04", "REN-05", "REN-06"],
+      "acceptance_criteria": "Assembles full 10-18 min 4K60 MP4 with faststart atom, 0ms AV drift, and verified playback in VLC/YouTube."
+    },
+
+    {
+      "id": "THM-01",
+      "track": "T07",
+      "phase": "P0_MVP_DAYS_1_7",
+      "priority": "P0",
+      "status": "todo",
+      "effort_hours": 3,
+      "title": "Build Playwright HTML/SVG -> 1920x1080 PNG Thumbnail Factory (3 distinct CTR templates)",
+      "dependencies": ["REN-01"],
+      "acceptance_criteria": "Generates 3 distinct variants (Map Contrast, Flag Showdown, Outlier Spike) per episode in <10s."
+    },
+    {
+      "id": "THM-02",
+      "track": "T07",
+      "phase": "P1_SPRINT_DAYS_8_30",
+      "priority": "P1",
+      "status": "todo",
+      "effort_hours": 1.5,
+      "title": "Add Mobile-Scale Legibility Preview (168x94px grid) & Contrast Ratio Checker",
+      "dependencies": ["THM-01"],
+      "acceptance_criteria": "Produces a 3-variant contact sheet at mobile thumbnail size and flags text contrast below WCAG AA."
+    },
+
+    {
+      "id": "QAG-01",
+      "track": "T08",
+      "phase": "P0_MVP_DAYS_1_7",
+      "priority": "P0",
+      "status": "todo",
+      "effort_hours": 3,
+      "title": "Build Automated QC Suite (ffprobe spec check, blackdetect, freezedetect, silence, LUFS, layout overlap)",
+      "dependencies": ["REN-09"],
+      "acceptance_criteria": "Outputs pass/fail QC JSON report; blocks publishing automatically on any spec violation or audio/video defect."
+    },
+    {
+      "id": "QAG-02",
+      "track": "T08",
+      "phase": "P0_MVP_DAYS_1_7",
+      "priority": "P0",
+      "status": "todo",
+      "effort_hours": 2.5,
+      "title": "Build Telegram (or Discord) Mobile Approval Bot with 30s hook clip, thumbnails & one-tap commands",
+      "dependencies": ["QAG-01", "THM-01"],
+      "acceptance_criteria": "Sends episode review bundle to phone; supports /approve, /regen_thumb, /fix_scene <n>, and /hold commands."
+    },
+
+    {
+      "id": "PUB-01",
+      "track": "T09",
+      "phase": "P0_MVP_DAYS_1_7",
+      "priority": "P0",
+      "status": "todo",
+      "effort_hours": 3,
+      "title": "Configure Google Cloud OAuth & YouTube Data API v3 Resumable Uploader (chapters + scheduling)",
+      "dependencies": ["QAG-02"],
+      "acceptance_criteria": "Uploads 4K60 master as scheduled video at optimal Tier-1 UTC slot with chapter timestamps and custom thumbnail."
+    },
+    {
+      "id": "PUB-02",
+      "track": "T09",
+      "phase": "P1_SPRINT_DAYS_8_30",
+      "priority": "P0",
+      "status": "todo",
+      "effort_hours": 3,
+      "title": "Build Automated Metadata & SRT Subtitle Localizer (Spanish, Portuguese, Hindi, Arabic)",
+      "dependencies": ["PUB-01", "AUD-03"],
+      "acceptance_criteria": "Translates title, description, and accurate time-coded SRTs into es, pt-BR, hi, ar and uploads via YouTube localizations & captions APIs."
+    },
+    {
+      "id": "PUB-03",
+      "track": "T09",
+      "phase": "P1_SPRINT_DAYS_8_30",
+      "priority": "P1",
+      "status": "todo",
+      "effort_hours": 3.5,
+      "title": "Build Facebook In-Stream Cut Generator (3s visual hook + burned captions) & Graph API Uploader",
+      "dependencies": ["REN-09", "AUD-03"],
+      "acceptance_criteria": "Renders FB-ready MP4 with high-contrast burned captions and uploads scheduled video to Facebook Page."
+    },
+
+    {
+      "id": "ORC-01",
+      "track": "T10",
+      "phase": "P0_MVP_DAYS_1_7",
+      "priority": "P0",
+      "status": "todo",
+      "effort_hours": 3.5,
+      "title": "Build Resumable Episode DAG Orchestrator (SQLite state machine with scene-level checkpointing)",
+      "dependencies": ["DAT-07", "SCR-03", "AUD-05", "REN-09", "PUB-01"],
+      "acceptance_criteria": "Single CLI command `python -m src.orchestrator run <episode_id>` runs end-to-end and resumes cleanly from any crash."
+    },
+    {
+      "id": "ORC-02",
+      "track": "T10",
+      "phase": "P1_SPRINT_DAYS_8_30",
+      "priority": "P1",
+      "status": "todo",
+      "effort_hours": 2,
+      "title": "Configure Daily Autonomous Cron / Systemd Timer for 30-in-30 Production Cadence",
+      "dependencies": ["ORC-01", "QAG-02"],
+      "acceptance_criteria": "Automatically builds next queued episode overnight IST so approval bundle arrives every morning at 08:00 IST."
+    },
+
+    {
+      "id": "CMP-01",
+      "track": "T11",
+      "phase": "P0_MVP_DAYS_1_7",
+      "priority": "P0",
+      "status": "todo",
+      "effort_hours": 2,
+      "title": "Create Flagship YouTube Channel & Facebook Page (branding, banner, about, Tier-1 English positioning)",
+      "dependencies": [],
+      "acceptance_criteria": "Channel branded as authoritative global data documentary network; verification enabled for custom thumbnails & >15 min uploads."
+    },
+    {
+      "id": "CMP-02",
+      "track": "T11",
+      "phase": "P0_MVP_DAYS_1_7",
+      "priority": "P0",
+      "status": "todo",
+      "effort_hours": 1.5,
+      "title": "Implement Anti-Demonetization Policy Checklist & Citation/License Audit Manifest",
+      "dependencies": ["AUD-04", "SCR-03"],
+      "acceptance_criteria": "Every episode ships with persistent source overlays, >=5 unique visual templates, analytical commentary, and verified asset licenses."
+    },
+    {
+      "id": "CMP-03",
+      "track": "T11",
+      "phase": "P2_OPT_MONTHS_2_6",
+      "priority": "P1",
+      "status": "todo",
+      "effort_hours": 3,
+      "title": "Apply for YouTube Partner Program (1k subs + 4k watch hrs) & Facebook In-Stream Monetization",
+      "dependencies": ["CMP-01", "CMP-02"],
+      "acceptance_criteria": "Both YouTube AdSense and Facebook In-Stream approved with clean policy standing and mid-roll ads enabled."
+    },
+    {
+      "id": "CMP-04",
+      "track": "T11",
+      "phase": "P2_OPT_MONTHS_2_6",
+      "priority": "P1",
+      "status": "todo",
+      "effort_hours": 2,
+      "title": "Complete India USD Payout & Tax Optimization (AdSense SWIFT, US Form W-8BEN 15% DTAA, GST LUT prep)",
+      "dependencies": ["CMP-03"],
+      "acceptance_criteria": "W-8BEN approved (15% US withholding vs 24%/30%), Indian bank SWIFT USD settlement tested, e-FIRA workflow documented."
+    },
+
+    {
+      "id": "ANA-01",
+      "track": "T12",
+      "phase": "P1_SPRINT_DAYS_8_30",
+      "priority": "P1",
+      "status": "todo",
+      "effort_hours": 3,
+      "title": "Build YouTube Analytics & Revenue Daily ETL into DuckDB (CTR, AVD, RPM, retention curves, geo)",
+      "dependencies": ["PUB-01"],
+      "acceptance_criteria": "Daily cron ingests video-level performance and geo RPM splits (US/UK/CA/AU share) into DuckDB."
+    },
+    {
+      "id": "ANA-02",
+      "track": "T12",
+      "phase": "P2_OPT_MONTHS_2_6",
+      "priority": "P1",
+      "status": "todo",
+      "effort_hours": 3,
+      "title": "Build Retention Drop-Off Diagnostic & RPM-per-Topic Feedback Loop",
+      "dependencies": ["ANA-01", "TOP-03"],
+      "acceptance_criteria": "Weekly Telegram report correlates >3% retention drops to exact scene templates and updates topic scorer weights."
+    },
+    {
+      "id": "ANA-03",
+      "track": "T12",
+      "phase": "P3_SCALE_MONTHS_7_36",
+      "priority": "P2",
+      "status": "todo",
+      "effort_hours": 4,
+      "title": "Build Automated Annual Dataset Refresh Trigger ('2027/2028 Edition' re-render pipeline)",
+      "dependencies": ["ANA-01", "ORC-01"],
+      "acceptance_criteria": "Detects new World Bank / OECD annual releases and queues refreshed sequel episodes for top-earning evergreen videos."
+    },
+    {
+      "id": "ANA-04",
+      "track": "T12",
+      "phase": "P3_SCALE_MONTHS_7_36",
+      "priority": "P2",
+      "status": "todo",
+      "effort_hours": 5,
+      "title": "Add Multi-Channel Config Isolation & Multi-Language Audio Dubbing (YouTube MLA for ES/PT)",
+      "dependencies": ["ANA-02", "CMP-03"],
+      "acceptance_criteria": "Single GPU pipeline serves 3+ niche channels via channel_id configs and optional secondary Spanish/Portuguese audio tracks."
+    }
+  ]
+}

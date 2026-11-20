@@ -1,0 +1,369 @@
+# System Architecture Blueprint — Automated Data Documentary Factory
+
+> **Mission:** Build a solo-operated, AI-powered automated data documentary network generating **$1,000–$2,000+/day ($30,000–$60,000+/month)** in pure platform ad revenue (YouTube AdSense + Facebook In-Stream) within 24–36 months, powered by a **~$100/month** single-GPU automated pipeline.
+
+---
+
+## 1. Architectural Principles & Design Constraints
+
+Every architectural decision is governed by five non-negotiable constraints:
+
+| Constraint | Engineering Implication |
+| :--- | :--- |
+| **~$100/mo Infrastructure Budget** | Zero SaaS bloat. Free public economic APIs, self-hosted GPU TTS + forced alignment, prompt-cached Claude API calls, hardware NVENC encoding, and smart spot/single-GPU compute budgeting. |
+| **100% Fact-Grounded Data** | LLMs **never** generate statistics from memory. Every number originates from versioned API snapshots (World Bank, FRED, OECD, IMF, OWID) stored in DuckDB and audited via deterministic post-script verification. |
+| **4K 60FPS Documentary Grade** | Naive single-threaded Manim Cairo renders take 10–20 hours per 15-min 4K60 video. Solved via **atomic scene DAG parallelism**, **static texture caching**, **OpenGL/Skia GPU rasterization**, and **zero-temp-PNG NVENC streaming**. |
+| **High-Retention & Anti-Demonetization** | Built to defeat YouTube's "Repetitious / Mass-Produced Content" filters: deep causal narration, visual template entropy enforcement (new visual every 35–50s), human 3-minute QA gate, and rich sound design. |
+| **Solo Developer Maintainability** | Monolithic Python 3.11+ repository, SQLite/DuckDB state store (no heavy K8s/microservices), idempotent resumable pipeline stages, and Telegram/Discord mobile notifications for one-tap approval. |
+
+---
+
+## 2. End-to-End Pipeline Architecture
+
+```mermaid
+flowchart TB
+    subgraph S1["1. Topic & Packaging Intelligence"]
+        T1[YouTube Outlier & Autocomplete Miner] --> T2[CPM & Data-Availability Scorer]
+        T2 --> T3[(Editorial Queue DB)]
+    end
+
+    subgraph S2["2. Fact-Grounded Data Layer (ETL)"]
+        D1[World Bank / FRED / OECD / IMF / OWID APIs] --> D2[Normalizer: ISO-3, PPP, CPI, YoY]
+        D2 --> D3[(DuckDB Warehouse)]
+        D3 --> D4[Deterministic Stats Analyzer -> DataBrief JSON + Fact IDs]
+    end
+
+    subgraph S3["3. Retention Script & SceneGraph Engine"]
+        C1[Claude API + Prompt Caching] --> C2[Structured SceneGraph JSON]
+        C2 --> C3{Automated Fact-Audit Gate}
+        C3 -->|Ungrounded Stat Found| C1
+        C3 -->|100% Verified| C4[Approved Script & Storyboard]
+    end
+
+    subgraph S4["4. Voiceover, Alignment & Sound Design"]
+        A1[GPU TTS Engine: Kokoro-82M / Chatterbox / F5-TTS] --> A2[WhisperX Word-Level Timestamps]
+        A2 --> A3[Audio Mastering: -14 LUFS + BGM Ducking + Synced SFX]
+    end
+
+    subgraph S5["5. 4K 60FPS GPU Rendering Engine"]
+        R1[Scene Splitter: 25-45 Atomic Scenes] --> R2[Parallel GPU Render Workers: ManimGL / ModernGL + Pre-Baked Layers]
+        R2 --> R3[Direct Pipe -> FFmpeg NVENC HEVC/H.264 4K60]
+        R3 --> R4[Concat Demuxer + Master Mux]
+    end
+
+    subgraph S6["6. Packaging, QA & Multi-Platform Distribution"]
+        Q1[Automated QC: Black Frames, Drift, Clipping, Overlap] --> Q2[3-Variant Thumbnail Factory]
+        Q2 --> Q3[Telegram Bot: 3-Min Human Approval Gate]
+        Q3 -->|Approved| P1[YouTube Data API v3 + ES/PT/HI/AR Localizations & SRT]
+        Q3 -->|Approved| P2[Facebook In-Stream Cut + Burned Captions -> Graph API]
+    end
+
+    subgraph S7["7. Compounding Analytics Loop"]
+        M1[YouTube Analytics & Revenue API] --> M2[Retention Drop-off & RPM-by-Topic Analyzer]
+        M2 -.->|Feedback Weights| T2
+    end
+
+    T3 --> D1
+    D4 --> C1
+    C4 --> A1
+    A2 --> R1
+    A3 --> R4
+    R4 --> Q1
+    P1 --> M1
+```
+
+### Pipeline Execution SLA (Target per 12–16 Min 4K60 Video)
+
+| Stage | Execution Time | Compute Target | Idempotency Key |
+| :--- | :---: | :--- | :--- |
+| 1. Data Ingestion & `DataBrief` | 15–45 sec | CPU | `episode_id + dataset_snapshot_hash` |
+| 2. Script + SceneGraph + Fact Audit | 30–60 sec | Claude API | `episode_id + brief_hash + prompt_v` |
+| 3. GPU TTS + Word Alignment | 2–4 min | GPU | `scene_id + narration_text_hash` |
+| 4. Parallel 4K60 Scene Rendering | 20–35 min | GPU + Multi-CPU | `scene_id + scene_spec_hash + audio_dur` |
+| 5. Mastering, QC & Thumbnails | 3–5 min | GPU (NVENC) | `episode_id + all_scene_hashes` |
+| 6. Localization & Resumable Upload | 3–8 min | Network | `episode_id + platform` |
+| **Total End-to-End** | **~30–50 min** | **Single GPU VPS** | **Full crash-resume at any scene** |
+
+---
+
+## 3. Module-by-Module Deep Technical Design
+
+### Module 1: Topic Intelligence & Packaging Engine
+High RPM and high CTR are engineered **before** a single line of script is written.
+
+* **Topic Scoring Formula (`0–100`):**
+  $$\text{Score} = 0.30(\text{Tier-1 Search Demand}) + 0.25(\text{Estimated Niche CPM}) + 0.25(\text{API Data Richness}) + 0.20(\text{Curiosity Gap / Outlier Ratio})$$
+* **High-CPM Evergreen Pillars (Tier-1 Finance/Econ CPM: $12–$28 gross / $8–$16 RPM):**
+  1. *Income, Salaries & Purchasing Power* (e.g., "Every Country Ranked by Real Average Salary")
+  2. *Cost of Living, Housing & Debt* (e.g., "Where a $100,000 Salary Actually Makes You Rich")
+  3. *Macro Wealth, GDP & Trade Flows* (e.g., "How the Top 10 Economies Changed Since 1960")
+  4. *Demographics, Taxes & Quality of Life* (e.g., "Every Country Ranked by Effective Tax Rate vs Services")
+* **Packaging First Rule:** Every queued episode must lock its **Title (≤60 chars)**, **3 Thumbnail Concepts**, and **Primary Hook Visual** before entering the ETL stage.
+
+---
+
+### Module 2: Fact-Grounded Data Layer (ETL & Verification)
+Eliminates LLM hallucinations permanently by treating economic data like a financial ledger.
+
+* **Primary Free API Connectors (`src/data/connectors/`):**
+  * **World Bank API v2** (`api.worldbank.org/v2`): 16,000+ global indicators (GDP per capita PPP, Gini, poverty, literacy, inflation, life expectancy) across 217 economies.
+  * **FRED API** (`api.stlouisfed.org`): High-frequency US & global macro series (housing prices, interest rates, wages, CPI, M2 money supply).
+  * **OECD SDMX API** (`sdmx.oecd.org`): Gold-standard Tier-1 data (average annual wages, tax wedge, housing affordability, hours worked, household debt).
+  * **IMF DataMapper API** (`imf.org/external/datamapper/api/v1`): Debt-to-GDP, real GDP forecasts, inflation projections.
+  * **Our World in Data (OWID) Grapher CSV/JSON**: Clean, harmonized long-run historical datasets (1800–present).
+* **Local Data Warehouse (`DuckDB`):**
+  * `dim_countries`: ISO-3, ISO-2, display name, short label, region, flag SVG path, GeoJSON polygon ID, currency code.
+  * `fact_observations`: `(source, indicator_id, iso3, year, value, unit, is_ppp, is_inflation_adjusted, fetched_at)`.
+  * `episode_snapshots`: Immutable Parquet freeze of exact rows used in each video (enables 100% reproducibility and automated source-citation generation).
+* **Deterministic Statistics Engine (`src/data/analyzer.py`):**
+  * Computes Top-N, Bottom-N, Global Median/Mean, Regional Averages, 10/20/50-year CAGR, Biggest Risers/Fallers, and Statistical Outliers (e.g., high nominal salary vs low PPP purchasing power).
+  * Outputs `DataBrief.json` assigning every statistic an immutable ID (`F001`–`F250`).
+
+---
+
+### Module 3: Narrative & Retention Script Engine (Claude API)
+Transforms raw `DataBrief.json` into a **10–18 minute high-retention documentary** (1,600–2,700 words at ~155 WPM).
+
+* **Model & Cost Optimization:**
+  * Primary: **Claude Sonnet** (best quality-to-cost ratio for structured JSON + engaging documentary prose) with **Anthropic Prompt Caching** enabled on the system prompt, visual template catalog, and style guide (~70% input token savings → **$0.15–$0.35 per full video**).
+* **Retention Blueprint (Enforced by Pydantic Schema):**
+  1. **`0:00–0:35` Cold Hook & Visual Proof:** Immediate provocative contrast backed by a fast animated reveal + open loop ("By the end, you'll see why a $45,000 salary in Country X buys more than $110,000 in Country Y").
+  2. **`0:35–1:30` Methodology & Stakes:** Establish credibility (PPP vs nominal, exact dataset & year) in under 45 seconds without boring the viewer.
+  3. **`1:30–11:30` 4–6 Escalating Narrative Acts:** Tiered progression (e.g., Bottom Tier → Emerging Middle → The Hidden Outliers → Top 10 Showdown). Every act includes a **causal explanation** (policy, geography, demographics, taxation) + **pattern interrupt** every 45–60 seconds.
+  4. **`11:30–14:30` The Climax / Surprising Inversion:** Re-rank the dataset on a second axis (e.g., after taxes & housing costs) to deliver a high-satisfaction payoff.
+  5. **`14:30–15:30` Synthesis & End-Screen Bridge:** 10-second bridge teasing the exact next related video on the channel to drive session duration (no "like and subscribe" begging).
+* **Zero-Hallucination Fact-Audit Gate (`src/script/fact_auditor.py`):**
+  * Extracts all numbers, percentages, dollar figures, years, and country ranks from the generated narration.
+  * Verifies every extracted claim against `DataBrief.json` (allowing clean rounding tolerance, e.g., `$63,412` → `"over $63,000"`).
+  * Fails fast and invokes a targeted repair prompt if *any* unverified figure appears.
+
+---
+
+### Module 4: Voiceover, Word-Level Alignment & Sound Design
+Documentary authority lives or dies on audio quality and frame-accurate synchronization.
+
+* **Zero-Marginal-Cost GPU TTS Stack (fits ~$100/mo budget):**
+  * **Primary Local Engine:** **Kokoro-82M** or **Chatterbox TTS** / **F5-TTS** running locally on the GPU VPS (zero API fees, ~0.05× real-time synthesis speed, consistent authoritative narrator voice via fixed voice embedding).
+  * **Optional Scale-Up (Post-$2k/mo revenue):** ElevenLabs Professional Voice Clone for flagship channel while local TTS powers secondary channels.
+* **Custom Pronunciation Lexicon (`config/pronunciation.json`):**
+  * Phonetic overrides for tricky country names, currencies, acronyms, and economic terms (`Gini`, `PPP`, `OECD`, `CAGR`, `Luxembourg`, `Liechtenstein`, `UAE`, `Q1`, `€`, `CHF`).
+* **Forced Word-Level Alignment (`WhisperX` / `stable-ts`):**
+  * Generates exact `(word, start_ms, end_ms)` timestamps per scene.
+  * **Audio-Driven Animation Binding:** Visual animations read these timestamps directly! When the narrator says *"Switzerland jumps to number one at eighty-two thousand dollars"*, the Switzerland bar surges and highlights at the exact millisecond `"Switzerland"` is spoken.
+* **Audio Mastering & Dynamic Ducking (`FFmpeg`):**
+  * 3-track mix: Narration (`0 dB` reference) + Royalty-Free Documentary Ambient BGM (`-24 dB` with `sidechaincompress` ducking under speech) + Crisp Micro-SFX (`whoosh`, `pop`, `tick`, `counter_roll`, `bass_drop`) triggered by scene animation events.
+  * Final broadcast loudness normalization via two-pass `loudnorm` to **`-14.0 LUFS`**, **`-1.0 dBTP`** true peak (exact YouTube & Facebook standard).
+
+---
+
+### Module 5: 4K 60FPS GPU Rendering Engine (The Core Technical Differentiator)
+
+#### Solving the 4K 60FPS Performance Bottleneck
+A 15-minute 4K60 video contains **54,000 frames** (`3840 × 2160`). Naive Manim Community (Cairo CPU) rendering takes 10–20 hours and bloats disk I/O. Our architecture reduces this to **20–35 minutes**:
+
+1. **Atomic Scene Graph Splitting:**
+   * A video is never rendered as one monolithic scene. It is split into **25–45 atomic scenes** (`15–35s` each), each mapped to one narration audio clip.
+   * Only modified scenes re-render on edits (instant iteration).
+2. **Hybrid GPU Rendering Pipeline:**
+   * **Engine:** Manim Community with **OpenGL renderer (`--renderer=opengl`)** for smooth camera pans, 3D/2.5D tilts, and vector animations + a **custom `skia-python` / `pycairo` + `moderngl` high-throughput chart rasterizer** for data-dense animated bar races, choropleth maps, and scatter plots (renders 4K60 data frames at **30–90 FPS**, faster than real-time!).
+   * **Static Layer Pre-Baking:** Dark slate grid background, subtle ambient bokeh loop (pre-rendered 4K60 loop), world map base geometry, and country flag sprite atlas are cached in memory/VRAM instead of re-parsed per frame.
+3. **Zero-Disk-Bloat NVENC Piping:**
+   * Frame buffers stream directly into FFmpeg over Unix pipe (`rawvideo`, `rgb24`) encoded in real time by GPU **NVENC**:
+     ```bash
+     ffmpeg -f rawvideo -pix_fmt rgb24 -s 3840x2160 -r 60 -i pipe:0 \
+            -c:v hevc_nvenc -preset p5 -rc vbr -cq 18 -b:v 35M -maxrate 55M \
+            -pix_fmt yuv420p -movflags +faststart scene_014.mp4
+     ```
+   * High visual fidelity (~35–45 Mbps YouTube 4K60 recommended bitrate), zero intermediate PNG storage, and fast concat demuxing.
+4. **8 Reusable Parameterized Visual Templates (`src/render/templates/`):**
+   1. `BarChartRace`: Smooth interpolated rankings with country flags, rolling year counter, and top-15 windowing.
+   2. `WorldChoroplethMap`: Vector Natural Earth projection with smooth camera zoom/pan to highlighted regions & animated color legend.
+   3. `AnimatedBubbleScatter`: Multi-axis correlation (e.g., GDP per Capita vs Life Expectancy, bubble size = population) with animated trail lines.
+   4. `SpotlightCountryCard`: High-contrast stat card with flag, rank badge, 3 KPIs, and sparkline trend.
+   5. `DualSplitComparison`: Head-to-head breakdown (e.g., Nominal Salary vs Real Purchasing Power side-by-side).
+   6. `HistoricalLineRace`: Multi-country time-series trajectory with animated callout pins at historical shocks (2008 Crisis, 2020 Pandemic).
+   7. `DistributionHistogram`: Global wealth/income bell curve showing where the viewer sits globally.
+   8. `ChapterTitleCard`: Minimalist 3-second act transition with kinetic typography and chapter number.
+* **Visual Entropy Rule:** The storyboard validator enforces that **no template repeats back-to-back** and every visual holds max **45 seconds** without a camera move, highlight shift, or template cut.
+
+---
+
+### Module 6: Automated QA & Human Approval Gate
+Zero broken videos ever reach YouTube.
+
+* **Automated QC Suite (`src/qa/validator.py`):**
+  * `ffprobe` stream audit: confirms exact `3840×2160`, `60.00 fps`, `yuv420p`, `48kHz stereo`, duration matches narration ±150ms.
+  * `blackdetect` / `freezedetect`: flags unintended black frames (>0.3s) or frozen frames (>4s).
+  * Audio QC: verifies integrated loudness `-14 ± 0.5 LUFS`, true peak `≤ -1.0 dBTP`, no dead silence >2.5s.
+  * Safe-zone & text-overlap check: automated bounding-box collision linter on scene layouts (prevents labels colliding on mobile screens).
+* **3-Minute Human Approval Gate (Telegram / Discord Bot):**
+  * Sends a compact mobile summary: Final Title, 3 Thumbnail Variants, Fact-Audit Score (`100% Verified`), 30-second Hook preview clip, and Chapter timeline contact sheet.
+  * Founder replies `/approve`, `/regen_thumb`, or `/fix_scene 07` from phone anywhere in India.
+
+---
+
+### Module 7: Thumbnail Factory & A/B Packaging
+* Programmatic high-CTR thumbnails generated via **Playwright (Headless Chromium HTML/CSS/SVG → 1920×1080 PNG)** for razor-sharp typography, glowing map highlights, vector flags, and data arrows.
+* Automatically outputs **3 distinct visual angles** per episode for **YouTube's native Test & Compare A/B testing**:
+  * *Variant A:* Global Map Contrast (Green vs Red extremes + 2-word bold hook).
+  * *Variant B:* Flag Showdown (2 iconic countries + stark dollar/percentage delta).
+  * *Variant C:* Shocking Outlier Graphic (Clean data spike + big number + subtle arrow).
+* Mobile legibility check: downscales thumbnail to `168×94 px` in preview report so readability on mobile feeds is verified before upload.
+
+---
+
+### Module 8: Localization & Multi-Platform Distribution
+* **YouTube Data API v3 (`src/publish/youtube.py`):**
+  * Resumable chunked upload (`private` or `scheduled` at peak Tier-1 US/EU time: **14:00–16:00 UTC / 19:30–21:30 IST**).
+  * Automated **Localized Metadata (`localizations` object)** translated by Claude for **Spanish (`es`)**, **Portuguese (`pt-BR`)**, **Hindi (`hi`)**, and **Arabic (`ar`)** — localized Title + Description + Search Tags.
+  * Automated **Multi-Language Subtitles (`.srt`)** uploaded for `en`, `es`, `pt`, `hi`, `ar` (boosts global search indexing & watch time).
+  * Automated YouTube Chapter timestamps injected into description from `SceneGraph`.
+* **Facebook In-Stream Automation (`src/publish/facebook.py`):**
+  * Generates a secondary **Facebook-tuned cut** via FFmpeg:
+    * Inserts a punchy 3-second kinetic hook card at `0:00` to capture muted newsfeed scrollers.
+    * Burns in clean, high-contrast bottom captions (`ass` subtitle filter) since ~70% of FB feed starts muted.
+    * Uploads via Facebook Graph API Video Upload endpoint with natural chapter pauses aligned for In-Stream mid-roll ad placement.
+
+---
+
+### Module 9: Analytics & Self-Optimizing Feedback Loop
+* Daily cron job pulls metrics via **YouTube Analytics API** (`views`, `estimatedRevenue`, `cpm`, `playbackBasedCpm`, `averageViewPercentage`, `subscribersGained`, `audienceWatchRatio` retention curve) and **Facebook Insights API**.
+* Stores time-series performance in DuckDB (`fact_video_performance`).
+* **Weekly Automated Optimization Report:**
+  * Identifies exact timestamps where retention drops >3% in 5 seconds → maps back to the `SceneGraph` template/pacing causing the drop.
+  * Ranks Topic Pillars by **Revenue per 1,000 Impressions (CTR × RPM)** → automatically boosts winning pillars in Module 1's topic scorer.
+
+---
+
+### Module 10: Platform Compliance & Anti-Demonetization Guardrails
+Protecting the channel asset is mission-critical when relying on 100% platform revenue.
+
+1. **YouTube "Inauthentic / Repetitious Content" Defense:**
+   * Original causal economic analysis in every script (never raw lists or scraped Wikipedia summaries).
+   * High visual diversity across 8 distinct data-viz templates + dynamic camera motion + custom graphics.
+   * Clean editorial branding & consistent documentary pacing.
+2. **Source Attribution & Fair Use:**
+   * Persistent subtle bottom-left citation overlay on every data frame (`Source: World Bank / OECD · Year`).
+   * 100% original vector maps (Natural Earth Public Domain), public-domain/SVG flags, and properly licensed royalty-free BGM/SFX (stored with license hashes in `assets/licenses.json` to auto-dispute false Content ID claims).
+3. **Synthetic Content Disclosure Hygiene:**
+   * Keep metadata compliant with YouTube Studio's altered/synthetic media guidelines (realistic people/events are never fabricated; pure data visualization + voice narration remains transparent and safe).
+4. **India Tax & Payout Readiness:**
+   * AdSense USD payout setup + **Form W-8BEN** (reduces US withholding from 24%/30% to 15% under India-US DTAA on US-origin views only), **GST Registration + LUT** (0% IGST on export of digital services above ₹20L/year), and **e-FIRA/FIRC** archiving.
+
+---
+
+## 4. Infrastructure & ~$100/Month Unit Economics
+
+Two proven deployment topologies that respect the **~$100/month** constraint:
+
+### Topology A (Recommended): Hybrid Always-On CPU Control Plane + Auto-Spot GPU Burst (~$60–$85/mo)
+*Faster 4K60 renders (RTX 4090 / L4) at lower total monthly spend.*
+
+| Component | Specification / Provider | Est. Monthly Cost |
+| :--- | :--- | :---: |
+| **Control Plane VPS** | Hetzner CPX31 (4 vCPU, 8 GB RAM, 160 GB NVMe) — runs Orchestrator, ETL, DB, Bot, Uploader | $16 |
+| **On-Demand GPU Worker** | RunPod / Vast.ai RTX 4090 (~$0.40/hr) auto-provisioned via API for 1.0 hr/video × 30 videos = 30–45 hrs/mo | $18 |
+| **Claude API (Sonnet + Caching)** | ~30 scripts + scene graphs + 4-language localizations (~$0.30/video) | $10 |
+| **Voiceover & Alignment** | Self-hosted Kokoro-82M / Chatterbox + WhisperX on the GPU worker | $0 |
+| **Economic Data APIs** | World Bank, FRED, OECD, IMF, OWID | $0 |
+| **Cloud Object Storage** | Cloudflare R2 (project archives, masters, backups — 200 GB, zero egress) | $3 |
+| **Music/SFX Licenses & Domain** | Amortized royalty-free audio library + channel domain/email | $10 |
+| **Buffer / Retries / Tests** | Re-renders, A/B tests, extra GPU hours | $15 |
+| **TOTAL** | **Full 30-video/month 4K60 Media Factory** | **~$72/month** |
+
+### Topology B (Literal Single-Box Simplicity): Single Always-On GPU VPS (~$85–$105/mo)
+*Zero provisioning scripts — one persistent Linux GPU box running everything locally.*
+
+| Component | Specification / Provider | Est. Monthly Cost |
+| :--- | :--- | :---: |
+| **Single GPU VPS** | Vast.ai / TensorDock / Genesis Cloud dedicated RTX 3060/4060 or RTX A4000 (8 vCPU, 32 GB RAM, 300 GB NVMe) | $65–$85 |
+| **Claude API + R2 Storage + Misc** | Same stack as Topology A | $20–$25 |
+| **TOTAL** | **Single-Box Always-On Pipeline** | **~$85–$110/month** |
+
+> **Recommendation:** Start Day 1 on **Topology B** (simpler DevOps during the 30-day sprint) or **Topology A** if you want RTX 4090 speed at ~$72/mo. Both stay strictly under the ~$100/month cap (₹8,500/month).
+
+---
+
+## 5. Target Codebase Directory Structure
+
+```text
+youtube/
+├── README.md
+├── docs/
+│   ├── ARCHITECTURE.md            # This system architecture blueprint
+│   ├── TRACKER.md                 # Complete item-by-item implementation checklist
+│   └── SPRINT_30_DAYS.md          # 30 Videos in 30 Days production & topic tracker
+├── tracker/
+│   └── items.json                 # Machine-readable master tracker database
+├── scripts/
+│   └── track.py                   # CLI tool to view, filter & update tracker items
+├── config/
+│   ├── settings.yaml              # Pipeline settings, render presets, upload schedule
+│   ├── style_guide.yaml           # 4K60 colors, typography, safe margins, animation curves
+│   ├── pronunciation.json         # TTS phonetic dictionary
+│   └── prompts/                   # Versioned Claude prompt templates (cached)
+├── assets/
+│   ├── fonts/                     # Documentary sans & tabular numeral fonts (Inter, JetBrains Mono)
+│   ├── flags/                     # Normalized SVG/PNG country flag atlas
+│   ├── geo/                       # Natural Earth 1:50m GeoJSON world boundaries
+│   ├── bgm/                       # Licensed ambient documentary music stems
+│   ├── sfx/                       # Micro-SFX pack (whoosh, pop, tick, riser)
+│   └── backgrounds/               # Pre-baked 4K60 looping dark-mode motion textures
+├── data/
+│   ├── warehouse.duckdb           # Economic data warehouse + analytics tables
+│   └── episodes/                  # Per-episode artifacts (brief, script, audio, scenes, master)
+└── src/
+    ├── orchestrator/              # DAG state machine, resumable runner, worker manager
+    ├── topics/                    # YouTube outlier scraper, CPM scorer, editorial queue
+    ├── data/
+    │   ├── connectors/            # worldbank.py, fred.py, oecd.py, imf.py, owid.py
+    │   ├── normalizer.py          # ISO-3 mapping, PPP/CPI alignment, currency handling
+    │   └── analyzer.py            # Deterministic ranking & stats -> DataBrief JSON
+    ├── script/
+    │   ├── generator.py           # Claude API client with prompt caching + structured output
+    │   ├── schema.py              # Pydantic SceneGraph & retention rule validators
+    │   └── fact_auditor.py        # Post-generation numeric fact verification gate
+    ├── audio/
+    │   ├── tts.py                 # Kokoro-82M / Chatterbox GPU narrator wrapper
+    │   ├── aligner.py             # WhisperX forced word-level timestamp extractor
+    │   └── mixer.py               # FFmpeg BGM ducking, SFX trigger sync, -14 LUFS mastering
+    ├── render/
+    │   ├── engine.py              # Parallel scene worker pool + direct NVENC pipe
+    │   ├── compositor.py          # Skia/ModernGL/ManimGL layer composer + texture cache
+    │   └── templates/             # 8 core 4K60 data-viz templates
+    ├── thumbnail/
+    │   └── generator.py           # Playwright HTML/SVG -> 3-variant 1080p PNG factory
+    ├── qa/
+    │   ├── validator.py           # ffprobe, black/freeze/silence/loudness/overlap lint
+    │   └── approval_bot.py        # Telegram/Discord mobile review & approval workflow
+    ├── publish/
+    │   ├── localizer.py           # ES, PT, HI, AR metadata & SRT translation
+    │   ├── youtube.py             # YouTube Data API v3 uploader + localizations + chapters
+    │   └── facebook.py            # FB cut generator (burned captions) + Graph API uploader
+    └── analytics/
+        ├── collector.py           # YouTube Analytics & FB Insights daily ETL
+        └── feedback.py            # Retention-drop & RPM-per-topic scoring updater
+```
+
+---
+
+## 6. 24–36 Month Revenue Scaling Architecture ($1,000–$2,000+/Day)
+
+### Unit Economics Math (Pure Ad Revenue)
+* **Target Niche RPM (Tier-1 English Finance/Global Economics, 10–18 min):** **$8–$16 RPM** (conservative planning baseline: **$10 blended RPM**).
+* **Facebook In-Stream Bonus:** Adds **+15% to +30%** incremental ad revenue on already-rendered videos.
+* **Daily Views Required:**
+  * **$1,000/day ($30,000/mo):** ~85,000 YouTube views/day + Facebook In-Stream (~$150/day).
+  * **$2,000/day ($60,000/mo):** ~165,000 YouTube views/day + Facebook In-Stream (~$350/day).
+
+### Compounding Library Growth Phases
+
+| Phase | Timeline | Network Footprint | Catalog Size | Target Daily Views | Projected Revenue |
+| :--- | :--- | :--- | :---: | :---: | :---: |
+| **Phase 0: Factory Build & Sprint** | Month 1 (Days 1–30) | 1 Flagship English Channel | 30 videos | 500–3,000 | $0 (Pre-YPP → YPP) |
+| **Phase 1: Monetization & PMF** | Months 2–6 | 1 Flagship Channel (3–4 videos/wk, quality tuned by retention data) | 100–120 videos | 10,000–30,000 | $100–$300/day |
+| **Phase 2: Evergreen Compounding** | Months 7–15 | 1 Flagship + Facebook Page Monetization + Annual Data Refreshes | 250–350 videos | 40,000–90,000 | $400–$900/day |
+| **Phase 3: Multi-Channel Network** | Months 16–24 | 3 Niche Channels (*Global Economy*, *Personal Wealth/COL*, *Demographics & Power*) + Multi-Audio Dubbing (ES/PT) | 600–850 videos | 100,000–160,000 | **$1,000–$1,600/day** |
+| **Phase 4: Scale & Annual Loops** | Months 25–36 | 4–5 Automated Channels + Automated Yearly "2027/2028 Edition" Refreshes | 1,000+ videos | 180,000–280,000 | **$1,800–$3,000+/day** |
+
+> **The Compounding Secret:** Global economic rankings expire every 12 months. Every year when World Bank / OECD / IMF release new data, your pipeline can automatically regenerate *"Every Country Ranked by Average Salary (2027 Edition)"* with fresh deltas, creating permanent recurring search waves on top of your evergreen back-catalog.
