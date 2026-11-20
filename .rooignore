@@ -1,0 +1,26 @@
+# Ignore heavy media, caches, databases, and secrets
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+node_modules/
+data/episodes/
+data/*.duckdb
+data/*.duckdb.wal
+data/*.parquet
+assets/bgm/
+assets/sfx/
+assets/backgrounds/
+*.mp4
+*.mkv
+*.mov
+*.wav
+*.mp3
+*.flac
+*.png
+*.jpg
+.env
+.env.*
+logs/
