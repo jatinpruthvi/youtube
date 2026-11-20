@@ -2,7 +2,7 @@
 
 > **Project:** Automated Data Documentary Network  
 > **Mission:** $1,000-$2,000+/day ($30k-$60k+/month) pure platform ad revenue in 24-36 months  
-> **Progress:** **0/50 items (0%)** · **139.0h remaining** of **139.0h total**
+> **Progress:** **0/51 items (0%)** · **142.0h remaining** of **142.0h total**
 
 <!-- Generated from tracker/items.json via `python3 scripts/track.py sync-md` -->
 
@@ -20,7 +20,7 @@ python3 scripts/track.py set INF-01 done  # Mark item done & auto-sync this Mark
 ### By Phase
 | Phase | Items Done | Total Effort |
 | :--- | :---: | :---: |
-| **Phase 0: Pipeline MVP (Days 1–7)** | 0 / 32 | 90.0h |
+| **Phase 0: Pipeline MVP (Days 1–7)** | 0 / 33 | 93.0h |
 | **Phase 1: 30-in-30 Launch Sprint (Days 8–30)** | 0 / 13 | 32.0h |
 | **Phase 2: Monetization & Retention Optimization (Months 2–6)** | 0 / 3 | 8.0h |
 | **Phase 3: Multi-Channel Network Scale (Months 7–36)** | 0 / 2 | 9.0h |
@@ -28,8 +28,8 @@ python3 scripts/track.py set INF-01 done  # Mark item done & auto-sync this Mark
 ### By Architecture Track
 | Track | Component | Items Done | Effort |
 | :--- | :--- | :---: | :---: |
-| **T01** | [Infrastructure, GPU VPS & Cost Guardrails](#t01-infrastructure-gpu-vps--cost-guardrails) | 0 / 5 | 8.0h |
-| **T02** | [Fact-Grounded Economic Data Layer (ETL)](#t02-fact-grounded-economic-data-layer-etl) | 0 / 7 | 20.0h |
+| **T01** | [Infrastructure, Compute & Cost Guardrails](#t01-infrastructure-compute--cost-guardrails) | 0 / 5 | 8.0h |
+| **T02** | [Fact-Grounded Economic Data Layer (SQLite + FastMCP)](#t02-fact-grounded-economic-data-layer-sqlite--fastmcp) | 0 / 8 | 23.0h |
 | **T03** | [Topic Intelligence & Editorial Queue](#t03-topic-intelligence--editorial-queue) | 0 / 3 | 7.0h |
 | **T04** | [Claude Narrative Script & Fact-Audit Engine](#t04-claude-narrative-script--fact-audit-engine) | 0 / 4 | 12.0h |
 | **T05** | [Voiceover, Forced Alignment & Audio Mastering](#t05-voiceover-forced-alignment--audio-mastering) | 0 / 5 | 12.0h |
@@ -43,21 +43,21 @@ python3 scripts/track.py set INF-01 done  # Mark item done & auto-sync this Mark
 
 ---
 
-## T01: Infrastructure, GPU VPS & Cost Guardrails
-*Single-GPU VPS setup, CUDA/NVENC runtime, storage, secrets, and ~$100/mo budget controls.* (**0/5 complete**)
+## T01: Infrastructure, Compute & Cost Guardrails
+*Hetzner CPX41 control plane + on-demand RTX 4090 worker, CUDA/NVENC runtime, storage, secrets, and ~$100/mo budget controls.* (**0/5 complete**)
 
 | Status | ID | Priority | Phase | Est. | Dependencies | Item & Acceptance Criteria |
 | :---: | :--- | :---: | :--- | :---: | :--- | :--- |
-| ⬜ Todo | `INF-01` | `P0` | `P0` | 2h | — | **Provision Single-GPU VPS (or Control Plane + Spot GPU) within ~$100/mo budget**<br/><sub>✓ Ubuntu 24.04 server accessible over SSH with NVIDIA GPU visible via nvidia-smi and >=200GB NVMe free.</sub> |
+| ⬜ Todo | `INF-01` | `P0` | `P0` | 2h | — | **Provision Hetzner CPX41 control plane + on-demand RTX 4090 worker within ~$100/mo budget**<br/><sub>✓ CPX41 reachable over SSH with the cron/SQLite/FastMCP stack installed; an on-demand RTX 4090 worker provisions and destroys cleanly via API for a 2-hour render window; >=200GB NVMe free.</sub> |
 | ⬜ Todo | `INF-02` | `P0` | `P0` | 2h | `INF-01` | **Install Python 3.11+, CUDA Toolkit, FFmpeg with NVENC (hevc_nvenc/h264_nvenc), and ManimGL/Cairo deps**<br/><sub>✓ ffmpeg -encoders shows h264_nvenc and hevc_nvenc; test 4K60 5-second GPU encode completes in <3 seconds.</sub> |
 | ⬜ Todo | `INF-03` | `P0` | `P0` | 1.5h | `INF-02` | **Initialize Python project skeleton, pyproject.toml, .env secrets template, and logging config**<br/><sub>✓ Virtual environment builds cleanly; structured JSON logging writes to logs/ with secrets loaded strictly from .env.</sub> |
-| ⬜ Todo | `INF-04` | `P1` | `P1` | 1.5h | `INF-03` | **Configure Cloudflare R2 (or Backblaze B2) archive sync & NVMe auto-pruning policy**<br/><sub>✓ Published masters and Parquet snapshots sync to R2; local scratch scene cache auto-cleans after 7 days.</sub> |
-| ⬜ Todo | `INF-05` | `P1` | `P1` | 1h | `INF-03` | **Set up API spend guardrails & monthly cost telemetry (Claude API + GPU runtime + R2)**<br/><sub>✓ Hard Anthropic monthly spend cap set; daily cost summary logged to DuckDB and sent via Telegram if >$4/day.</sub> |
+| ⬜ Todo | `INF-04` | `P1` | `P1` | 1.5h | `INF-03` | **Configure Cloudflare R2 (or Backblaze B2) archive sync & NVMe auto-pruning policy**<br/><sub>✓ Published masters and SQLite/JSON snapshots sync to R2; local scratch scene cache auto-cleans after 7 days.</sub> |
+| ⬜ Todo | `INF-05` | `P1` | `P1` | 1h | `INF-03` | **Set up API spend guardrails & monthly cost telemetry (Claude API + GPU runtime + R2)**<br/><sub>✓ Hard Anthropic monthly spend cap set; daily cost summary logged to SQLite and sent via Telegram if >$4/day.</sub> |
 
 <details>
 <summary>Checklist View — T01 (0/5)</summary>
 
-- [ ] **`INF-01`** (P0, 2h) — Provision Single-GPU VPS (or Control Plane + Spot GPU) within ~$100/mo budget
+- [ ] **`INF-01`** (P0, 2h) — Provision Hetzner CPX41 control plane + on-demand RTX 4090 worker within ~$100/mo budget
 - [ ] **`INF-02`** (P0, 2h) — Install Python 3.11+, CUDA Toolkit, FFmpeg with NVENC (hevc_nvenc/h264_nvenc), and ManimGL/Cairo deps
 - [ ] **`INF-03`** (P0, 1.5h) — Initialize Python project skeleton, pyproject.toml, .env secrets template, and logging config
 - [ ] **`INF-04`** (P1, 1.5h) — Configure Cloudflare R2 (or Backblaze B2) archive sync & NVMe auto-pruning policy
@@ -65,29 +65,31 @@ python3 scripts/track.py set INF-01 done  # Mark item done & auto-sync this Mark
 
 </details>
 
-## T02: Fact-Grounded Economic Data Layer (ETL)
-*Free public API connectors (World Bank, FRED, OECD, IMF, OWID), DuckDB warehouse, and deterministic DataBrief generator.* (**0/7 complete**)
+## T02: Fact-Grounded Economic Data Layer (SQLite + FastMCP)
+*Free public API connectors (World Bank, FRED, OECD, IMF, OWID, DBnomics, UN Data), SQLite warehouse with the production schema, FastMCP grounding server, and deterministic DataBrief generator.* (**0/8 complete**)
 
 | Status | ID | Priority | Phase | Est. | Dependencies | Item & Acceptance Criteria |
 | :---: | :--- | :---: | :--- | :---: | :--- | :--- |
-| ⬜ Todo | `DAT-01` | `P0` | `P0` | 2.5h | `INF-03` | **Design DuckDB warehouse schema (dim_countries, fact_observations, episode_snapshots)**<br/><sub>✓ DuckDB initializes idempotently with 217 ISO-3 countries, regions, currencies, flag paths, and GeoJSON IDs.</sub> |
+| ⬜ Todo | `DAT-01` | `P0` | `P0` | 2.5h | `INF-03` | **Design SQLite warehouse schema (data/schema.sql: dim_countries, fact_observations, episode_snapshots, rss_items, videos, ats_snapshots, hijack_attempts, hijack_results)**<br/><sub>✓ `sqlite3 data/production.db < data/schema.sql` initializes idempotently in WAL mode with 217 ISO-3 countries, regions, currencies, flag paths and GeoJSON IDs.</sub> |
 | ⬜ Todo | `DAT-02` | `P0` | `P0` | 3h | `DAT-01` | **Build World Bank API v2 connector with pagination, retry backoff, and indicator caching**<br/><sub>✓ Fetches full multi-decade history for NY.GDP.PCAP.PP.KD and writes clean rows to fact_observations in <10s.</sub> |
-| ⬜ Todo | `DAT-03` | `P0` | `P0` | 2.5h | `DAT-01` | **Build FRED API connector for US/global macro, CPI, wages, housing, and interest rates**<br/><sub>✓ Fetches FRED series with metadata units and frequency normalization into DuckDB.</sub> |
+| ⬜ Todo | `DAT-03` | `P0` | `P0` | 2.5h | `DAT-01` | **Build FRED API connector for US/global macro, CPI, wages, housing, and interest rates**<br/><sub>✓ Fetches FRED series with metadata units and frequency normalization into SQLite.</sub> |
 | ⬜ Todo | `DAT-04` | `P0` | `P0` | 3h | `DAT-01` | **Build OECD SDMX API connector for Tier-1 average wages, tax wedge, and hours worked**<br/><sub>✓ Successfully parses OECD SDMX JSON/CSV payloads and maps all OECD members to ISO-3 codes.</sub> |
-| ⬜ Todo | `DAT-05` | `P1` | `P1` | 2.5h | `DAT-01` | **Build IMF DataMapper & Our World in Data (OWID) secondary connectors**<br/><sub>✓ Ingests IMF debt-to-GDP / inflation forecasts and OWID long-run historical CSVs into unified schema.</sub> |
+| ⬜ Todo | `DAT-05` | `P1` | `P1` | 2.5h | `DAT-01` | **Build DBnomics, UN Data, IMF and Our World in Data (OWID) secondary connectors**<br/><sub>✓ Ingests IMF debt-to-GDP / inflation forecasts and OWID long-run historical CSVs into unified schema.</sub> |
 | ⬜ Todo | `DAT-06` | `P0` | `P0` | 3h | `DAT-02`, `DAT-03`, `DAT-04` | **Build Data Normalizer (ISO-3 reconciliation, PPP vs Nominal tagging, missing-year handling)**<br/><sub>✓ Zero orphan country names; explicitly flags latest available year per country and rejects unaligned units.</sub> |
-| ⬜ Todo | `DAT-07` | `P0` | `P0` | 3.5h | `DAT-06` | **Build Deterministic Statistical Analyzer & DataBrief JSON + Fact-ID Ledger generator**<br/><sub>✓ Generates immutable Parquet snapshot + DataBrief JSON with Top/Bottom N, medians, CAGRs, outliers, and F001..Fxxx IDs.</sub> |
+| ⬜ Todo | `DAT-07` | `P0` | `P0` | 3.5h | `DAT-06` | **Build Deterministic Statistical Analyzer & DataBrief JSON + Fact-ID Ledger generator**<br/><sub>✓ Generates a frozen episode snapshot (JSON row-set keyed by episode_id) + DataBrief JSON with Top/Bottom N, medians, CAGRs, outliers, and F001..Fxxx IDs.</sub> |
+| ⬜ Todo | `DAT-08` | `P0` | `P0` | 3h | `DAT-06` | **Build FastMCP data-grounding server (get_indicator, rank_countries, get_series, search_datasets)**<br/><sub>✓ Claude can call the MCP tools over stdio, receives only warehouse-backed rows with Fact IDs, and never receives a number that is absent from fact_observations.</sub> |
 
 <details>
-<summary>Checklist View — T02 (0/7)</summary>
+<summary>Checklist View — T02 (0/8)</summary>
 
-- [ ] **`DAT-01`** (P0, 2.5h) — Design DuckDB warehouse schema (dim_countries, fact_observations, episode_snapshots)
+- [ ] **`DAT-01`** (P0, 2.5h) — Design SQLite warehouse schema (data/schema.sql: dim_countries, fact_observations, episode_snapshots, rss_items, videos, ats_snapshots, hijack_attempts, hijack_results)
 - [ ] **`DAT-02`** (P0, 3h) — Build World Bank API v2 connector with pagination, retry backoff, and indicator caching
 - [ ] **`DAT-03`** (P0, 2.5h) — Build FRED API connector for US/global macro, CPI, wages, housing, and interest rates
 - [ ] **`DAT-04`** (P0, 3h) — Build OECD SDMX API connector for Tier-1 average wages, tax wedge, and hours worked
-- [ ] **`DAT-05`** (P1, 2.5h) — Build IMF DataMapper & Our World in Data (OWID) secondary connectors
+- [ ] **`DAT-05`** (P1, 2.5h) — Build DBnomics, UN Data, IMF and Our World in Data (OWID) secondary connectors
 - [ ] **`DAT-06`** (P0, 3h) — Build Data Normalizer (ISO-3 reconciliation, PPP vs Nominal tagging, missing-year handling)
 - [ ] **`DAT-07`** (P0, 3.5h) — Build Deterministic Statistical Analyzer & DataBrief JSON + Fact-ID Ledger generator
+- [ ] **`DAT-08`** (P0, 3h) — Build FastMCP data-grounding server (get_indicator, rank_countries, get_series, search_datasets)
 
 </details>
 
@@ -115,7 +117,7 @@ python3 scripts/track.py set INF-01 done  # Mark item done & auto-sync this Mark
 | Status | ID | Priority | Phase | Est. | Dependencies | Item & Acceptance Criteria |
 | :---: | :--- | :---: | :--- | :---: | :--- | :--- |
 | ⬜ Todo | `SCR-01` | `P0` | `P0` | 3h | `DAT-07` | **Define Pydantic SceneGraph JSON Schema (acts, scenes, visual templates, data bindings, SFX cues)**<br/><sub>✓ Schema validates 10-18 min episodes, enforces visual-template entropy (no consecutive duplicates), and links every scene to fact IDs.</sub> |
-| ⬜ Todo | `SCR-02` | `P0` | `P0` | 4h | `SCR-01` | **Engineer Versioned Claude API Documentary Prompts with Prompt Caching enabled**<br/><sub>✓ Generates 1,700-2,600 word causal documentary scripts + SceneGraph JSON at <$0.35/video with cache hit rate >70%.</sub> |
+| ⬜ Todo | `SCR-02` | `P0` | `P0` | 4h | `SCR-01` | **Engineer versioned Claude 3.5 Sonnet prompts with prompt caching and a GPT-4o fallback**<br/><sub>✓ Generates 1,700-2,600 word causal documentary scripts + SceneGraph JSON at <=$0.05/script with cache hit rate >70%, falling back to GPT-4o on repeated fact-audit failure.</sub> |
 | ⬜ Todo | `SCR-03` | `P0` | `P0` | 3h | `SCR-02` | **Build Zero-Hallucination Automated Fact-Audit Gate & targeted auto-repair loop**<br/><sub>✓ Extracts every number/rank/percentage in narration, cross-checks against DataBrief (+-0.5% tolerance), and auto-repairs mismatches.</sub> |
 | ⬜ Todo | `SCR-04` | `P1` | `P1` | 2h | `SCR-03` | **Add Retention Pacing Linter (0-35s hook, open loops, pattern interrupts every <=55s, end-screen bridge)**<br/><sub>✓ Scores script retention structure and rejects scripts lacking a hook contrast, mid-video inversion, or bridge.</sub> |
 
@@ -123,7 +125,7 @@ python3 scripts/track.py set INF-01 done  # Mark item done & auto-sync this Mark
 <summary>Checklist View — T04 (0/4)</summary>
 
 - [ ] **`SCR-01`** (P0, 3h) — Define Pydantic SceneGraph JSON Schema (acts, scenes, visual templates, data bindings, SFX cues)
-- [ ] **`SCR-02`** (P0, 4h) — Engineer Versioned Claude API Documentary Prompts with Prompt Caching enabled
+- [ ] **`SCR-02`** (P0, 4h) — Engineer versioned Claude 3.5 Sonnet prompts with prompt caching and a GPT-4o fallback
 - [ ] **`SCR-03`** (P0, 3h) — Build Zero-Hallucination Automated Fact-Audit Gate & targeted auto-repair loop
 - [ ] **`SCR-04`** (P1, 2h) — Add Retention Pacing Linter (0-35s hook, open loops, pattern interrupts every <=55s, end-screen bridge)
 
@@ -134,7 +136,7 @@ python3 scripts/track.py set INF-01 done  # Mark item done & auto-sync this Mark
 
 | Status | ID | Priority | Phase | Est. | Dependencies | Item & Acceptance Criteria |
 | :---: | :--- | :---: | :--- | :---: | :--- | :--- |
-| ⬜ Todo | `AUD-01` | `P0` | `P0` | 3h | `INF-02` | **Deploy Local GPU TTS Engine (Kokoro-82M / Chatterbox / F5-TTS) with locked documentary voice profile**<br/><sub>✓ Synthesizes clean 48kHz broadcast-quality narration per scene at >10x real-time speed with $0 marginal API cost.</sub> |
+| ⬜ Todo | `AUD-01` | `P0` | `P0` | 3h | `INF-02` | **Deploy local GPU TTS (MeloTTS primary, Kokoro-82M alternate, Azure Neural fallback) with a locked narrator voice**<br/><sub>✓ MeloTTS synthesizes clean 48kHz broadcast narration per scene at >10x real-time with $0 marginal API cost; Azure fallback triggers on any flagged pronunciation.</sub> |
 | ⬜ Todo | `AUD-02` | `P0` | `P0` | 1.5h | `AUD-01` | **Build Pronunciation Lexicon & SSML/Pause Preprocessor for countries, currencies, and acronyms**<br/><sub>✓ Correctly pronounces 100+ tricky terms (Gini, PPP, OECD, Liechtenstein, Luxembourg, CHF, UAE, etc.) with natural pauses.</sub> |
 | ⬜ Todo | `AUD-03` | `P0` | `P0` | 2.5h | `AUD-01` | **Integrate WhisperX / stable-ts Forced Word-Level Alignment**<br/><sub>✓ Outputs per-scene word timestamp JSON (start_ms, end_ms) accurate within +-40ms to drive visual animation triggers.</sub> |
 | ⬜ Todo | `AUD-04` | `P0` | `P0` | 2h | `INF-03` | **Curate royalty-free ambient documentary BGM stems & micro-SFX library with license manifest**<br/><sub>✓ At least 6 loopable BGM tracks + 15 crisp SFX stored in assets/ with documented commercial licenses in assets/licenses.json.</sub> |
@@ -143,7 +145,7 @@ python3 scripts/track.py set INF-01 done  # Mark item done & auto-sync this Mark
 <details>
 <summary>Checklist View — T05 (0/5)</summary>
 
-- [ ] **`AUD-01`** (P0, 3h) — Deploy Local GPU TTS Engine (Kokoro-82M / Chatterbox / F5-TTS) with locked documentary voice profile
+- [ ] **`AUD-01`** (P0, 3h) — Deploy local GPU TTS (MeloTTS primary, Kokoro-82M alternate, Azure Neural fallback) with a locked narrator voice
 - [ ] **`AUD-02`** (P0, 1.5h) — Build Pronunciation Lexicon & SSML/Pause Preprocessor for countries, currencies, and acronyms
 - [ ] **`AUD-03`** (P0, 2.5h) — Integrate WhisperX / stable-ts Forced Word-Level Alignment
 - [ ] **`AUD-04`** (P0, 2h) — Curate royalty-free ambient documentary BGM stems & micro-SFX library with license manifest
@@ -272,7 +274,7 @@ python3 scripts/track.py set INF-01 done  # Mark item done & auto-sync this Mark
 
 | Status | ID | Priority | Phase | Est. | Dependencies | Item & Acceptance Criteria |
 | :---: | :--- | :---: | :--- | :---: | :--- | :--- |
-| ⬜ Todo | `ANA-01` | `P1` | `P1` | 3h | `PUB-01` | **Build YouTube Analytics & Revenue Daily ETL into DuckDB (CTR, AVD, RPM, retention curves, geo)**<br/><sub>✓ Daily cron ingests video-level performance and geo RPM splits (US/UK/CA/AU share) into DuckDB.</sub> |
+| ⬜ Todo | `ANA-01` | `P1` | `P1` | 3h | `PUB-01` | **Build YouTube Analytics & Revenue daily ETL into SQLite (CTR, AVD, RPM, retention curves, geo)**<br/><sub>✓ Daily cron ingests video-level performance and geo RPM splits (US/UK/CA/AU share) into SQLite.</sub> |
 | ⬜ Todo | `ANA-02` | `P1` | `P2` | 3h | `ANA-01`, `TOP-03` | **Build Retention Drop-Off Diagnostic & RPM-per-Topic Feedback Loop**<br/><sub>✓ Weekly Telegram report correlates >3% retention drops to exact scene templates and updates topic scorer weights.</sub> |
 | ⬜ Todo | `ANA-03` | `P2` | `P3` | 4h | `ANA-01`, `ORC-01` | **Build Automated Annual Dataset Refresh Trigger ('2027/2028 Edition' re-render pipeline)**<br/><sub>✓ Detects new World Bank / OECD annual releases and queues refreshed sequel episodes for top-earning evergreen videos.</sub> |
 | ⬜ Todo | `ANA-04` | `P2` | `P3` | 5h | `ANA-02`, `CMP-03` | **Add Multi-Channel Config Isolation & Multi-Language Audio Dubbing (YouTube MLA for ES/PT)**<br/><sub>✓ Single GPU pipeline serves 3+ niche channels via channel_id configs and optional secondary Spanish/Portuguese audio tracks.</sub> |
@@ -280,7 +282,7 @@ python3 scripts/track.py set INF-01 done  # Mark item done & auto-sync this Mark
 <details>
 <summary>Checklist View — T12 (0/4)</summary>
 
-- [ ] **`ANA-01`** (P1, 3h) — Build YouTube Analytics & Revenue Daily ETL into DuckDB (CTR, AVD, RPM, retention curves, geo)
+- [ ] **`ANA-01`** (P1, 3h) — Build YouTube Analytics & Revenue daily ETL into SQLite (CTR, AVD, RPM, retention curves, geo)
 - [ ] **`ANA-02`** (P1, 3h) — Build Retention Drop-Off Diagnostic & RPM-per-Topic Feedback Loop
 - [ ] **`ANA-03`** (P2, 4h) — Build Automated Annual Dataset Refresh Trigger ('2027/2028 Edition' re-render pipeline)
 - [ ] **`ANA-04`** (P2, 5h) — Add Multi-Channel Config Isolation & Multi-Language Audio Dubbing (YouTube MLA for ES/PT)

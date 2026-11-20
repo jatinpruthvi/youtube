@@ -9,8 +9,8 @@ Universal, model-agnostic operating instructions for **all AI coding models and 
 ## 1. Mission & Non-Negotiable Constraints
 
 * **Mission:** Build an AI-powered, automated data documentary factory generating **$1,000–$2,000+/day ($30k–$60k+/month)** in pure platform ad revenue (YouTube AdSense + Facebook In-Stream) within 24–36 months.
-* **Budget Cap:** **~$100/month** single-GPU VPS (or CPU control plane + spot GPU burst) — zero unnecessary paid SaaS, prompt-cached LLM script generation, free public economic APIs, self-hosted GPU TTS.
-* **Fact Grounding:** **0% hallucination tolerance.** Every number spoken or rendered must trace back to an immutable DuckDB/Parquet snapshot from World Bank, FRED, OECD, IMF, or OWID via a verified `DataBrief` Fact ID (`F001..Fxxx`).
+* **Budget Cap:** **~$100/month** — Hetzner CPX41 control plane always on plus an on-demand RTX 4090 worker for ~2 h/day (single-GPU VPS as fallback) — zero unnecessary paid SaaS, prompt-cached Claude 3.5 Sonnet script generation with GPT-4o fallback, free public economic APIs, self-hosted MeloTTS/Kokoro.
+* **Fact Grounding:** **0% hallucination tolerance.** Every number spoken or rendered must trace back to a frozen snapshot row in the SQLite warehouse, fetched from World Bank, FRED, OECD, IMF, OWID, DBnomics or UN Data through the FastMCP server, and carried by a verified `DataBrief` Fact ID (`F001..Fxxx`).
 * **Output Standard:** 10–18 min · **4K (`3840×2160`) 60FPS** · `-14 LUFS` · English-first + automated ES/PT/HI/AR metadata & SRTs + Facebook In-Stream cut.
 
 ---
@@ -21,8 +21,8 @@ Always consult these before planning or writing code:
 
 | File | Role |
 | :--- | :--- |
-| `docs/ARCHITECTURE.md` | Full system architecture, 10 module specs, 4K60 NVENC strategy, ~$100/mo unit economics |
-| `docs/TRACKER.md` | Human-readable 50-item Master Track List across 12 tracks and 4 phases |
+| `docs/ARCHITECTURE.md` | Full system architecture, 10 module specs, 4K60 NVENC strategy, ~$100/mo unit economics (CPX41 + on-demand 4090) |
+| `docs/TRACKER.md` | Human-readable 51-item Master Track List across 12 tracks and 4 phases |
 | `docs/SPRINT_30_DAYS.md` | 30 Videos in 30 Days production schedule & 30 high-CPM episode specs |
 | `tracker/items.json` | Machine-readable task database (validated acyclic DAG) |
 
@@ -74,7 +74,7 @@ Installed in **`.roomodes`**, **`.roo/rules/rules.md`**, **`.roo/commands/commit
 | `prd` | `snarktank/ralph` | Writing detailed PRDs before building a module or phase |
 | `ralph` | `snarktank/ralph` | Converting PRDs into autonomous `prd.json` user stories |
 | `roo-conflict-resolution` | `RooCodeInc/Roo-Code` | Resolving git merge/rebase conflicts safely |
-| `economic-data-etl` | Project-native | Track T02: World Bank/FRED/OECD/IMF/OWID connectors, DuckDB, `DataBrief` |
+| `economic-data-etl` | Project-native | Track T02: World Bank/FRED/OECD/IMF/OWID/DBnomics/UN Data connectors, SQLite warehouse, FastMCP server, `DataBrief` |
 | `claude-script-fact-auditor` | Project-native | Track T04: Prompt-cached LLM scripts, `SceneGraph` schema, fact-audit gate |
 | `audio-tts-lufs-mastering` | Project-native | Track T05: GPU TTS, pronunciation lexicon, WhisperX alignment, `-14 LUFS` mix |
 | `manim-4k60-gpu-renderer` | Project-native | Track T06: Parallel 4K60 GPU templates, static caching, direct NVENC piping |

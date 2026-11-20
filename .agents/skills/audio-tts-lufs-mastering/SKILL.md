@@ -1,6 +1,6 @@
 ---
 name: audio-tts-lufs-mastering
-description: Build zero-marginal-cost GPU TTS narration pipelines (Kokoro-82M / Chatterbox / F5-TTS), phonetic pronunciation lexicons, WhisperX forced word-level alignment, and FFmpeg BGM sidechain ducking + SFX sync + broadcast -14 LUFS mastering. Use whenever implementing Track T05 (AUD-01..AUD-05).
+description: Build zero-marginal-cost GPU TTS narration pipelines (MeloTTS / Kokoro-82M + Azure Neural fallback), phonetic pronunciation lexicons, WhisperX forced word-level alignment, and FFmpeg BGM sidechain ducking + SFX sync + broadcast -14 LUFS mastering. Use whenever implementing Track T05 (AUD-01..AUD-05).
 ---
 
 # GPU TTS, Forced Alignment & Broadcast Audio Mastering Skill
@@ -8,7 +8,7 @@ description: Build zero-marginal-cost GPU TTS narration pipelines (Kokoro-82M / 
 Use this skill when building or debugging `src/audio/` narration synthesis, alignment, or FFmpeg audio mixing.
 
 ## Core Standards
-1. **Zero-Marginal-Cost GPU TTS:** Default to self-hosted local GPU models (**Kokoro-82M**, **Chatterbox TTS**, or **F5-TTS**) behind a clean `TTSProvider` protocol so upgrading to ElevenLabs later is a one-line config switch.
+1. **Zero-Marginal-Cost GPU TTS:** Default to self-hosted local GPU models (**MeloTTS**, MIT, primary English narrator; **Kokoro-82M**, Apache 2.0, alternate voice) with **Azure Neural TTS** as the paid fallback for non-English and flagged pronunciations, all behind a clean `TTSProvider` protocol.
 2. **Pronunciation Lexicon (`config/pronunciation.json`):** Pre-process narration text before TTS synthesis (while keeping original clean text for SRT captions!) so acronyms, currencies, and tricky country names sound natural:
    - `OECD` → `"O-E-C-D"`, `PPP` → `"P-P-P"`, `Gini` → `"Jee-nee"`, `CAGR` → `"compound annual growth rate"`, `CHF` → `"Swiss francs"`, `UAE` → `"U-A-E"`.
 3. **Forced Word-Level Alignment (`WhisperX` / `stable-ts`):**

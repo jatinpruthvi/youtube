@@ -10,11 +10,11 @@ Every architectural decision is governed by five non-negotiable constraints:
 
 | Constraint | Engineering Implication |
 | :--- | :--- |
-| **~$100/mo Infrastructure Budget** | Zero SaaS bloat. Free public economic APIs, self-hosted GPU TTS + forced alignment, prompt-cached Claude API calls, hardware NVENC encoding, and smart spot/single-GPU compute budgeting. |
-| **100% Fact-Grounded Data** | LLMs **never** generate statistics from memory. Every number originates from versioned API snapshots (World Bank, FRED, OECD, IMF, OWID) stored in DuckDB and audited via deterministic post-script verification. |
+| **~$100/mo Infrastructure Budget** | Zero SaaS bloat. Free public economic APIs, self-hosted GPU TTS (MeloTTS/Kokoro) + WhisperX forced alignment, prompt-cached Claude 3.5 Sonnet calls with GPT-4o fallback, hardware NVENC encoding, and a CPU control plane plus on-demand RTX 4090 budget. |
+| **100% Fact-Grounded Data** | LLMs **never** generate statistics from memory. Every number originates from versioned API snapshots (World Bank, FRED, OECD, IMF, OWID, DBnomics, UN Data) stored in the local SQLite warehouse and audited via deterministic post-script verification. |
 | **4K 60FPS Documentary Grade** | Naive single-threaded Manim Cairo renders take 10–20 hours per 15-min 4K60 video. Solved via **atomic scene DAG parallelism**, **static texture caching**, **OpenGL/Skia GPU rasterization**, and **zero-temp-PNG NVENC streaming**. |
 | **High-Retention & Anti-Demonetization** | Built to defeat YouTube's "Repetitious / Mass-Produced Content" filters: deep causal narration, visual template entropy enforcement (new visual every 35–50s), human 3-minute QA gate, and rich sound design. |
-| **Solo Developer Maintainability** | Monolithic Python 3.11+ repository, SQLite/DuckDB state store (no heavy K8s/microservices), idempotent resumable pipeline stages, and Telegram/Discord mobile notifications for one-tap approval. |
+| **Solo Developer Maintainability** | Monolithic Python 3.12 repository, SQLite state store (PostgreSQL when scaling; no heavy K8s/microservices), idempotent resumable pipeline stages, and Telegram/Discord mobile notifications for one-tap approval. |
 
 ---
 
@@ -29,7 +29,7 @@ flowchart TB
 
     subgraph S2["2. Fact-Grounded Data Layer (ETL)"]
         D1[World Bank / FRED / OECD / IMF / OWID APIs] --> D2[Normalizer: ISO-3, PPP, CPI, YoY]
-        D2 --> D3[(DuckDB Warehouse)]
+        D2 --> D3[(SQLite Warehouse)]
         D3 --> D4[Deterministic Stats Analyzer -> DataBrief JSON + Fact IDs]
     end
 
@@ -41,7 +41,7 @@ flowchart TB
     end
 
     subgraph S4["4. Voiceover, Alignment & Sound Design"]
-        A1[GPU TTS Engine: Kokoro-82M / Chatterbox / F5-TTS] --> A2[WhisperX Word-Level Timestamps]
+        A1[GPU TTS Engine: MeloTTS / Kokoro-82M + Azure Fallback] --> A2[WhisperX Word-Level Timestamps]
         A2 --> A3[Audio Mastering: -14 LUFS + BGM Ducking + Synced SFX]
     end
 
@@ -111,10 +111,15 @@ Eliminates LLM hallucinations permanently by treating economic data like a finan
   * **OECD SDMX API** (`sdmx.oecd.org`): Gold-standard Tier-1 data (average annual wages, tax wedge, housing affordability, hours worked, household debt).
   * **IMF DataMapper API** (`imf.org/external/datamapper/api/v1`): Debt-to-GDP, real GDP forecasts, inflation projections.
   * **Our World in Data (OWID) Grapher CSV/JSON**: Clean, harmonized long-run historical datasets (1800–present).
-* **Local Data Warehouse (`DuckDB`):**
+  * **DBnomics API** (`api.db.nomics.world`): Single aggregation point for OECD/Eurostat/IMF/BIS series with one schema — the thread's shortcut to multi-source coverage.
+  * **UN Data API** (`data.un.org`): Population, migration, education and labour series not covered by the World Bank.
+* **Local Data Warehouse (`SQLite`, `data/production.db`; PostgreSQL when scaling):**
   * `dim_countries`: ISO-3, ISO-2, display name, short label, region, flag SVG path, GeoJSON polygon ID, currency code.
   * `fact_observations`: `(source, indicator_id, iso3, year, value, unit, is_ppp, is_inflation_adjusted, fetched_at)`.
-  * `episode_snapshots`: Immutable Parquet freeze of exact rows used in each video (enables 100% reproducibility and automated source-citation generation).
+  * `episode_snapshots`: frozen row-set used by each video (JSON blob keyed by `episode_id`), so any published number can be re-derived and cited.
+  * Operational tables from the locked schema (`data/schema.sql`): `rss_items`, `videos`, `ats_snapshots`, `hijack_attempts`, `hijack_results`. WAL mode, `PRAGMA foreign_keys = ON`.
+* **`FastMCP` Data-Grounding Server (`src/data/mcp_server.py`):**
+  * Exposes `get_indicator`, `rank_countries`, `get_series` and `search_datasets` tools over the warehouse. The script LLM can only read verified rows through these tools — it never formats a number itself.
 * **Deterministic Statistics Engine (`src/data/analyzer.py`):**
   * Computes Top-N, Bottom-N, Global Median/Mean, Regional Averages, 10/20/50-year CAGR, Biggest Risers/Fallers, and Statistical Outliers (e.g., high nominal salary vs low PPP purchasing power).
   * Outputs `DataBrief.json` assigning every statistic an immutable ID (`F001`–`F250`).
@@ -125,7 +130,9 @@ Eliminates LLM hallucinations permanently by treating economic data like a finan
 Transforms raw `DataBrief.json` into a **10–18 minute high-retention documentary** (1,600–2,700 words at ~155 WPM).
 
 * **Model & Cost Optimization:**
-  * Primary: **Claude Sonnet** (best quality-to-cost ratio for structured JSON + engaging documentary prose) with **Anthropic Prompt Caching** enabled on the system prompt, visual template catalog, and style guide (~70% input token savings → **$0.15–$0.35 per full video**).
+  * Primary: **Claude 3.5 Sonnet** (~$0.05/script) for structured JSON + engaging documentary prose, with **Anthropic Prompt Caching** enabled on the system prompt, visual template catalog and style guide (~70% input-token savings).
+  * Fallback: **GPT-4o** (~$0.08/script) when the primary call fails the fact-audit gate twice.
+  * A local **Ollama + Llama 3.1 8B** handles metadata, tags and descriptions only — never narration (generic prose kills first-30s retention).
 * **Retention Blueprint (Enforced by Pydantic Schema):**
   1. **`0:00–0:35` Cold Hook & Visual Proof:** Immediate provocative contrast backed by a fast animated reveal + open loop ("By the end, you'll see why a $45,000 salary in Country X buys more than $110,000 in Country Y").
   2. **`0:35–1:30` Methodology & Stakes:** Establish credibility (PPP vs nominal, exact dataset & year) in under 45 seconds without boring the viewer.
@@ -143,8 +150,8 @@ Transforms raw `DataBrief.json` into a **10–18 minute high-retention documenta
 Documentary authority lives or dies on audio quality and frame-accurate synchronization.
 
 * **Zero-Marginal-Cost GPU TTS Stack (fits ~$100/mo budget):**
-  * **Primary Local Engine:** **Kokoro-82M** or **Chatterbox TTS** / **F5-TTS** running locally on the GPU VPS (zero API fees, ~0.05× real-time synthesis speed, consistent authoritative narrator voice via fixed voice embedding).
-  * **Optional Scale-Up (Post-$2k/mo revenue):** ElevenLabs Professional Voice Clone for flagship channel while local TTS powers secondary channels.
+  * **Primary Local Engine:** **MeloTTS** (MIT — English narration, fixed authoritative voice embedding) with **Kokoro-82M** (Apache 2.0) as the alternate local voice. Zero API fees, runs on the GPU worker.
+  * **Fallback:** **Azure Neural TTS** (~$0.20 per 12-minute video) for non-English localisations and for any scene the local engine mispronounces. Coqui XTTS is excluded (unmaintained, CPML non-commercial risk) and MusicGen is excluded (CC-BY-NC weights).
 * **Custom Pronunciation Lexicon (`config/pronunciation.json`):**
   * Phonetic overrides for tricky country names, currencies, acronyms, and economic terms (`Gini`, `PPP`, `OECD`, `CAGR`, `Luxembourg`, `Liechtenstein`, `UAE`, `Q1`, `€`, `CHF`).
 * **Forced Word-Level Alignment (`WhisperX` / `stable-ts`):**
@@ -228,7 +235,7 @@ Zero broken videos ever reach YouTube.
 
 ### Module 9: Analytics & Self-Optimizing Feedback Loop
 * Daily cron job pulls metrics via **YouTube Analytics API** (`views`, `estimatedRevenue`, `cpm`, `playbackBasedCpm`, `averageViewPercentage`, `subscribersGained`, `audienceWatchRatio` retention curve) and **Facebook Insights API**.
-* Stores time-series performance in DuckDB (`fact_video_performance`).
+* Stores time-series performance in SQLite (`fact_video_performance`).
 * **Weekly Automated Optimization Report:**
   * Identifies exact timestamps where retention drops >3% in 5 seconds → maps back to the `SceneGraph` template/pacing causing the drop.
   * Ranks Topic Pillars by **Revenue per 1,000 Impressions (CTR × RPM)** → automatically boosts winning pillars in Module 1's topic scorer.
@@ -256,23 +263,23 @@ Protecting the channel asset is mission-critical when relying on 100% platform r
 
 Two proven deployment topologies that respect the **~$100/month** constraint:
 
-### Topology A (Recommended): Hybrid Always-On CPU Control Plane + Auto-Spot GPU Burst (~$60–$85/mo)
-*Faster 4K60 renders (RTX 4090 / L4) at lower total monthly spend.*
+### Topology A (Locked Plan): Always-On CPU Control Plane + On-Demand RTX 4090 (~$85–$100/mo)
+*This is the infrastructure the strategy thread locked: Hetzner CPX41 always on, RTX 4090 rented for ~2 h/day of GPU work.*
 
 | Component | Specification / Provider | Est. Monthly Cost |
 | :--- | :--- | :---: |
-| **Control Plane VPS** | Hetzner CPX31 (4 vCPU, 8 GB RAM, 160 GB NVMe) — runs Orchestrator, ETL, DB, Bot, Uploader | $16 |
-| **On-Demand GPU Worker** | RunPod / Vast.ai RTX 4090 (~$0.40/hr) auto-provisioned via API for 1.0 hr/video × 30 videos = 30–45 hrs/mo | $18 |
-| **Claude API (Sonnet + Caching)** | ~30 scripts + scene graphs + 4-language localizations (~$0.30/video) | $10 |
-| **Voiceover & Alignment** | Self-hosted Kokoro-82M / Chatterbox + WhisperX on the GPU worker | $0 |
-| **Economic Data APIs** | World Bank, FRED, OECD, IMF, OWID | $0 |
-| **Cloud Object Storage** | Cloudflare R2 (project archives, masters, backups — 200 GB, zero egress) | $3 |
-| **Music/SFX Licenses & Domain** | Amortized royalty-free audio library + channel domain/email | $10 |
-| **Buffer / Retries / Tests** | Re-renders, A/B tests, extra GPU hours | $15 |
-| **TOTAL** | **Full 30-video/month 4K60 Media Factory** | **~$72/month** |
+| **Control Plane VPS** | Hetzner CPX41 (8 vCPU, 16 GB RAM, 240 GB NVMe) — cron, SQLite, FastMCP data server, Python scripts, RSS parser, uploader | $27 |
+| **On-Demand GPU Worker** | RunPod / Vast.ai RTX 4090 (24 GB) provisioned by API for ~2 h/day (≈60 h/mo) — TTS, alignment, 4K60 render | $20–35 |
+| **Script LLM (Claude 3.5 Sonnet + caching)** | ~30 scripts + scene graphs + ES/PT/HI/AR localized metadata (~$0.05–0.30/video) | $10 |
+| **Voiceover** | Self-hosted MeloTTS / Kokoro on the GPU worker, Azure Neural fallback | $5 |
+| **Economic Data APIs** | World Bank, FRED, OECD, IMF, OWID, DBnomics, UN Data | $0 |
+| **Storage** | Hetzner Volume / Backblaze B2 / Cloudflare R2 — 500 GB masters + backups | $5 |
+| **Music/SFX Licenses & Domain** | YouTube Audio Library / Pixabay + channel domain & email | $10 |
+| **Buffer / Retries / Tests** | Re-renders, A/B tests, extra GPU hours | $8 |
+| **TOTAL** | **Full 30-video/month 4K60 media factory** | **~$85–100/month** |
 
-### Topology B (Literal Single-Box Simplicity): Single Always-On GPU VPS (~$85–$105/mo)
-*Zero provisioning scripts — one persistent Linux GPU box running everything locally.*
+### Topology B (Fallback): Single Always-On GPU VPS (~$85–$105/mo)
+*One persistent Linux GPU box running everything locally — no provisioning scripts, simpler DevOps, but a slower GPU than an on-demand 4090.*
 
 | Component | Specification / Provider | Est. Monthly Cost |
 | :--- | :--- | :---: |
@@ -280,7 +287,7 @@ Two proven deployment topologies that respect the **~$100/month** constraint:
 | **Claude API + R2 Storage + Misc** | Same stack as Topology A | $20–$25 |
 | **TOTAL** | **Single-Box Always-On Pipeline** | **~$85–$110/month** |
 
-> **Recommendation:** Start Day 1 on **Topology B** (simpler DevOps during the 30-day sprint) or **Topology A** if you want RTX 4090 speed at ~$72/mo. Both stay strictly under the ~$100/month cap (₹8,500/month).
+> **Recommendation:** Start Day 1 on **Topology A** — it is the locked plan (Hetzner CPX41 control plane + on-demand RTX 4090, ~2 h/day). Topology B is the fallback if one box matters more than render speed. Both stay under the ~$100/month cap (₹8,500/month).
 
 ---
 
@@ -310,21 +317,23 @@ youtube/
 │   ├── sfx/                       # Micro-SFX pack (whoosh, pop, tick, riser)
 │   └── backgrounds/               # Pre-baked 4K60 looping dark-mode motion textures
 ├── data/
-│   ├── warehouse.duckdb           # Economic data warehouse + analytics tables
+│   ├── production.db              # SQLite warehouse (schema.sql applied) + analytics tables
+│   ├── schema.sql                 # Production schema (rss_items, videos, ats_snapshots, ...)
 │   └── episodes/                  # Per-episode artifacts (brief, script, audio, scenes, master)
 └── src/
     ├── orchestrator/              # DAG state machine, resumable runner, worker manager
     ├── topics/                    # YouTube outlier scraper, CPM scorer, editorial queue
     ├── data/
-    │   ├── connectors/            # worldbank.py, fred.py, oecd.py, imf.py, owid.py
+    │   ├── connectors/            # worldbank.py, fred.py, oecd.py, imf.py, owid.py, dbnomics.py, undata.py
+    │   ├── mcp_server.py         # FastMCP grounding server (get_indicator, rank_countries, ...)
     │   ├── normalizer.py          # ISO-3 mapping, PPP/CPI alignment, currency handling
     │   └── analyzer.py            # Deterministic ranking & stats -> DataBrief JSON
     ├── script/
-    │   ├── generator.py           # Claude API client with prompt caching + structured output
+    │   ├── generator.py           # Claude 3.5 Sonnet client (GPT-4o fallback) + caching + structured output
     │   ├── schema.py              # Pydantic SceneGraph & retention rule validators
     │   └── fact_auditor.py        # Post-generation numeric fact verification gate
     ├── audio/
-    │   ├── tts.py                 # Kokoro-82M / Chatterbox GPU narrator wrapper
+    │   ├── tts.py                 # MeloTTS / Kokoro-82M narrator wrapper (+ Azure fallback)
     │   ├── aligner.py             # WhisperX forced word-level timestamp extractor
     │   └── mixer.py               # FFmpeg BGM ducking, SFX trigger sync, -14 LUFS mastering
     ├── render/

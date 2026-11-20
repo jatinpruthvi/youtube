@@ -1,17 +1,17 @@
 ---
 name: economic-data-etl
-description: Build fact-grounded economic data connectors (World Bank API v2, FRED, OECD SDMX, IMF DataMapper, OWID), DuckDB warehouse tables, ISO-3/PPP normalizers, and deterministic DataBrief JSON generators with auditable Fact IDs. Use whenever implementing or debugging Track T02 (DAT-01..DAT-07) or any economic dataset pipeline.
+description: Build fact-grounded economic data connectors (World Bank API v2, FRED, OECD SDMX, IMF DataMapper, OWID), SQLite warehouse tables + FastMCP grounding server, ISO-3/PPP normalizers, and deterministic DataBrief JSON generators with auditable Fact IDs. Use whenever implementing or debugging Track T02 (DAT-01..DAT-07) or any economic dataset pipeline.
 ---
 
 # Economic Data ETL & Fact-Grounding Skill
 
-Use this skill when building or modifying `src/data/` connectors, DuckDB schemas, normalizers, or `DataBrief` generators.
+Use this skill when building or modifying `src/data/` connectors, SQLite schemas, normalizers, or `DataBrief` generators.
 
 ## Core Invariants
 1. **Zero LLM Memory Stats:** Every figure used in narration or visuals MUST originate from a stored API observation.
 2. **ISO-3 Canonical Key:** All country rows MUST normalize to uppercase ISO 3166-1 alpha-3 (`USA`, `IND`, `CHE`, `DEU`). Drop or quarantine regional aggregates (`WLD`, `EAS`, `EUU`) into an explicit `is_aggregate = true` flag so they never pollute country rankings.
 3. **Unit & Adjustment Explicitness:** Always store `unit`, `currency`, `is_ppp_adjusted`, and `is_inflation_adjusted`. Never mix nominal USD and PPP-adjusted international dollars in the same ranking without explicit dual-axis comparison.
-4. **Immutable Episode Freeze:** Before scripting begins, freeze the exact DuckDB query output to `data/episodes/<episode_id>/snapshot.parquet` and generate `data_brief.json` with deterministic Fact IDs (`F001`, `F002`, ...).
+4. **Immutable Episode Freeze:** Before scripting begins, freeze the exact warehouse query output to `data/episodes/<episode_id>/snapshot.json` and generate `data_brief.json` with deterministic Fact IDs (`F001`, `F002`, ...).
 
 ## API Connector Contracts
 * **World Bank API v2 (`https://api.worldbank.org/v2/country/all/indicator/{code}?format=json&per_page=20000`)**
@@ -26,10 +26,10 @@ Use this skill when building or modifying `src/data/` connectors, DuckDB schemas
 * **OWID Grapher (`https://ourworldindata.org/grapher/{slug}.csv`)**
   - Use `Code` column for ISO-3 filtering; discard rows with empty `Code`.
 
-## Required DuckDB Tables
+## Required SQLite Tables
 * `dim_countries(iso3 PRIMARY KEY, iso2, name, short_name, region, sub_region, currency_code, is_oecd, flag_asset_path)`
 * `fact_observations(source, indicator_id, iso3, year, value, unit, is_ppp, is_real, is_forecast, fetched_at, PRIMARY KEY (source, indicator_id, iso3, year))`
-* `episode_snapshots(episode_id, dataset_hash, parquet_path, created_at)`
+* `episode_snapshots(episode_id, dataset_hash, snapshot_json_path, created_at)`
 
 ## Verification Checklist
 - [ ] Unit tests use local JSON/CSV fixtures (no live internet required during `pytest`).

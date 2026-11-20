@@ -65,7 +65,7 @@ All 30 episodes are selected for **high Tier-1 advertiser CPM (Finance / Economi
 ## 30-Day Exit KPIs (Definition of Sprint Success)
 
 - [ ] **30/30 episodes** published in native 4K 60FPS with zero fact-audit violations and zero copyright/policy strikes.
-- [ ] **Average end-to-end automated pipeline time** ≤ 45 minutes per episode on the single-GPU VPS.
+- [ ] **Average end-to-end automated pipeline time** ≤ 45 minutes per episode on the CPX41 control plane + on-demand RTX 4090 worker.
 - [ ] **Monthly operating spend** verified ≤ $100–$115/month (compute + Claude API + storage).
 - [ ] **Baseline telemetry captured** across all 30 videos: Top 5 CTR hooks, Top 5 Average View Duration (AVD) pacing styles, and Tier-1 (US/UK/CA/AU) audience percentage ≥ 55%.
 - [ ] **Channel momentum:** Clear path to YouTube Partner Program (1,000 subscribers + 4,000 valid public watch hours) triggered by the top 3–5 breakout evergreen videos.

@@ -1,6 +1,6 @@
 # Automated Data Documentary Network
 
-> **Mission:** Build an AI-powered, automated data documentary factory generating **$1,000–$2,000+/day ($30,000–$60,000+/month)** in pure platform ad revenue (YouTube AdSense + Facebook In-Stream) within 24–36 months — operated by a solo developer on a **~$100/month** single-GPU VPS pipeline.
+> **Mission:** Build an AI-powered, automated data documentary factory generating **$1,000–$2,000+/day ($30,000–$60,000+/month)** in pure platform ad revenue (YouTube AdSense + Facebook In-Stream) within 24–36 months — operated by a solo developer on a **~$100/month** pipeline (Hetzner CPU control plane + on-demand RTX 4090).
 
 ---
 
@@ -22,13 +22,13 @@
 Free Economic APIs (World Bank / FRED / OECD / IMF / OWID)
         │
         ▼
-DuckDB Warehouse + Deterministic Stats Analyzer ──► Verified DataBrief JSON (Fact IDs)
+SQLite Warehouse + FastMCP Grounding + Deterministic Stats Analyzer ──► Verified DataBrief JSON (Fact IDs)
         │
         ▼
 Claude API (Prompt Cached) ──► SceneGraph JSON ──► Automated Fact-Audit Gate (0 Hallucinations)
         │
         ▼
-Local GPU TTS (Kokoro/Chatterbox) + WhisperX Word Timestamps ──► FFmpeg -14 LUFS Master + Ducking/SFX
+Local GPU TTS (MeloTTS/Kokoro, Azure fallback) + WhisperX Word Timestamps ──► FFmpeg -14 LUFS Master + Ducking/SFX
         │
         ▼
 Parallel 4K 60FPS GPU Renderer (25–45 Atomic Scenes + Direct NVENC Pipe) ──► Master MP4
