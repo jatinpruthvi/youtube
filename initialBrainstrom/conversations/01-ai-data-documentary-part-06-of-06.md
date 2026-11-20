@@ -1908,7 +1908,6 @@ You are building an automated digital media factory. Every video you publish bec
 
 ---
 
-*End of the rendered thread (70 messages). Four sibling replies exist in the session but are not
-renderable — no branch switcher exists in the Arena UI. See
-`01-ai-data-documentary-branches.md` for their metadata and the alternate bodies recovered from
-the Flight payload.*
+*End of the rendered thread (70 messages). Four direct-battle replies exist in the session but are
+not renderable — no branch switcher exists in the Arena UI. They are attributed individually
+(records #30, #36, #39, #43) with their verbatim bodies in `01-ai-data-documentary-branches.md`.*

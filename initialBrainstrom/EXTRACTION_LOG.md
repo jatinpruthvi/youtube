@@ -25,14 +25,25 @@
 
 ## Known gaps
 
-* The server reports **74 message records**; the page renders **70**. The 4 extra records are the
-  second reply of four `direct-battle` turns (`participantPosition` `a`/`b`). **There is no branch
-  switcher, response pager or A/B toggle anywhere in the UI** — checked on every turn's toolbar and
-  page-wide — so the alternates are never rendered. Their ids, parents, models and timestamps are
-  recorded in `01-ai-data-documentary-branches.md`, together with four alternate bodies recovered
-  verbatim from the RSC Flight stream (`raw/branch-candidates.json`).
-* Flight chunk ids are re-numbered per serialisation, so a hidden body cannot be tied to its turn
-  with certainty; the appendix labels the recovered bodies as candidates rather than H1–H4.
+* The server reports **74 message records**; the page renders **70**. The 4 extra records are
+  three `direct-battle` alternates (`participantPosition` `b`: H1, H2, H4) plus one compaction /
+  session-memory record (H3) that hangs off the hidden reply H2. **There is no branch switcher,
+  response pager or A/B toggle anywhere in the UI** — checked on every turn's toolbar and
+  page-wide — so they are never rendered.
+* **These 4 are now fully attributed**, not guessed. The Flight stream embeds the session object
+  (`initialState.messages`, all 74 records), and every record points at its own text row
+  (`"content":"$c1"`). Row `c1` therefore *is* H1's body. An independent Needleman–Wunsch
+  alignment of 74 records against the 70 rendered turns leaves exactly 70 pairs, 0 skipped page
+  turns and 4 skipped records — the same four ids — so the unrendered set is derived, not assumed.
+  Result: H1 = rec#30 (`$c1`, 10,350 ch), H2 = rec#36 (`$c7`, 17,478), H3 = rec#39 (`$cb`, 11,985,
+  continuation of the hidden branch), H4 = rec#43 (`$cf`, 10,435). Bodies are verbatim in
+  `01-ai-data-documentary-branches.md` and `raw/hidden-bodies.json`; all 74 records with resolved
+  text and page turns are in `raw/session-records.json`; the untouched payload is
+  `raw/arena-payload.json`.
+* Flight chunk ids are still re-numbered per serialisation, so an id from one capture is not valid
+  in another. The earlier appendix used ids (`be`, `c4`, `cc`, `d1`) as if they were stable; one of
+  those (`d1`) was in fact the rendered turn [44], and the real fourth body was missed. That is why
+  attribution now goes through the messages array rather than through captured ids.
 * Turns marked `USER` that visibly contain another model's prose (`kimi-k3`, `muse-wonder-max`,
   `claude-haiku-5.5-xhigh`) are third-party output the user pasted in; the page renders them as user
   turns and they are preserved that way with the model name visible.

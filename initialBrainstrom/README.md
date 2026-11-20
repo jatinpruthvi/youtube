@@ -10,7 +10,7 @@ Source: https://arena.ai/c/01a1d911-36fc-7344-9f71-ec5b8fa4f328 · Captured 2026
 | File | What it is |
 |---|---|
 | `conversations/01-ai-data-documentary-part-01..06-of-06.md` | **The full conversation, verbatim** — 70 messages, 732,742 characters |
-| `conversations/01-ai-data-documentary-branches.md` | The 4 hidden sibling replies (metadata) + alternate bodies recovered from the payload, and the proof that Arena has no branch switcher |
+| `conversations/01-ai-data-documentary-branches.md` | The 4 hidden direct-battle replies: exact attribution (H1–H4), their verbatim bodies, and the proof that Arena has no branch switcher |
 | `SUMMARY.md` | The arc, start to end, with turn refs `[NN]` |
 | `DECISIONS.md` | What was decided, what was killed, and why |
 | `REQUIREMENTS.md` | Consolidated spec + drift vs `docs/ARCHITECTURE.md` / `tracker/items.json` |
@@ -18,7 +18,9 @@ Source: https://arena.ai/c/01a1d911-36fc-7344-9f71-ec5b8fa4f328 · Captured 2026
 | `OPEN_QUESTIONS.md` | Unresolved points |
 | `EXTRACTION_LOG.md` | Capture method, completeness proof, known gaps |
 | `raw/items.json` | Machine-readable capture (one entry per message) |
-| `raw/branch-candidates.json` | Raw alternate bodies pulled from the Flight stream |
+| `raw/hidden-bodies.json` | The 4 hidden bodies verbatim, with record ids, models, parents and rendered-turn positions |
+| `raw/session-records.json` | All 74 session records: text resolved from the Flight rows, plus the rendered turn each one maps to |
+| `raw/arena-payload.json` | The captured page HTML + Flight payload the attribution was computed from |
 | `raw/outline-main.txt` | One line per turn: role, model, length, opening text |
 
 ## Reading order
