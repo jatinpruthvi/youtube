@@ -37,6 +37,7 @@ python3 scripts/track.py set <ID> done    # Update status and auto-sync docs/TRA
 ```bash
 python3 scripts/check_docs.py   # memo arithmetic + table render + per-day goal sweep
 ```
+CI runs this same command on every push (`.github/workflows/doc-invariant.yml`, no install step — the checks are stdlib-only).
 Fails loudly if a figure or table drifts from the mission's **$1,500–$2,000 of profit per day**: `scripts/check_memo.py` re-derives the memo's arithmetic, `scripts/check_render.py` checks every table's width, `scripts/check_goal.py` requires every per-month figure to show what it is (and requires a monthly figure under a target noun to carry its own day figure), and `scripts/selftest_goal.py` plants monthly-target violations in a temp copy of the docs and fails if the sweep stops catching them. Shared helpers live in `scripts/doccheck.py`.
 
 ---

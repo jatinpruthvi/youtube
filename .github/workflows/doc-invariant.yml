@@ -1,0 +1,29 @@
+name: doc invariant
+
+# The repository's one stated target is $1,500-$2,000 of profit per day, and
+# scripts/check_docs.py is what keeps the docs honest about it. It runs here on
+# every push so a monthly figure, a broken table, or a loosened label cannot
+# land in the docs unnoticed.
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    name: per-day goal invariant
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+
+      # No install step: the checks are stdlib-only Python (3.11+ semantics, and
+      # ubuntu-latest ships a newer python3), so there is nothing to set up.
+      - name: Check the docs
+        run: |
+          python3 -V
+          python3 scripts/check_docs.py
