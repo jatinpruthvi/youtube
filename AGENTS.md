@@ -33,6 +33,12 @@ python3 scripts/track.py next             # Top unblocked items whose dependenci
 python3 scripts/track.py set <ID> done    # Update status and auto-sync docs/TRACKER.md
 ```
 
+### Doc Invariant Check (run after editing any `.md`)
+```bash
+python3 scripts/check_docs.py   # memo arithmetic + table render + per-day goal sweep
+```
+Fails loudly if a figure or table drifts from the mission's **$1,500–$2,000 of profit per day**: `scripts/check_memo.py` re-derives the memo's arithmetic, `scripts/check_render.py` checks every table's width, `scripts/check_goal.py` rejects an unlabelled monthly goal, trajectory or revenue target anywhere in the docs.
+
 ---
 
 ## 3. Model-Agnostic Agent Tooling & Frameworks
