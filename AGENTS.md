@@ -8,7 +8,7 @@ Universal, model-agnostic operating instructions for **all AI coding models and 
 
 ## 1. Mission & Non-Negotiable Constraints
 
-* **Mission:** Build an AI-powered, automated data documentary factory generating **$1,000–$2,000+/day ($30k–$60k+/month)** in pure platform ad revenue (YouTube AdSense + Facebook In-Stream) within 24–36 months.
+* **Mission:** Build an AI-powered, automated data documentary factory generating **$1,500–$2,000/day ($45k–$60k/month) of profit** from pure platform ad revenue (YouTube AdSense + Facebook In-Stream) within 24–36 months.
 * **Budget Cap:** **~$100/month** — Hetzner CPX41 control plane always on plus an on-demand RTX 4090 worker for ~2 h/day (single-GPU VPS as fallback) — zero unnecessary paid SaaS, prompt-cached Claude 3.5 Sonnet script generation with GPT-4o fallback, free public economic APIs, self-hosted MeloTTS/Kokoro.
 * **Fact Grounding:** **0% hallucination tolerance.** Every number spoken or rendered must trace back to a frozen snapshot row in the SQLite warehouse, fetched from World Bank, FRED, OECD, IMF, OWID, DBnomics or UN Data through the FastMCP server, and carried by a verified `DataBrief` Fact ID (`F001..Fxxx`).
 * **Output Standard:** 10–18 min · **4K (`3840×2160`) 60FPS** · `-14 LUFS` · English-first + automated ES/PT/HI/AR metadata & SRTs + Facebook In-Stream cut.

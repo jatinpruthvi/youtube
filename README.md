@@ -1,6 +1,6 @@
 # Automated Data Documentary Network
 
-> **Mission:** Build an AI-powered, automated data documentary factory generating **$1,000–$2,000+/day ($30,000–$60,000+/month)** in pure platform ad revenue (YouTube AdSense + Facebook In-Stream) within 24–36 months — operated by a solo developer on a **~$100/month** pipeline (Hetzner CPU control plane + on-demand RTX 4090).
+> **Mission:** Build an AI-powered, automated data documentary factory generating **$1,500–$2,000/day ($45,000–$60,000/month) of profit** from pure platform ad revenue (YouTube AdSense + Facebook In-Stream) within 24–36 months — operated by a solo developer on a **~$100/month** pipeline (Hetzner CPU control plane + on-demand RTX 4090).
 
 ---
 

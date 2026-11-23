@@ -7,8 +7,8 @@
 > measurements.
 >
 > **One target: $1,500-$2,000 of profit per day.** `AGENTS.md` sec.1, `README.md` line 3, `docs/TRACKER.md` line 4 and
-> `docs/ARCHITECTURE.md` line 3 all state the mission as **$1,000-$2,000+ per day ($30k-$60k+/month)**; this memo prices the upper
-> half, **$1,500-$2,000/day**, and every revenue, library, calendar and cost figure below is daily. **No operating point in this file
+> `docs/ARCHITECTURE.md` line 3 all state the mission as **$1,500-$2,000 per day ($45k-$60k/month) of profit** - the same range and
+> the same unit this memo prices - and every revenue, library, calendar and cost figure below is daily. **No operating point in this file
 > is stated per month as a target.** A **per-month** reading of the same wording was considered and rejected - it is a 30x smaller
 > business (64-126 videos, month 2-4) that would make sections 2-8 unnecessary - and is kept only as the one-paragraph record in
 > **1.5**.
@@ -20,8 +20,8 @@
 ## 1. The target is per day
 
 ```
-AGENTS.md sec.1 mission      = $1,000-$2,000+ / day  = $30,000-$60,000+ / month
-this memo uses the upper half = $1,500-$2,000 / day  = $45,000-$60,000   / month
+AGENTS.md sec.1 mission = $1,500-$2,000 of profit / day = $45,000-$60,000 / month
+this memo prices that range at both ends (1.4) - no subset of it is the goal
 ```
 
 ```

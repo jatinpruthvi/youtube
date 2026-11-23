@@ -1,7 +1,7 @@
 # Master Architecture Track List
 
 > **Project:** Automated Data Documentary Network  
-> **Mission:** $1,000-$2,000+/day ($30k-$60k+/month) pure platform ad revenue in 24-36 months  
+> **Mission:** $1,500-$2,000/day ($45k-$60k/month) of profit from pure platform ad revenue in 24-36 months  
 > **Progress:** **0/51 items (0%)** · **142.0h remaining** of **142.0h total**
 
 <!-- Generated from tracker/items.json via `python3 scripts/track.py sync-md` -->

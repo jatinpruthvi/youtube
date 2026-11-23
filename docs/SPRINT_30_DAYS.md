@@ -18,7 +18,7 @@ views/video/day = views(last 28 days) / published videos / 28
 ```
 
 This single number decides which row of `IMPROVEMENT_VALUE_AT_2K.md` §1.2 applies, and therefore whether the
-**$1,500–$2,000/day** mission (`AGENTS.md` §1) is a ~12-month build or a ~5.6-year one.
+**$1,500–$2,000/day of profit** mission (`AGENTS.md` §1) is a ~12-month build or a ~5.6-year one.
 
 | Threshold | What it means | Videos needed for $1,500/day<br>(at $10.50 RPM, 78% ad share) | Months at<br>30 / 75 videos per month | What choosing this verdict would commit you to |
 | :--- | :--- | :---: | :---: | :--- |

@@ -301,17 +301,20 @@ Two things follow, and both matter more than the totals:
 
 ### The nine outcomes, side by side
 
-| Base | Item case | Group gains | Resulting PPM | $/day | % of $1,000/day | % of $2,000/day |
+| Base | Item case | Group gains | Resulting PPM | $/day | % of $1,500/day | % of $2,000/day |
 |---|---|---|---|---|---|---|
-| 40 views/video/day | low | $2,579 | **$10,054** | $335 | 34% | 17% |
-| 40 views/video/day | likely | $4,935 | **$12,410** | $414 | 41% | 21% |
-| 40 views/video/day | high | $7,484 | **$14,959** | $499 | 50% | 25% |
-| 61 views/video/day | low | $3,921 | **$15,365** | $512 | 51% | 26% |
-| 61 views/video/day | likely | $7,514 | **$18,958** | $632 | 63% | 32% |
-| 61 views/video/day | high | $11,402 | **$22,846** | $762 | 76% | 38% |
-| 94 views/video/day | low | $6,032 | **$23,713** | $790 | 79% | 40% |
-| 94 views/video/day | likely | $11,568 | **$29,249** | $975 | 98% | 49% |
-| 94 views/video/day | high | $17,561 | **$35,242** | $1,175 | 118% | 59% |
+| 40 views/video/day | low | $2,579 | **$10,054** | $335 | 22% | 17% |
+| 40 views/video/day | likely | $4,935 | **$12,410** | $414 | 28% | 21% |
+| 40 views/video/day | high | $7,484 | **$14,959** | $499 | 33% | 25% |
+| 61 views/video/day | low | $3,921 | **$15,365** | $512 | 34% | 26% |
+| 61 views/video/day | likely | $7,514 | **$18,958** | $632 | 42% | 32% |
+| 61 views/video/day | high | $11,402 | **$22,846** | $762 | 51% | 38% |
+| 94 views/video/day | low | $6,032 | **$23,713** | $790 | 53% | 40% |
+| 94 views/video/day | likely | $11,568 | **$29,249** | $975 | 65% | 49% |
+| 94 views/video/day | high | $17,561 | **$35,242** | $1,175 | 78% | 59% |
+
+Percentages divide PPM's `$/day` by the **profit** goal itself ($1,500 / $2,000); the revenue needed for that profit is
+$1,502.83 / $2,002.83 per day (sec.8), so they overstate progress by 0.2%.
 
 **The single defensible headline is the likely-likely cell: $18,958/month, $632/day.** Everything else in
 the grid is a bound. The span between the lowest corner ($10,054/month, $335/day) and the highest
@@ -393,68 +396,79 @@ Three numbers in the plan itself are the pattern this review refuses to repeat:
 The plan's Year-3 figure ($92,400/month, 2,500 videos at 220,000 views/day) is not reproduced here: it rests on 88 views per video
 per day - inside the 40-94 range used here - and on $11 RPM, which is above the $7 used here.
 
-## 8. The $1,000-$2,000/day goal, measured against these numbers
+## 8. The $1,500-$2,000/day of profit goal, measured against these numbers
 
-PPM is monthly, so the conversion is fixed: **$/day = PPM/month / 30.**
+PPM is revenue and the goal is profit, so there are two conversions, both fixed by this review rather than chosen here.
+**$/day = PPM/month / 30**, and **revenue needed = profit goal + $85/month** of infrastructure (sec.0). The full 2-3 FTE stack is
+priced in `IMPROVEMENT_VALUE_AT_2K.md` sec.1.4; the tables below use this review's own $85/month line, so they read as the solo case -
+the only regime where this review's 900-video base is reachable without hiring.
+
+**Why the floor moved.** The goal is **$1,500-$2,000 of profit per day** (`AGENTS.md` sec.1, `README.md` line 3, `docs/TRACKER.md`
+line 4, `docs/ARCHITECTURE.md` line 3). Earlier printings of this section measured a lower bound on revenue rather than profit; that
+bound is retired, and every percentage below is against the $1,500 floor or the $2,000 top of the profit range.
 
 **That $85/month is infrastructure only.** `IMPROVEMENT_VALUE_AT_2K.md` sec.1.4 keeps this conversion and adds the 2-3 FTE labour
-line: the goal is **per day**, so the full stack still leaves **93.0-95.3%** of it - **$1,394.86-$1,429.44/day** of profit at
-$1,500/day and **$1,894.86-$1,929.44/day** at $2,000/day, against $30,085-$60,085/month of revenue. A per-month reading of the same
-wording was considered and rejected in that memo's sec.1.5; it is not the target anywhere in this repository.
+line: under the full stack profit is **93.0-95.3%** of revenue - **$1,394.86-$1,429.44/day** at $1,500/day and
+**$1,894.86-$1,929.44/day** at $2,000/day, against $45,085-$60,085/month of revenue here. A per-month reading of the same wording was
+considered and rejected in that memo's sec.1.5; it is not the target anywhere in this repository.
 
-| Target | PPM/month needed | Revenue/month needed | Daily views at $7 RPM | at $9 | at $10 |
+| Profit target | PPM/month needed | Revenue/month needed | Daily views at $7 RPM | at $9 | at $10 |
 |---|---|---|---|---|---|
-| $1,000/day | $30,000 | $30,085 | 143,262 | 111,426 | 100,283 |
+| $1,500/day | $45,000 | $45,085 | 214,690 | 166,981 | 150,283 |
 | $2,000/day | $60,000 | $60,085 | 286,119 | 222,537 | 200,283 |
 
-Views/day = revenue x 1000 / (30 x RPM). At $1,000/day and $10: 30,085,000 / 300 = 100,283 views/day.
+Views/day = revenue x 1000 / (30 x RPM). At the $1,500 floor and $10 RPM: 45,085,000 / 300 = 150,283 views/day.
 
 ### 8.1 The nine outcomes against the goal
 
-| Base | Item case | PPM/month | $/day | % of $1,000/day | % of $2,000/day |
+| Base | Item case | PPM/month | $/day | % of $1,500/day | % of $2,000/day |
 |---|---|---|---|---|---|
 | measured today | - | $0 | $0 | 0% | 0% |
-| 40 views/video/day | low | $10,054 | $335 | 34% | 17% |
-| 40 views/video/day | likely | $12,410 | $414 | 41% | 21% |
-| 40 views/video/day | high | $14,959 | $499 | 50% | 25% |
-| 61 views/video/day | low | $15,365 | $512 | 51% | 26% |
-| 61 views/video/day | likely | **$18,958** | **$632** | 63% | 32% |
-| 61 views/video/day | high | $22,846 | $762 | 76% | 38% |
-| 94 views/video/day | low | $23,713 | $790 | 79% | 40% |
-| 94 views/video/day | likely | $29,249 | $975 | 98% | 49% |
-| 94 views/video/day | high | $35,242 | $1,175 | 118% | 59% |
-| **goal** | $1,000/day | $30,000 | $1,000 | 100% | 50% |
-| **goal** | $2,000/day | $60,000 | $2,000 | 200% | 100% |
+| 40 views/video/day | low | $10,054 | $335 | 22% | 17% |
+| 40 views/video/day | likely | $12,410 | $414 | 28% | 21% |
+| 40 views/video/day | high | $14,959 | $499 | 33% | 25% |
+| 61 views/video/day | low | $15,365 | $512 | 34% | 26% |
+| 61 views/video/day | likely | **$18,958** | **$632** | 42% | 32% |
+| 61 views/video/day | high | $22,846 | $762 | 51% | 38% |
+| 94 views/video/day | low | $23,713 | $790 | 53% | 40% |
+| 94 views/video/day | likely | $29,249 | $975 | 65% | 49% |
+| 94 views/video/day | high | $35,242 | $1,175 | 78% | 59% |
+| **goal, solo** | $1,500/day of profit | $45,085 | $1,503 | 100% | 75% |
+| **goal, solo** | $2,000/day of profit | $60,085 | $2,003 | 134% | 100% |
+
+The percentages divide `$/day` by the profit goal itself; the revenue that profit needs is $1,502.83/$2,002.83 per day, so they
+overstate progress by 0.2%.
 
 So the answer to the goal is a band, not a number: **$632/day if the plan's own Month 13-16 rate and the likely
 item case both hold, rising to $975/day at the Month 25-28 rate, and falling to $335/day if neither does.**
-At 61 views/video/day the items deliver 63% of the $1,000/day floor; at 94 they deliver
-98% of it and 49% of the $2,000/day target.
+At 61 views/video/day the items deliver 42% of the $1,500/day floor; at 94 they deliver
+65% of it and 49% of the $2,000/day top.
 
-**The goal turns on one number, and it is the one the base now varies over.** At 94 views/video/day the twelve items nearly close
-the gap to $1,000/day on their own; at 40 they reach a third of it. No tracker item can move that number - only publishing can.
+**The goal turns on one number, and it is the one the base now varies over.** At 94 views/video/day the twelve items reach
+65% of the floor on their own; at 40 they reach 28% of it. No tracker item can move that number - only publishing can.
 
 ### 8.2 What it takes in videos x views-per-video x RPM
 
-Revenue needed is $30,085/month. Growth required from each base, and the share the twelve items supply in the likely case:
+Revenue needed for the $1,500/day profit floor is $45,085/month. Growth required from each base, and the share the twelve items
+supply in the likely case:
 
-| Base | Revenue/month | Growth needed to $1,000/day | Items supply | Still missing |
+| Base | Revenue/month | Growth needed to $1,500/day | Items supply | Still missing |
 |---|---|---|---|---|
-| 40 views/video/day | $7,560 | 3.98x | 1.66x | 2.40x |
-| 61 views/video/day | $11,529 | 2.61x | 1.66x | 1.58x |
-| 94 views/video/day | $17,766 | 1.69x | 1.65x | 1.02x |
+| 40 views/video/day | $7,560 | 5.96x | 1.66x | 3.59x |
+| 61 views/video/day | $11,529 | 3.91x | 1.66x | 2.36x |
+| 94 views/video/day | $17,766 | 2.54x | 1.65x | 1.54x |
 
 Videos needed = revenue x 1000 / (RPM x 30 x views per video per day). Months assume 30 videos/month from a 900-video library.
 
 | Views/video/day | $7 RPM | $9 RPM | $10 RPM |
 |---|---|---|---|
-| 40 | 3,582 videos (89 months) | 2,786 videos (63 months) | 2,507 videos (54 months) |
-| 61 | 2,349 videos (48 months) | 1,827 videos (31 months) | 1,644 videos (25 months) |
-| 94 | 1,524 videos (21 months) | 1,185 videos (10 months) | 1,067 videos (6 months) |
+| 40 | 5,367 videos (149 months) | 4,175 videos (109 months) | 3,757 videos (95 months) |
+| 61 | 3,520 videos (87 months) | 2,738 videos (61 months) | 2,464 videos (52 months) |
+| 94 | 2,284 videos (46 months) | 1,776 videos (29 months) | 1,599 videos (23 months) |
 
-For $2,000/day multiply every cell by 1.997. At 900 videos the $1,000/day goal needs **159 views per
-video per day at $7 RPM** (143,262 / 900), **124 at $9** (111,426 / 900) and
-**111 at $10** (100,283 / 900).
+For $2,000/day multiply every cell by 1.33. At 900 videos the $1,500/day floor needs **239 views per
+video per day at $7 RPM** (214,690 / 900), **186 at $9** (166,981 / 900) and
+**167 at $10** (150,283 / 900).
 
 ### 8.3 The plan's own tables disagree on that number
 
@@ -468,23 +482,22 @@ video per day at $7 RPM** (143,262 / 900), **124 at $9** (111,426 / 900) and
 | ARCHITECTURE Phase 3 mid-point (130,000 / 725) | 179 |
 | ARCHITECTURE Phase 4 mid-point (230,000 / 1,000) | 230 |
 
-Twenty-two to two hundred and thirty is a tenfold spread on the single input that decides whether $1,000/day arrives in month 25 or
-never, and the two tables sit 2-4x apart from each other. This review ranges over 40-94 - the projection table's own span - which is
-the defensible part of the plan's evidence. **No repository file measures it, because nothing has been published.**
+Twenty-two to two hundred and thirty is a tenfold spread on the single input that decides whether $1,500/day of profit arrives in month
+25 or never, and the two tables sit 2-4x apart from each other. This review ranges over 40-94 - the projection table's own span - which
+is the defensible part of the plan's evidence. **No repository file measures it, because nothing has been published.**
 
 ### 8.4 Verdict against the goal
 
 The best single item, `THM-01`, is worth $2,306/month ($77/day) at the likely base and
-$6,017/month ($201/day) once the channel earns $1,000/day - the same percentage, four times the money.
+$9,017/month ($301/day) once the channel earns $1,500/day of profit - the same percentage, 3.9 times the money.
 All twelve together reach $18,958/month ($632/day).
 
-* At **61 views/video/day** - the plan's own Month 13-16 rate - the goal needs 2.61x the revenue, of which the items
-  supply 1.66x. That is $632/day, 63% of the floor.
-* At **94** - the plan's Month 25-28 rate - the items nearly close it: $975/day, 98% of the floor.
-* At **40** - this review's floor - the same items reach $414/day, 41% of it.
+* At **61 views/video/day** - the plan's own Month 13-16 rate - the floor needs 3.91x the revenue, of which the items
+  supply 1.66x. That is $632/day, 42% of the floor.
+* At **94** - the plan's Month 25-28 rate - the items nearly close it: $975/day, 65% of the floor.
+* At **40** - this review's floor - the same items reach $414/day, 28% of it.
 
 Two things are therefore true at once. The goal is a views-and-RPM problem that the tracker only multiplies - no item, alone, moves
 it. And the multiplier is worth having at any base: `THM-01` is $50/day at 40 views/video/day, $77/day at 61, and $118/day at 94,
 before a single extra video exists. The cheapest honest next step is still not one of the twelve: it is `ANA-01`, which replaces the
 whole 40-94 axis with a measured number after 30 published episodes - at $0/month of PPM.
-

@@ -1,6 +1,6 @@
 # System Architecture Blueprint — Automated Data Documentary Factory
 
-> **Mission:** Build a solo-operated, AI-powered automated data documentary network generating **$1,000–$2,000+/day ($30,000–$60,000+/month)** in pure platform ad revenue (YouTube AdSense + Facebook In-Stream) within 24–36 months, powered by a **~$100/month** single-GPU automated pipeline.
+> **Mission:** Build a solo-operated, AI-powered automated data documentary network generating **$1,500–$2,000/day ($45,000–$60,000/month) of profit** from pure platform ad revenue (YouTube AdSense + Facebook In-Stream) within 24–36 months, powered by a **~$100/month** single-GPU automated pipeline.
 
 ---
 
@@ -356,18 +356,18 @@ youtube/
 
 ---
 
-## 6. 24–36 Month Revenue Scaling Architecture ($1,000–$2,000+/Day)
+## 6. 24–36 Month Revenue Scaling Architecture ($1,500–$2,000/Day of Profit)
 
 ### Unit Economics Math (Pure Ad Revenue)
 * **Target Niche RPM (Tier-1 English Finance/Global Economics, 10–18 min):** **$8–$16 RPM** (conservative planning baseline: **$10 blended RPM**).
 * **Facebook In-Stream Bonus:** Adds **+15% to +30%** incremental ad revenue on already-rendered videos.
-* **Daily Views Required:**
-  * **$1,000/day ($30,000/mo):** ~85,000 YouTube views/day + Facebook In-Stream (~$150/day).
-  * **$2,000/day ($60,000/mo):** ~165,000 YouTube views/day + Facebook In-Stream (~$350/day).
+* **Daily Views Required** for the **$1,500–$2,000/day of profit** goal (78% ad share, $10.50 RPM - `IMPROVEMENT_VALUE_AT_2K.md` sec.1.4):
+  * **$1,500/day of profit ($45,000/mo):** $1,570.56–$1,605.14/day of revenue = ~116,700–119,200 YouTube views/day.
+  * **$2,000/day of profit ($60,000/mo):** $2,070.56–$2,105.14/day of revenue = ~153,800–156,400 YouTube views/day.
 
-> These are **revenue** requirements, not profit. Profit at the same per-day targets - with the month only as `x30` - is in
-> `docs/IMPROVEMENT_VALUE_AT_2K.md` sec.1.4: infrastructure is $2.14-$5.14/day and the 2-3 FTE labour line is $66.67-$100.00/day, so
-> profit is 93-95% of the target once hired and 99%+ solo.
+> These are **revenue** requirements for a per-day **profit** goal, not revenue targets of their own. The cost that turns one into
+> the other is in `docs/IMPROVEMENT_VALUE_AT_2K.md` sec.1.4: infrastructure is $2.14-$5.14/day and the 2-3 FTE labour line is
+> $66.67-$100.00/day, so profit is 93.0-95.3% of revenue at $1,500/day and 94.7-96.5% at $2,000/day. The month is a derived `x30`.
 
 ### Compounding Library Growth Phases
 
