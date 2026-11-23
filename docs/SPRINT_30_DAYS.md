@@ -4,6 +4,8 @@
 
 ---
 
+> **Improvement sequencing:** precedence and deferral limits for `THM-01`, `TOP-03`, `PUB-02`, `PUB-03` and `CMP-04` - the value-bearing items that sit in the windows below - are specified in [`IMPROVEMENT_VALUE_AT_2K.md`](IMPROVEMENT_VALUE_AT_2K.md) §7, together with the Phase-0 overload (93.0h assigned to Days 1–5).
+
 ## Execution Rhythm (How a Solo Dev Hits 30-in-30 Without Burnout)
 
 | Window | Primary Focus | Output Target |
