@@ -23,7 +23,7 @@ This single number decides which row of `IMPROVEMENT_VALUE_AT_2K.md` §1.2 appli
 | Threshold | What it means | Videos needed for $1,500/day<br>(at $10.50 RPM, 78% ad share) | Months at<br>30 / 75 videos per month | What choosing this verdict would commit you to |
 | :--- | :--- | :---: | :---: | :--- |
 | **≥ 90 views/video/day** | Packaging works. The format is at or above the plan's own Month 25-28 assumption (94), before a year of library effects. | **~1,185–1,238** | **40–41 / 16–17** | Scale the cadence, not the format. Hire to 75–90/month, add templates rather than new topics, keep the niche and the thumbnail system unchanged. |
-| **45–90 views/video/day** | Ordinary. Between the plan's Month 13-16 rate (61) and its Month 25-28 rate (94). | **~1,238–2,476** | **41–83 / 17–33** | Scale, and accept a 2–3 year build. Treat the plan's Month 7-9 row ($95/day, $2,850/month) as the interim milestone instead of the goal, and re-test the format at video 100. |
+| **45–90 views/video/day** | Ordinary. Between the plan's Month 13-16 rate (61) and its Month 25-28 rate (94). | **~1,238–2,476** | **41–83 / 17–33** | Scale, and accept a 2–3 year build. Treat the plan's Month 7-9 row ($95/day) as the interim milestone instead of the goal, and re-test the format at video 100. |
 | **< 45 views/video/day** | The format or the niche is the problem, not the inventory. | **~2,476–5,015+** | **83–167 / 33–67** | Stop adding episodes. Change topic, hook or template mix before spending the next ~100 hours on the remaining pipeline, because volume cannot recover a rate this low. |
 
 | | Decision state |

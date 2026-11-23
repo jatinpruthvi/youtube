@@ -377,7 +377,7 @@ youtube/
 | **Phase 1: Monetization & PMF** | Months 2–6 | 1 Flagship Channel (3–4 videos/wk, quality tuned by retention data) | 100–120 videos | 10,000–30,000 | $100–$300/day | **Below the goal** - early stage |
 | **Phase 2: Evergreen Compounding** | Months 7–15 | 1 Flagship + Facebook Page Monetization + Annual Data Refreshes | 250–350 videos | 40,000–90,000 | $400–$900/day | **Below the goal** - milestone |
 | **Phase 3: Multi-Channel Network** | Months 16–24 | 3 Niche Channels (*Global Economy*, *Personal Wealth/COL*, *Demographics & Power*) + Multi-Audio Dubbing (ES/PT) | 600–850 videos | 100,000–160,000 | $1,000–$1,600/day | **Pre-goal milestone, not the target** - below the $1,500 profit floor except at the very top of the band |
-| **Phase 4: Scale & Annual Loops** | Months 25–36 | 4–5 Automated Channels + Automated Yearly "2027/2028 Edition" Refreshes | 1,000+ videos | 180,000–280,000 | $1,800–$3,000+/day | **Contains the goal** - the $1,500–$2,000 profit range sits inside this band |
+| **Phase 4: Scale & Annual Loops** | Months 25–36 | 4–5 Automated Channels + Automated Yearly "2027/2028 Edition" Refreshes | 1,000+ videos | 180,000–280,000 | $1,800–$2,800/day | **Contains the goal** - the $1,500–$2,000 profit range sits inside this band |
 
 > **Reading the phase table against the goal.** The goal is **$1,500–$2,000 of profit per day**, which needs
 > **$1,570.56–$2,105.14/day of revenue** (`IMPROVEMENT_VALUE_AT_2K.md` sec.1.4), so a revenue figure is not the goal. Phases 1–2 are
