@@ -365,9 +365,9 @@ youtube/
   * **$1,000/day ($30,000/mo):** ~85,000 YouTube views/day + Facebook In-Stream (~$150/day).
   * **$2,000/day ($60,000/mo):** ~165,000 YouTube views/day + Facebook In-Stream (~$350/day).
 
-> These are **revenue** requirements, not profit. Profit per day and per month at the same targets is in `docs/IMPROVEMENT_VALUE_AT_2K.md`
-> sec.1.4: infrastructure is $2.14-$5.14/day and the 2-3 FTE labour line is $66.67-$100.00/day, so profit is 93-95% of the target once
-> hired and 99%+ solo.
+> These are **revenue** requirements, not profit. Profit at the same per-day targets - with the month only as `x30` - is in
+> `docs/IMPROVEMENT_VALUE_AT_2K.md` sec.1.4: infrastructure is $2.14-$5.14/day and the 2-3 FTE labour line is $66.67-$100.00/day, so
+> profit is 93-95% of the target once hired and 99%+ solo.
 
 ### Compounding Library Growth Phases
 

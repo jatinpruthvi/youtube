@@ -398,8 +398,9 @@ per day - inside the 40-94 range used here - and on $11 RPM, which is above the 
 PPM is monthly, so the conversion is fixed: **$/day = PPM/month / 30.**
 
 **That $85/month is infrastructure only.** `IMPROVEMENT_VALUE_AT_2K.md` sec.1.4 keeps this conversion and adds the 2-3 FTE labour
-line: under the fuller stack the same figures need $3,616.75-$5,154.25/month of revenue for $1,500-$2,000 of *monthly* profit - more
-than the monthly goal itself - against $30,085-$60,085/month for $1,000-$2,000 *per day*.
+line: the goal is **per day**, so the full stack still leaves **93.0-95.3%** of it - **$1,394.86-$1,429.44/day** of profit at
+$1,500/day and **$1,894.86-$1,929.44/day** at $2,000/day, against $30,085-$60,085/month of revenue. A per-month reading of the same
+wording was considered and rejected in that memo's sec.1.5; it is not the target anywhere in this repository.
 
 | Target | PPM/month needed | Revenue/month needed | Daily views at $7 RPM | at $9 | at $10 |
 |---|---|---|---|---|---|
