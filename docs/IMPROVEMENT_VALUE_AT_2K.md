@@ -10,6 +10,10 @@
 > wrong unit: `AGENTS.md` sec.1, `README.md` line 3 and `docs/TRACKER.md` line 4 all state the mission as
 > **$1,000-$2,000+ per day ($30k-$60k+/month)**, and `PPM_REVIEW.md` sec.8 already prices it per day. Every figure below is now
 > per day. The monthly reading made the goal look like the plan's Month 7-9 row; at the daily reading it is the plan's Month 20-26.
+>
+> **Revenue or profit?** The mission's own wording is *"pure platform ad revenue"*, so the target as written is a **revenue** target - and
+> sections 1.1-1.3 price it that way. **Section 1.4 is the profit calculation**: cost lines of $70.56-$105.14/day fully loaded, a 93-95%
+> margin at the goal, and an inventory premium of +85 to +128 videos (1.035-1.070x) if the owner means net profit rather than gross.
 
 ## 1. The target is per day
 
@@ -30,8 +34,9 @@ $220 + $140 + $150 = **$510 of $2,295 = 22.2% of the total**, i.e. 28.6% of AdSe
 ancillary**. If ancillary never materialises, every ad figure rises by `1 / 0.78 = 1.28x`. **Ancillary has zero tracker items** -
 all 51 are ad-side.
 
-Infrastructure is second-order at this scale: $85-180/month is **$3-6/day**, under 0.4% of the target. Labour is not second-order
-and is not in the repo at all (sec.3).
+**This formula is gross revenue.** Profit is 1.4: it subtracts $70.56-$105.14/day of cost, which is 4.7-7.0% of a $1,500-$2,000 day.
+Infrastructure is second-order at this scale ($2.14-$5.14/day, under 0.4% of the target). Labour is not second-order, and is not in
+the repo at all (sec.3).
 
 ### 1.1 Ad revenue and views/day required
 
@@ -83,6 +88,57 @@ Three readings of the same table:
 **$1,500-$2,000/day lands between month 10 and month 67 (5.6 years) depending on two numbers nobody has measured and one cadence
 nobody has committed to.** That is the whole answer, and it is why the next 30 videos matter more than any further document: they
 measure the first of the two.
+
+### 1.4 Profit per day: the cost lines 1.1-1.3 leave out
+
+**The mission line is a revenue target** - "$1,000-$2,000+/day ... in pure platform ad revenue". So every table above is gross. Profit
+is that minus the cost of running the factory, and the repository prices both halves of that cost already:
+
+```
+profit/day = revenue/day - cost/day
+cost/day   = infra/day + labour/day
+```
+
+| Cost line | Per month | Per day | Where the figure comes from |
+|---|---|---|---|
+| Infrastructure at 30 videos/month | $64.10-$79.10 | **$2.14-$2.64** | `PPM_REVIEW.md` sec.0: CPX41 $27 + R2 $2 fixed, plus 30 x $1.17-$1.67 per episode |
+| Infrastructure at 75 videos/month | $116.75-$154.25 | **$3.89-$5.14** | the same line at 75 episodes - the plan's ~$100/month holds only at 30/month |
+| Labour, 2-3 FTE from ~Month 3 | $2,000-$3,000 | **$66.67-$100.00** | sec.3: 75 videos/month needs 300-450 h, i.e. 2-3 people at $600-$1,000/month |
+| **Total, solo at 30/month** | **$64-$79** | **$2.14-$2.64** | 1.3's 61-67 month column: no hires |
+| **Total, 2-3 FTE at 75/month** | **$2,117-$3,154** | **$70.56-$105.14** | 1.3's 24-26 month column: the only regime that reaches the goal inside 5 years |
+
+| Operating point | Revenue/day | Profit/day, solo | Profit/day, 2-3 FTE | Margin (solo / loaded) |
+|---|---|---|---|---|
+| 900 videos, v=61, $7 (the `PPM_REVIEW.md` base) | $492 | $489.67-$490.17 | $387.17-$421.75 | 99.5% / **78.6-85.7%** |
+| 1,827 videos, v=61, $10.50 ($1,500/day) | $1,500 | $1,497.36-$1,497.86 | **$1,394.86-$1,429.44** | 99.8% / **93.0-95.3%** |
+| 2,436 videos, v=61, $10.50 ($2,000/day) | $2,000 | $1,997.36-$1,997.86 | **$1,894.86-$1,929.44** | 99.9% / **94.7-96.5%** |
+
+**The margin is 93-95% at the goal and 79-86% at the base**, because labour is fixed at $2,000-$3,000/month while revenue grows 4x. So
+profit per day is not a different problem from revenue per day - it is the same problem with a cost floor of ~$70-105/day.
+
+**Profit costs 85-128 videos.** Solving `profit = goal` instead of `revenue = goal`, at $10.50 RPM and 61 views/video/day:
+
+| Profit goal | Revenue needed | Ad revenue/day (78%) | Views/day | Library | vs the revenue target | Calendar cost |
+|---|---|---|---|---|---|---|
+| **$1,500/day** | $1,570.56-$1,605.14 (1.047-1.070x) | $1,225-$1,252 | 116,670-119,239 | **1,913-1,955** | 1,827 -> +85 to +128 | +1.1-1.7 mo at 75/mo; +2.9-4.3 mo at 30/mo |
+| **$2,000/day** | $2,070.56-$2,105.14 (1.035-1.053x) | $1,615-$1,642 | 153,813-156,382 | **2,522-2,564** | 2,436 -> +86 to +128 | +1.1-1.7 mo at 75/mo; +2.9-4.3 mo at 30/mo |
+
+The premium is the same +85 to +128 videos at both goals, because it depends only on cost: $70.56-$105.14/day of revenue, divided by
+`61 x $10.50 / 1000 / 0.78` = **$0.82/day of total revenue per video**. **If the owner means net profit, add 85-128 videos and 1-4
+months; nothing else in this memo changes.**
+
+**Withholding is a larger cash leak than either cost line, and it is not a cost.** `CMP-04` (sec.5): 30% vs 15% withholding on 40%
+US-origin revenue = 12% vs 6% of revenue. At $1,500/day that is **$180/day unfiled, $90/day once fixed** - bigger than infrastructure
+and about equal to the whole labour line, and recoverable only by filing the form. So cash in hand is `profit/day x 0.94` after
+`CMP-04` and `x 0.88` before it.
+
+**The runway is the one number profit makes worse.** sec.3's ~$55,000 of cumulative labour before the first $1,500 day is spent against
+$0 of revenue; at $1,394.86-$1,429.44/day of profit that is **38-39 days at the goal to recoup**. The first $1,500 day arrives at
+Month 24-26; cumulative profit turns positive roughly two months later.
+
+So the daily chain is: **revenue/day (1.1-1.3) -> minus $70.56-$105.14/day of cost (1.4) -> profit/day -> minus 6-12% withholding
+for cash.** The middle step is 4.7-7.0% of the goal and the last step is 6-12%: at $1,500/day they are a **$160.56-$285.14/day** swing,
+comparable to the twelve priced items at the base (sec.5.1) and far below what cadence is worth at the goal.
 
 ## 2. Where the target actually sits in the plan - and it is not Month 7-9
 
@@ -228,3 +284,7 @@ instead of from the plan's rows.
 At the daily target the three things that actually move the number are, in order: **cadence** (37 months), **library or RPM**
 (a factor of 1.8-2.0 on the videos required), and **the twelve items** (+49.1%, worth $574-766/day once you are there). Only the
 third one is in the tracker.
+
+**Profit is not a fourth lever.** 1.4 fixes it at revenue minus $70.56-$105.14/day, i.e. 93-95% of the goal, and the withholding line
+in 1.4 is a filing (2h) rather than a build. The per-day answer does not change between gross and net by more than 85-128 videos and
+1-4 months.
