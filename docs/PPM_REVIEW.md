@@ -196,8 +196,8 @@ that lever's own upper case: 30% for FB (G4), 150 refreshed videos at +60% for G
 
 ### Group bounds at 40 views/video/day
 
-| Group | Variable it owns | Members | Low | Likely | High |
-|---|---|---|---|---|---|
+| Group | Members and their claimed move | Low | Likely | High |
+|---|---|---|---|---|
 | **G1** Packaging / CTR | THM-01 +20%, THM-02 +2% | $151 | $1,512 | $1,663 |
 | **G2** Topic selection | TOP-02 +5%, TOP-03 +5% | $378 | $378 | $756 |
 | **G3** Retention / AVD | SCR-04 +4%, ANA-02 +4% | $302 | $302 | $604 |
@@ -210,8 +210,8 @@ that lever's own upper case: 30% for FB (G4), 150 refreshed videos at +60% for G
 
 ### Group bounds at 61 views/video/day
 
-| Group | Variable it owns | Members | Low | Likely | High |
-|---|---|---|---|---|---|
+| Group | Members and their claimed move | Low | Likely | High |
+|---|---|---|---|---|
 | **G1** Packaging / CTR | THM-01 +20%, THM-02 +2% | $231 | $2,306 | $2,537 |
 | **G2** Topic selection | TOP-02 +5%, TOP-03 +5% | $576 | $576 | $1,152 |
 | **G3** Retention / AVD | SCR-04 +4%, ANA-02 +4% | $461 | $461 | $922 |
@@ -224,8 +224,8 @@ that lever's own upper case: 30% for FB (G4), 150 refreshed videos at +60% for G
 
 ### Group bounds at 94 views/video/day
 
-| Group | Variable it owns | Members | Low | Likely | High |
-|---|---|---|---|---|---|
+| Group | Members and their claimed move | Low | Likely | High |
+|---|---|---|---|---|
 | **G1** Packaging / CTR | THM-01 +20%, THM-02 +2% | $355 | $3,553 | $3,908 |
 | **G2** Topic selection | TOP-02 +5%, TOP-03 +5% | $888 | $888 | $1,776 |
 | **G3** Retention / AVD | SCR-04 +4%, ANA-02 +4% | $711 | $711 | $1,422 |
