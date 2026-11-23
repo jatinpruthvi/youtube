@@ -32,6 +32,7 @@ python3 scripts/track.py summary          # Overall progress by track & phase
 python3 scripts/track.py next             # Top unblocked items whose dependencies are done
 python3 scripts/track.py set <ID> done    # Update status and auto-sync docs/TRACKER.md
 ```
+CI also runs `summary` on every push, which fails if `tracker/items.json` will not load or is missing a field the CLI reads. It is not a graph check: `track.py` has no cycle, dangling-dependency, duplicate-ID or enum validation, so run `python3 scripts/track.py next` and read the result before trusting a dependency edit.
 
 ### Doc Invariant Check (run after editing any `.md`)
 ```bash
