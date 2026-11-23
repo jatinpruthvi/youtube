@@ -11,9 +11,12 @@
 > **$1,000-$2,000+ per day ($30k-$60k+/month)**, and `PPM_REVIEW.md` sec.8 already prices it per day. Every figure below is now
 > per day. The monthly reading made the goal look like the plan's Month 7-9 row; at the daily reading it is the plan's Month 20-26.
 >
-> **Revenue or profit?** The mission's own wording is *"pure platform ad revenue"*, so the target as written is a **revenue** target - and
-> sections 1.1-1.3 price it that way. **Section 1.4 is the profit calculation**: cost lines of $70.56-$105.14/day fully loaded, a 93-95%
-> margin at the goal, and an inventory premium of +85 to +128 videos (1.035-1.070x) if the owner means net profit rather than gross.
+> **Revenue or profit, and per day or per month?** Two unit questions sit under this file, and both are answered with arithmetic
+> rather than by picking one. The mission's own wording is *"pure platform ad revenue"*, so sections 1.1-1.3 price a **revenue**
+> target; **1.4** adds the cost stack ($2.14-$105.14/day depending on whether the 2-3 FTE hires exist) and states **profit/day and
+> profit/month for every operating point** under one conversion, `profit/month = profit/day x 30`. The request this file answers asks
+> for **$1,500-$2,000 per *month*** while the mission line says **per *day***; **1.5** prices the monthly reading too (64-126 videos
+> rather than 1,913-2,564), so the 30x difference is visible instead of implied. No table here mixes the two units.
 
 ## 1. The target is per day
 
@@ -34,23 +37,27 @@ $220 + $140 + $150 = **$510 of $2,295 = 22.2% of the total**, i.e. 28.6% of AdSe
 ancillary**. If ancillary never materialises, every ad figure rises by `1 / 0.78 = 1.28x`. **Ancillary has zero tracker items** -
 all 51 are ad-side.
 
-**This formula is gross revenue.** Profit is 1.4: it subtracts $70.56-$105.14/day of cost, which is 4.7-7.0% of a $1,500-$2,000 day.
-Infrastructure is second-order at this scale ($2.14-$5.14/day, under 0.4% of the target). Labour is not second-order, and is not in
-the repo at all (sec.3).
+**This formula is gross revenue, per day.** Profit is 1.4: subtract $2.14-$2.64/day solo or $70.56-$105.14/day with the 2-3 FTE hires
+(4.7-7.0% of a $1,500-$2,000 day), then `x 30` for profit/month. The same goal read as a *monthly* figure is 1.5 - a 30x smaller
+business. Infrastructure is second-order at this scale ($2.14-$5.14/day, under 0.4% of the target). Labour is not second-order, and
+is not in the repo at all (sec.3).
 
 ### 1.1 Ad revenue and views/day required
 
-| Goal | Ad revenue/day (78%) | Views/day at $7 RPM | at $10.50 | at $14 | AdSense-only views/day at $10.50 |
+| Profit goal (per day) | Ad revenue/day (78%) | Views/day at $7 RPM | at $10.50 | at $14 | AdSense-only views/day at $10.50 |
 |---|---|---|---|---|---|
 | **$1,500/day** | $1,170 | 167,143 | 111,429 | 83,571 | 142,857 |
 | **$2,000/day** | $1,560 | 222,857 | 148,571 | 111,429 | 190,476 |
 
 `views/day = ad revenue/day x 1000 / RPM`. RPM band is the plan's own: `$7` is where its projection starts, `$10.50` is its
-Month 25-28 blended figure, `$14` is inside the `$10-18` band that `branches.md` itself assigns to EconomicsByNumbers.
+Month 25-28 blended figure, `$14` is inside the `$10-18` band that `branches.md` itself assigns to EconomicsByNumbers. Both rows are
+**revenue** columns of a *profit* goal: `revenue/day = profit goal + $2.14...$105.14` (1.4), so the two rows need $1,570.56-$1,605.14
+and $2,070.56-$2,105.14/day of revenue for the full cost stack, or the figures above when the operator is solo. The same two goals read
+as a *monthly* figure are 1.5.
 
 ### 1.2 Library size required
 
-Videos needed for **$1,500/day**, by per-video rate:
+Videos needed for **$1,500/day of revenue**, by per-video rate (as *profit* at the hired stack it is 1,913-1,955, 1.4):
 
 | RPM | v = 22.22 <br>(plan Month 7-9) | v = 61 <br>(plan Month 13-16) | v = 91 <br>(61 + the twelve items' +49.1%) | v = 94 <br>(plan Month 25-28) |
 |---|---|---|---|---|
@@ -58,7 +65,7 @@ Videos needed for **$1,500/day**, by per-video rate:
 | **$10.50** | 5,015 | **1,827** | 1,224 | 1,185 |
 | **$14** | 3,761 | 1,370 | **918** | 889 |
 
-Videos needed for **$2,000/day**:
+Videos needed for **$2,000/day of revenue** (as profit at the hired stack, 2,522-2,564):
 
 | RPM | v = 22.22 | v = 61 | v = 91 | v = 94 |
 |---|---|---|---|---|
@@ -89,70 +96,151 @@ Three readings of the same table:
 nobody has committed to.** That is the whole answer, and it is why the next 30 videos matter more than any further document: they
 measure the first of the two.
 
-### 1.4 Profit per day: the cost lines 1.1-1.3 leave out
-
-**The mission line is a revenue target** - "$1,000-$2,000+/day ... in pure platform ad revenue". So every table above is gross. Profit
-is that minus the cost of running the factory, and the repository prices both halves of that cost already:
+### 1.4 Profit per day, and profit per month
 
 ```
-profit/day = revenue/day - cost/day
-cost/day   = infra/day + labour/day
+profit/day   = revenue/day - cost/day
+profit/month = profit/day x 30        <- the only conversion used in this file
 ```
 
-| Cost line | Per month | Per day | Where the figure comes from |
+**One month is 30 days, so a year is 360.** That is not this memo's invention: `PPM_REVIEW.md` sec.8 already fixes the conversion
+for this repository - *"PPM is monthly, so the conversion is fixed: $/day = PPM/month / 30."* Stating it also states its cost: a
+calendar year has 365 days, so any annual total built by multiplying these months by 12 is **1.4% low** (`365 / 360 = 1.0139`).
+Every profit cell below is `revenue/day - cost/day` using the cost figures published in the stack, and every /month cell is that /day
+cell `x 30`, so any line can be reproduced with two subtractions and one multiplication. The stack's own monthly source is rounded
+before the division, so it can sit up to $0.10 from `30 x` its daily figure - rounding, not a second estimate.
+
+**The cost stack.** Both lines are priced in the repository already; nothing here is new.
+
+| Cost line | Per month (source) | Per day (/30) | Where it comes from |
 |---|---|---|---|
-| Infrastructure at 30 videos/month | $64.10-$79.10 | **$2.14-$2.64** | `PPM_REVIEW.md` sec.0: CPX41 $27 + R2 $2 fixed, plus 30 x $1.17-$1.67 per episode |
-| Infrastructure at 75 videos/month | $116.75-$154.25 | **$3.89-$5.14** | the same line at 75 episodes - the plan's ~$100/month holds only at 30/month |
-| Labour, 2-3 FTE from ~Month 3 | $2,000-$3,000 | **$66.67-$100.00** | sec.3: 75 videos/month needs 300-450 h, i.e. 2-3 people at $600-$1,000/month |
-| **Total, solo at 30/month** | **$64-$79** | **$2.14-$2.64** | 1.3's 61-67 month column: no hires |
-| **Total, 2-3 FTE at 75/month** | **$2,117-$3,154** | **$70.56-$105.14** | 1.3's 24-26 month column: the only regime that reaches the goal inside 5 years |
+| Infrastructure, 30 videos/month | $64.10-$79.10 | **$2.14-$2.64** | `PPM_REVIEW.md` sec.0: CPX41 $27 + R2 $2 fixed, plus 30 x $1.17-$1.67 per episode |
+| Infrastructure, 75 videos/month | $116.75-$154.25 | **$3.89-$5.14** | the same line at 75 episodes - the plan's ~$100/month holds only at 30/month |
+| Labour, 2-3 FTE from ~Month 3 | $2,000.00-$3,000.00 | **$66.67-$100.00** | sec.3: 75 videos/month needs 300-450 h, i.e. 2-3 people at $600-$1,000/month |
+| **Total, solo at 30/month** | **$64.10-$79.10** | **$2.14-$2.64** | the 61-67 month column of 1.3: no hires |
+| **Total, 2-3 FTE at 75/month** | **$2,116.75-$3,154.25** | **$70.56-$105.14** | the 24-26 month column of 1.3: the only regime that reaches the goal inside 5 years |
+| Flat line used by `PPM_REVIEW.md` sec.8 | $85.00 | $2.83 | infrastructure only, no labour: $5.90-$20.90/month conservative on infrastructure, and $2,031.75-$3,069.25/month short of the hired stack |
 
-| Operating point | Revenue/day | Profit/day, solo | Profit/day, 2-3 FTE | Margin (solo / loaded) |
-|---|---|---|---|---|
-| 900 videos, v=61, $7 (the `PPM_REVIEW.md` base) | $492 | $489.67-$490.17 | $387.17-$421.75 | 99.5% / **78.6-85.7%** |
-| 1,827 videos, v=61, $10.50 ($1,500/day) | $1,500 | $1,497.36-$1,497.86 | **$1,394.86-$1,429.44** | 99.8% / **93.0-95.3%** |
-| 2,436 videos, v=61, $10.50 ($2,000/day) | $2,000 | $1,997.36-$1,997.86 | **$1,894.86-$1,929.44** | 99.9% / **94.7-96.5%** |
+**Profit at every operating point.** Three revenue points, each under both regimes. The solo columns are the 30-per-month case
+(no hires, 61-81 months per 1.3); the 2-3 FTE columns are the 75-per-month case that reaches the goal at Month 24-26.
 
-**The margin is 93-95% at the goal and 79-86% at the base**, because labour is fixed at $2,000-$3,000/month while revenue grows 4x. So
-profit per day is not a different problem from revenue per day - it is the same problem with a cost floor of ~$70-105/day.
+| Operating point | Revenue/day | Revenue/month | Profit/day, solo | Profit/month, solo | Profit/day, 2-3 FTE | Profit/month, 2-3 FTE | Margin, 2-3 FTE |
+|---|---|---|---|---|---|---|---|
+| 900 videos, v=61, $7 (the `PPM_REVIEW.md` base) | $492.69 | $14,780.70 | $490.05-$490.55 | $14,701.50-$14,716.50 | $387.55-$422.13 | $11,626.50-$12,663.90 | 78.7-85.7% |
+| 1,827 videos, v=61, $10.50 ($1,500/day) | $1,500.00 | $45,000.00 | $1,497.36-$1,497.86 | $44,920.80-$44,935.80 | $1,394.86-$1,429.44 | $41,845.80-$42,883.20 | 93.0-95.3% |
+| 2,436 videos, v=61, $10.50 ($2,000/day) | $2,000.00 | $60,000.00 | $1,997.36-$1,997.86 | $59,920.80-$59,935.80 | $1,894.86-$1,929.44 | $56,845.80-$57,883.20 | 94.7-96.5% |
 
-**Profit costs 85-128 videos.** Solving `profit = goal` instead of `revenue = goal`, at $10.50 RPM and 61 views/video/day:
+The base row is the `PPM_REVIEW.md` likely base with this memo's 78% ad share applied: `900 x 61 x $7 / 1000` = **$384.30 ad/day**,
+and `$384.30 / 0.78` = **$492.69 total/day** = $11,529/month of ad, which is exactly `PPM_REVIEW.md`'s base.
 
-| Profit goal | Revenue needed | Ad revenue/day (78%) | Views/day | Library | vs the revenue target | Calendar cost |
+**Margin is 78.7-85.7% at the base, 93.0-95.3% at $1,500/day and 94.7-96.5% at $2,000/day**, because labour is fixed at
+$2,000-$3,000/month while revenue grows 4x. Profit per day is therefore not a different problem from revenue per day - it is the
+same problem with a cost floor of $70.56-$105.14/day, i.e. **4.7-7.0% of a $1,500 day**. Only the hired stack has a margin that
+moves: at the base it gives up 14-21 points, at the goal 5-7.
+
+**What a profit target costs in inventory.** Solving `profit = goal` instead of `revenue = goal`, on the hired stack, at $10.50 RPM
+and 61 views/video/day:
+
+| Profit goal | Revenue/day needed | Revenue/month | Ad revenue/day (78%) | Views/day | Library | vs the revenue target | Calendar cost at 75/month |
+|---|---|---|---|---|---|---|---|
+| **$1,500/day** | $1,570.56-$1,605.14 | $47,116.80-$48,154.20 | $1,225.04-$1,252.01 | 116,670-119,239 | **1,913-1,955** | 1,827 -> +86 to +128 | +1.1-1.7 months |
+| **$2,000/day** | $2,070.56-$2,105.14 | $62,116.80-$63,154.20 | $1,615.04-$1,642.01 | 153,813-156,382 | **2,522-2,564** | 2,436 -> +86 to +128 | +1.1-1.7 months |
+
+The premium is the same +86 to +128 videos at both goals, because it depends only on cost: `$70.56-$105.14/day` divided by
+`61 x $10.50 / 1000 / 0.78` = **$0.82/day of total revenue per video**. In calendar terms the profit target arrives **1.1-1.7 months
+later at 75/month and 2.9-4.3 months later at 30/month** than the revenue target. **If the owner means net profit, add 86-128 videos
+and 1-4 months; nothing else in this memo changes.**
+
+**Cash, withholding, and the one-offs.** None of these is a cost of production, and all three are real. They belong on the page as
+lines, not as prose:
+
+| Line | Size | At $1,500/day | Per month (x30) | At $2,000/day | Per month (x30) |
+|---|---|---|---|---|---|
+| Withholding before `CMP-04` | 12% of revenue (30% x 40% US-origin) | $180.00/day | $5,400.00 | $240.00/day | $7,200.00 |
+| Withholding after `CMP-04` | 6% of revenue (15% x 40%) | $90.00/day | $2,700.00 | $120.00/day | $3,600.00 |
+| Cash in hand, unfiled | `revenue x 0.88 - cost` | $1,214.86-$1,249.44/day | $36,445.80-$37,483.20 | $1,654.86-$1,689.44/day | $49,645.80-$50,683.20 |
+| Cash in hand, filed | `revenue x 0.94 - cost` | $1,304.86-$1,339.44/day | $39,145.80-$40,183.20 | $1,774.86-$1,809.44/day | $53,245.80-$54,283.20 |
+| `CMP-04` filing, one-off | 2.0h of owner time, no cash cost | - | - | - | - |
+| Runway recoup, one-off | $55,000 of cumulative labour before the first $1,500 day (sec.3) | 38.5-39.4 days | ~1.3 months | 28.5-29.0 days | ~1.0 month |
+
+Withholding is a prepaid tax credit, not a permanent loss, but it is cash that does not arrive on the day it is earned, and the
+6-point gap between the two rows is the whole value of a 2-hour filing. The recoup row is the one number profit makes worse: the
+first $1,500 day arrives at Month 24-26, and **cumulative profit turns positive about 39 days after it**.
+
+So the chain is: **revenue/day (1.1-1.3) -> minus $2.14-$105.14/day depending on regime -> profit/day -> x30 -> profit/month ->
+minus withholding for cash.** The middle step is 4.7-7.0% of the goal; the last is 6-12%. At $1,500/day the cost and withholding
+lines together are a **$160.56-$285.14/day** swing - comparable to the whole twelve-item package at the base (sec.5.1) and far
+below what cadence is worth at the goal.
+
+### 1.5 The other reading: $1,500-$2,000 per **month**
+
+**The unit discrepancy, stated plainly.** The request this memo answers asks for *"$1,500 to $2,000 profit per month"*. The mission
+this repository tracks is *"$1,000-$2,000+ **per day**"* (`AGENTS.md` sec.1, `README.md` line 3, `docs/TRACKER.md` line 4,
+`docs/ARCHITECTURE.md` line 3). **The two are 30x apart, and both are priced here.** Sections 1.1-1.4 and 2-8 price the daily
+reading, because that is the one the repository states and the one the plan's Month 20-26 rows describe. This section prices the
+monthly reading, which is a different and much smaller business.
+
+**Why the monthly reading is the tempting one.** The plan's own Month 7-9 row is **$2,850/month**. As a *monthly profit* target that
+row already clears $2,000 with room: `$2,850 - $64.10...$79.10` = **$2,770.90-$2,785.90 of profit per month** for a solo operator.
+As a *daily* target the same row is $95/day - **6.3% of the floor** (sec.2). One row, two readings, and the monthly one makes the
+goal look eight months away instead of two and a bit years.
+
+**What $1,500-$2,000 of profit per month actually needs** (same method, same conversion):
+
+| Profit goal | Regime | Revenue/month needed | Ad/month (78%) | Views/day at $10.50 | Views/day at $7 | Library at v=61 ($10.50 / $7) | Months at 30/month ($10.50 / $7) |
+|---|---|---|---|---|---|---|---|
+| $1,500/month | solo (infra only) | $1,564.10-$1,579.10 | $1,220.00-$1,231.70 | 3,873-3,910 | 5,810-5,865 | **64 / 96** | 2.1 / 3.2 |
+| $2,000/month | solo (infra only) | $2,064.10-$2,079.10 | $1,610.00-$1,621.70 | 5,111-5,148 | 7,667-7,722 | **84 / 126** | 2.8 / 4.2 |
+| $1,500/month | 2-3 FTE | $3,616.75-$4,654.25 | $2,821.07-$3,630.32 | 8,956-11,525 | 13,434-17,287 | 147-189 / 220-283 | 4.9-6.3 / 7.3-9.4 |
+| $2,000/month | 2-3 FTE | $4,116.75-$5,154.25 | $3,211.07-$4,020.32 | 10,194-12,763 | 15,291-19,144 | 167-209 / 251-314 | 5.6-7.0 / 8.4-10.5 |
+
+`views/day = revenue/month x 0.78 x 1000 / (30 x RPM)`, and `library = views/day / 61`.
+
+**The monthly reading is solo-only.** The hired stack costs $2,116.75-$3,154.25/month, which is *more than the entire $1,500-$2,000
+monthly target*: hiring is not a way to reach a monthly goal, it is a way to miss it. Any monthly plan is a one-person plan, and the
+monthly reading therefore never uses 1.3's 75-per-month column at all.
+
+The other cash lines scale down with it. `CMP-04` withholding on $1,564.10-$1,579.10 of revenue is **$93.85-$189.49/month** at 6-12%,
+i.e. 6.3-12.6% of the $1,500 target - the same line as 1.4, measured at a monthly scale. The runway recoup does not exist here at all,
+because the monthly reading never hires anyone, and neither does the $55,000.
+
+**The two readings side by side**, which is the whole point of this section:
+
+| Reading | Profit target | Equivalent profit/day | Revenue needed/day | Views/day at $10.50 | Library at v=61 | Arrival at 30/month |
 |---|---|---|---|---|---|---|
-| **$1,500/day** | $1,570.56-$1,605.14 (1.047-1.070x) | $1,225-$1,252 | 116,670-119,239 | **1,913-1,955** | 1,827 -> +85 to +128 | +1.1-1.7 mo at 75/mo; +2.9-4.3 mo at 30/mo |
-| **$2,000/day** | $2,070.56-$2,105.14 (1.035-1.053x) | $1,615-$1,642 | 153,813-156,382 | **2,522-2,564** | 2,436 -> +86 to +128 | +1.1-1.7 mo at 75/mo; +2.9-4.3 mo at 30/mo |
+| **per month** | $1,500/month = $18,000/year | **$50.00** | $52.14-$52.64 | 3,873-3,910 | **64** | month 2.1 |
+| **per month** | $2,000/month = $24,000/year | **$66.67** | $68.80-$69.30 | 5,111-5,148 | **84** | month 2.8 |
+| **per day** | $1,500/day = $45,000/month | **$1,500.00** | $1,570.56-$1,605.14 | 116,670-119,239 | **1,913-1,955** | month 63.8-65.2 |
+| **per day** | $2,000/day = $60,000/month | **$2,000.00** | $2,070.56-$2,105.14 | 153,813-156,382 | **2,522-2,564** | month 84.1-85.5 |
 
-The premium is the same +85 to +128 videos at both goals, because it depends only on cost: $70.56-$105.14/day of revenue, divided by
-`61 x $10.50 / 1000 / 0.78` = **$0.82/day of total revenue per video**. **If the owner means net profit, add 85-128 videos and 1-4
-months; nothing else in this memo changes.**
+The target ratio is exactly 30x (`$1,500 / $50.00`). The views ratio is **30.1x** (`116,670 / 3,873`) and the library ratio
+**29.9x-30.0x** (`1,913 / 64`, `2,522 / 84`) - the same 30x, with the published video counts rounded to whole videos. Nothing else
+about the two businesses is proportional, though: the monthly reading fits inside the 30-video sprint's second month and needs no
+hiring, no second channel, no Facebook cut and no ancillary revenue, while the daily reading is the Month 20-26 network that
+sec.2-8 are about.
 
-**Withholding is a larger cash leak than either cost line, and it is not a cost.** `CMP-04` (sec.5): 30% vs 15% withholding on 40%
-US-origin revenue = 12% vs 6% of revenue. At $1,500/day that is **$180/day unfiled, $90/day once fixed** - bigger than infrastructure
-and about equal to the whole labour line, and recoverable only by filing the form. So cash in hand is `profit/day x 0.94` after
-`CMP-04` and `x 0.88` before it.
-
-**The runway is the one number profit makes worse.** sec.3's ~$55,000 of cumulative labour before the first $1,500 day is spent against
-$0 of revenue; at $1,394.86-$1,429.44/day of profit that is **38-39 days at the goal to recoup**. The first $1,500 day arrives at
-Month 24-26; cumulative profit turns positive roughly two months later.
-
-So the daily chain is: **revenue/day (1.1-1.3) -> minus $70.56-$105.14/day of cost (1.4) -> profit/day -> minus 6-12% withholding
-for cash.** The middle step is 4.7-7.0% of the goal and the last step is 6-12%: at $1,500/day they are a **$160.56-$285.14/day** swing,
-comparable to the twelve priced items at the base (sec.5.1) and far below what cadence is worth at the goal.
+**Which one is the goal?** The repository's canonical line is per day, and this memo does not change it. If the owner's actual goal
+is $1,500-$2,000 of profit **per month**, then the answer is **64-126 videos at 30/month - month 2-4 - and sections 3-8 are
+irrelevant**: no 75/month cadence, no 37-month throughput gap, no $55,000 labour runway, no $2,000-$3,000/month hire. That is a
+question for the owner, not for arithmetic, and it is the only decision in this file that changes every other number.
 
 ## 2. Where the target actually sits in the plan - and it is not Month 7-9
 
 `initialBrainstrom/conversations/01-ai-data-documentary-branches.md`, projection rows, with the plan's own monthly column converted:
 
-| Plan row | Library | Views/day | Implied v | Total/day | Plan's own PPM/month | vs $1,500/day |
-|---|---|---|---|---|---|---|
-| Month 7-9 | 450 | 10,000 | 22.22 | **$95** | $2,850 | **6.3%** |
-| Month 10-12 | 650 | 25,000 | 38.5 | $280 | $8,400 | 18.7% |
-| Month 13-16 | 900 | 55,000 | 61.1 | $665 | $19,950 | 44.3% |
-| Month 17-20 | 1,200 | 95,000 | 79.2 | $1,183 | $35,490 | 78.9% |
-| Month 21-24 | 1,500 | 140,000 | 93.3 | **$1,800** | $54,000 | **120%** |
-| Month 25-28 | 1,800 | 170,000 | 94.4 | $2,295 | $68,850 | 153% |
-| Year 3 | 2,500 | 220,000 | 88.0 | $3,080 | $92,400 | 205% |
+| Plan row | Library | Views/day | Implied v | Total/day | Profit/day, 2-3 FTE | Plan's own PPM/month | vs $1,500/day |
+|---|---|---|---|---|---|---|---|
+| Month 7-9 | 450 | 10,000 | 22.22 | **$95** | **-$10.14 to +$24.44** | $2,850 | **6.3%** |
+| Month 10-12 | 650 | 25,000 | 38.5 | $280 | $174.86-$209.44 | $8,400 | 18.7% |
+| Month 13-16 | 900 | 55,000 | 61.1 | $665 | $559.86-$594.44 | $19,950 | 44.3% |
+| Month 17-20 | 1,200 | 95,000 | 79.2 | $1,183 | $1,077.86-$1,112.44 | $35,490 | 78.9% |
+| Month 21-24 | 1,500 | 140,000 | 93.3 | **$1,800** | $1,694.86-$1,729.44 | $54,000 | **120%** |
+| Month 25-28 | 1,800 | 170,000 | 94.4 | $2,295 | $2,189.86-$2,224.44 | $68,850 | 153% |
+| Year 3 | 2,500 | 220,000 | 88.0 | $3,080 | $2,974.86-$3,009.44 | $92,400 | 205% |
+
+Every `Profit/day` cell is `Total/day - $70.56...$105.14` (1.4); `x 30` makes it /month. **The Month 7-9 row does not pay for the
+hires**: -$10.14 to +$24.44/day is **-$304.20 to +$733.20/month**, and the first row that clears $1,500/day of *profit* on the hired
+stack is Month 21-24 at $1,694.86-$1,729.44.
 
 **$1,500/day is the Month 20-22 band; $2,000/day is Month 25-26.** The plan says so itself: line 217, *"$2,000/day hit at Month
 25-26"*. Its own calibration line 534 is the honest one: **"expected value at Month 28: ~$1,400/day"**.
@@ -184,7 +272,7 @@ in India at $600-1,000/month each      = $2,000-3,000/month from roughly Month 3
 cumulative labour before the first $1,500 day (Month 24) = ~$55,000
 ```
 
-At $45,000/month of revenue that labour is ~6% - affordable, but it is **$55,000 of runway before the first $1,500 day**, and
+At $45,000/month of revenue that labour is **4.4-6.7%** - affordable, but it is **$55,000 of runway before the first $1,500 day**, and
 nothing in this repository acknowledges it.
 
 ## 4. The four contradictions that decide which cell you land in
@@ -233,14 +321,15 @@ library requirements in 1.2 rise by 1.28x.
 
 They are percentages, so their dollars scale with revenue - which is why they look trivial at the base and large at the goal.
 
-| Operating point | Ad revenue/day | Twelve items at +49.1% = $/day |
-|---|---|---|
-| 900 videos, 61 v/v/day, $7 (the `PPM_REVIEW.md` likely base) | $384 | **+$189** |
-| 1,827 videos, 61 v/v/day, $10.50 ($1,500/day) | $1,170 | **+$574** |
-| 2,436 videos, 61 v/v/day, $10.50 ($2,000/day) | $1,560 | **+$766** |
+| Operating point | Ad revenue/day | Twelve items at +49.1% = $/day | = $/month (x30) |
+|---|---|---|---|
+| 900 videos, 61 v/v/day, $7 (the `PPM_REVIEW.md` likely base) | $384.30 | **+$188.69** | +$5,660.70 |
+| 1,827 videos, 61 v/v/day, $10.50 ($1,500/day) | $1,170.00 | **+$574.47** | +$17,234.10 |
+| 2,436 videos, 61 v/v/day, $10.50 ($2,000/day) | $1,560.00 | **+$765.96** | +$22,978.80 |
 
-At the base the entire 51-item tracker is worth ~$250/day against a $1,500/day goal - **under 17% of one day's target**. At the goal
-it is worth $574-766/day, i.e. it buys back roughly a third of a year of library building. **Multiplicative, never additive: build
+At the base the twelve priced items are worth **$188.69/day ($5,660.70/month)** against a $1,500/day goal - **12.6% of one day's
+target**. At the goal the same percentage is worth $574.47-$765.96/day ($17,234.10-$22,978.80/month), i.e. it buys back roughly a
+third of a year of library building. **Multiplicative, never additive: build
 it, but it cannot be the answer to how the goal is reached.**
 
 ## 6. The measurement plan - three checkpoints, no new documents
@@ -285,6 +374,8 @@ At the daily target the three things that actually move the number are, in order
 (a factor of 1.8-2.0 on the videos required), and **the twelve items** (+49.1%, worth $574-766/day once you are there). Only the
 third one is in the tracker.
 
-**Profit is not a fourth lever.** 1.4 fixes it at revenue minus $70.56-$105.14/day, i.e. 93-95% of the goal, and the withholding line
-in 1.4 is a filing (2h) rather than a build. The per-day answer does not change between gross and net by more than 85-128 videos and
-1-4 months.
+**Profit is not a fourth lever, and it is not a fifth unit either.** 1.4 fixes profit at revenue minus $2.14-$105.14/day depending on
+regime - 93-95% of the goal once hired - under one conversion, `profit/month = profit/day x 30`. The withholding line there is a
+2-hour filing rather than a build, and 1.5's reading of the same goal as a *monthly* figure is a 30x smaller business (64-126 videos,
+month 2-4) that would make sections 2-8 unnecessary. Between gross and net the daily answer moves by 86-128 videos and 1-4 months;
+between the daily and monthly readings it moves by a factor of 30.

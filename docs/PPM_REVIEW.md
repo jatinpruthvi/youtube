@@ -397,6 +397,10 @@ per day - inside the 40-94 range used here - and on $11 RPM, which is above the 
 
 PPM is monthly, so the conversion is fixed: **$/day = PPM/month / 30.**
 
+**That $85/month is infrastructure only.** `IMPROVEMENT_VALUE_AT_2K.md` sec.1.4 keeps this conversion and adds the 2-3 FTE labour
+line: under the fuller stack the same figures need $3,616.75-$5,154.25/month of revenue for $1,500-$2,000 of *monthly* profit - more
+than the monthly goal itself - against $30,085-$60,085/month for $1,000-$2,000 *per day*.
+
 | Target | PPM/month needed | Revenue/month needed | Daily views at $7 RPM | at $9 | at $10 |
 |---|---|---|---|---|---|
 | $1,000/day | $30,000 | $30,085 | 143,262 | 111,426 | 100,283 |
