@@ -104,10 +104,15 @@ absent(DECISIONS, "month 26–32", "D-01 asserted band is gone")
 # ---- D-02 / D-12: what T06 actually costs --------------------------------
 t06 = [i for i in ITEMS if i["track"] == "T06"]
 t06_hours = sum(i["effort_hours"] for i in t06)
-ck.ck("D-02 VAL-01 is 6h", HOURS["VAL-01"] == 6, str(HOURS["VAL-01"]))
-ck.ck("D-02 T06 is now 36.0h", abs(t06_hours - 36.0) < 0.01, f"{t06_hours}")
-ck.ck("D-02 original T06 was 31.5h", abs(t06_hours - HOURS["SHR-01"] - HOURS["REN-10"] - 31.5) < 0.01)
-has(DECISIONS, "31.5h when this was decided, 36.0h now", "D-02 T06 figure is dated, not stale")
+val_dependencies = {
+    "INF-03", "DAT-07", "DAT-08", "TOP-03", "SCR-03", "AUD-05", "AUD-06",
+    "REN-09", "THM-02", "QAG-02", "PUB-03", "ORC-02",
+}
+ck.ck("D-02 VAL-01 is a terminal integration item",
+      set(BY_ID["VAL-01"]["dependencies"]) == val_dependencies,
+      str(BY_ID["VAL-01"]["dependencies"]))
+ck.ck("D-02 T06 is 36.0h", abs(t06_hours - 36.0) < 0.01, f"{t06_hours}")
+ck.ck("D-02 T06 remains fully in the launch architecture", "4K60" in BY_ID["REN-10"]["title"] or "4K60" in BY_ID["REN-10"]["acceptance_criteria"])
 
 # ---- D-04 / D-10 / D-12: the effort chain --------------------------------
 added = {
@@ -196,9 +201,14 @@ ck.ck("D-06 22% ancillary = $330-$440/day", (1500 * 0.22, 2000 * 0.22) == (330.0
 has(DECISIONS, "$330–$440/day", "D-06/D-04 state the ancillary line")
 
 # ---- D-02 / D-05 / D-06 / D-08: is the decision enforced, or just stated? --
-ck.ck("D-02 REN-02 waits for VAL-01", "VAL-01" in BY_ID["REN-02"]["dependencies"], str(BY_ID["REN-02"]["dependencies"]))
-ck.ck("D-02 ORC-02 waits for VAL-01", "VAL-01" in BY_ID["ORC-02"]["dependencies"], str(BY_ID["ORC-02"]["dependencies"]))
-ck.ck("D-02 VAL-01 itself is unblocked", BY_ID["VAL-01"]["dependencies"] == [], str(BY_ID["VAL-01"]["dependencies"]))
+ck.ck("D-02 launch episode is not a hand-built separate gate",
+      "real warehouse" in BY_ID["VAL-01"]["acceptance_criteria"]
+      and "end-to-end pipeline" in BY_ID["VAL-01"]["title"],
+      BY_ID["VAL-01"]["acceptance_criteria"][:100])
+ck.ck("D-02 REN-02 does not wait for a falsification episode",
+      "VAL-01" not in BY_ID["REN-02"]["dependencies"], str(BY_ID["REN-02"]["dependencies"]))
+ck.ck("D-02 ORC-02 does not wait for a falsification episode",
+      "VAL-01" not in BY_ID["ORC-02"]["dependencies"], str(BY_ID["ORC-02"]["dependencies"]))
 ck.ck("D-05 PUB-02 gate is in its acceptance criterion",
       "only receives localized metadata once captions" in BY_ID["PUB-02"]["acceptance_criteria"], "gate missing")
 ck.ck("D-06 PUB-03 gate is in its acceptance criterion",
@@ -208,8 +218,10 @@ for item, needle, label in (("REN-01", "RenderSpec", "D-08 RenderSpec contract")
                             ("ORC-01", "data/episodes/<episode_id>/<stage>/<content_hash>", "D-08 artifact layout"),
                             ("DAT-09", "tests/fixtures", "D-08 record/replay cassettes")):
     ck.ck(f"{label} lives in {item}", needle in BY_ID[item]["acceptance_criteria"], needle)
-ck.ck("D-11 TOP-01 seeds one cluster, not 6x5",
-      "ONE cluster 30 deep" in BY_ID["TOP-01"]["acceptance_criteria"], BY_ID["TOP-01"]["acceptance_criteria"][:70])
+ck.ck("D-11 TOP-01 concentrates topics without fixed fill-the-quota logic",
+      "concentrated launch slate" in BY_ID["TOP-01"]["title"].lower()
+      and "fixed publish quota" in BY_ID["TOP-01"]["acceptance_criteria"],
+      BY_ID["TOP-01"]["acceptance_criteria"][:70])
 ck.ck("D-11 no document still prescribes 6x5",
       "6 pillars x 5" not in read("docs/ARCHITECTURE.md") and "6 pillars x 5" not in read("AGENTS.md"),
       "6x5 still prescribed")

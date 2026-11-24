@@ -15,9 +15,9 @@ Checked by `python3 scripts/check_baseline.py` (wired into `scripts/check_docs.p
 
 | Input | Symbol | Used as | Band | Tier | Derivation or retirement |
 | :--- | :--- | :--- | :--- | :---: | :--- |
-| Published episodes | — | 0 | 0 | **M** | `tracker/items.json`: 60/60 items `todo` |
+| Published episodes | — | 0 | 0 | **M** | `tracker/items.json`: 62/62 items `todo` |
 | Revenue earned | — | $0 | $0 | **M** | no channel exists (`CMP-01` todo) |
-| Plan effort | — | 166.5h | 166.5h | **M** | sum of `effort_hours` over 60 items |
+| Plan effort | — | 170.5h | 170.5h | **M** | sum of `effort_hours` over 62 items |
 | Docs arithmetic | — | all checks green | 7 check scripts | **M** | `check_docs.py` runs the band and decision checks on every push (the count is deliberately not written here: it drifts) |
 | Views per video per day | v | 61 | 22–94 | **D** | the plan's own projection rows: 10,000/450 = 22 … 170,000/1,800 = 94; projected, not measured. Retired by `ANA-01` |
 | Ad-side RPM | **RPM_ad** | $10.50 | $6.24–$12.48 | **D** | the plan's stated total-RPM band is $8–$16; at a 78% ad share the ad-side band is 0.78 × that. $10.50 sits at the **68th percentile**, so the base is *not* conservative. Retired by the AdSense report |
@@ -35,7 +35,7 @@ Checked by `python3 scripts/check_baseline.py` (wired into `scripts/check_docs.p
 | 4K60 render minutes | — | 20–35 min | 20–35 min | **U** | architecture target, no benchmark. Retired by `REN-02` |
 | CTR lift from packaging | — | 0 (base) | 0–20% | **U** | `PPM_REVIEW` calls it the weakest claim. Retired by Test & Compare |
 
-**Nothing in the revenue line is Tier M.** That is the honest state of the business, and it is why `VAL-01` exists.
+**Nothing in the revenue line is Tier M.** That is the honest state of the business, and it is why `VAL-01` begins a real production pipeline rather than a throwaway experiment.
 
 ---
 
@@ -115,14 +115,14 @@ and the action — including the action that ends the project.
 
 | # | When | Reading | Threshold | Action, fixed in advance |
 | :---: | :--- | :--- | :--- | :--- |
-| **R1** | Day 3 | `VAL-01` published | live within 3 days of the demand research | If not published, the constraint is production, not demand: cut scope to one template before anything else |
-| **R2** | Day 17 | 14-day views on `VAL-01` | ≥ 20 v/day | keep the format, release `REN-02` and the 1/day cadence |
-| **R3** | Day 17 | same | 10–19 v/day | keep the format, **hold 4K60 and Facebook**, publish 30 episodes before any further tooling |
-| **R4** | Day 17 | same | < 10 v/day | **stop the sprint** (whatever its length — `D-16` sets that, not this rule), re-cut the slate with `TOP-04`, and re-run `VAL-01` once — one retry, not two |
-| **R5** | Day 45 | cohort trend, latest 5 uploads vs previous 5 | flat or rising | scale **within the pre-YPP ceiling**: 30/month stands, and the hour freed by a 5-video cohort is reinvested in the editor's desk. The 45/month step is **not** unlocked here — `D-17` moved it to `R20`, and a Day-45 reading with no AdSense data cannot buy cadence |
-| **R6** | Day 45 | same | falling > 25% | stop publishing; the topic shape is wrong, and more episodes cannot fix it |
-| **R7** | Day 45 | measured v (30 videos, 28 days) | any value | record it and **replace the 61 in every table** with the measured figure; the calendar is re-derived, not debated |
-| **R8** | Day 45 | measured v | < 22 | the plan's own floor is already exceeded downward: at v=22 the goal needs **5,066 videos = 67.5 months at 75/month**, so reset the horizon to **6 years** (not 5 — that was the earlier row's arithmetic error) or change the niche, and say which |
+| **R1** | First episode | `VAL-01` published | published through the complete pipeline | If publication fails, resolve the first-factory defect before queue expansion |
+| **R2** | First 28 days | first episode cohort trend | flat or rising from observed baseline | continue the same measured demand cluster and improve only measured weak stages |
+| **R3** | First 28 days | format trend | falls materially relative to the channel median | revise topic, packaging, or narrative; do not add more output to a weak format |
+| **R4** | Any cohort | policy, fact, or license violation | any confirmed violation | stop affected publishing, correct the gate/root cause, and re-audit affected episodes |
+| **R5** | After 5+ episode cohorts | cohort trend | flat or rising | continue in the measured topic cluster and improve the weakest measured stage |
+| **R6** | After 5+ episode cohorts | cohort trend | falling materially | revise topic, packaging, or narrative before expanding cadence |
+| **R7** | After 28-day cohort measurement | measured v | any value | replace projections with measured views/video/day and rederive capacity/economics |
+| **R8** | After measured v | measured v | below the level required for the current horizon | change the niche, improve the measured demand/conversion layer, or rebase the horizon |
 | **R9** | YPP approval | AdSense `RPM_ad` | < $7.11 | **two steps, because the band floor is not the viability line.** Below **$7.11** the 36-month timetable is unreachable at *any* cadence ≤ 75/month (2,698 videos needed): re-derive the horizon before anything else. Below **$6.24** the band itself is broken: also cut the localization set, raise price-tier keywords, and re-price the goal |
 | **R10** | YPP approval | AdSense `RPM_ad` | > $12.48 | the band's top is beaten: scale cadence aggressively — the library requirement falls **15.9%** (1,827 → 1,537), not the 40% an earlier version claimed; 40% needs $17.50 |
 | **R11** | any time | ancillary revenue share | < 5% of total after 60 episodes | `ANC-01` is not working: drop it to a monthly batch job and delete the 22% assumption from the model |

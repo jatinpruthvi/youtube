@@ -27,6 +27,9 @@ Runs the documentation and tracker checks in order and fails if any of them fail
                    replaced sigma, the v x RPM library grid, and that every
                    unmeasured input still names its retirement instrument and
                    its pre-registered rule
+  check_consistency.py
+                   cross-document tracker totals and launch-resolution claims
+                   match tracker/items.json
   selftest_goal.py
                    plants monthly-target violations in a temp copy of the docs
                    and requires check_goal.py to fail on each one, so its
@@ -46,7 +49,7 @@ import sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 CHECKS = ("check_memo.py", "check_render.py", "check_goal.py", "check_decisions.py",
-          "check_baseline.py", "selftest_goal.py", "selftest_track.py")
+          "check_baseline.py", "check_consistency.py", "selftest_goal.py", "selftest_track.py")
 
 failed = []
 for name in CHECKS:

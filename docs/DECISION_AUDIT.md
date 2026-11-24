@@ -22,7 +22,7 @@ That script is not a description of this file — it is the check this file repo
 | Source of truth | Used for |
 | :--- | :--- |
 | `IMPROVEMENT_VALUE_AT_2K.md` 1.1–1.4 constants (78% ad share, $10.50 RPM, $2.64/day of infra cost, $1,500/day of profit) | every revenue and arrival figure |
-| `tracker/items.json` (60 items, 166.5h) | every effort, count and enforcement claim |
+| `tracker/items.json` (62 items, 170.5h) | every effort, count and enforcement claim |
 | `docs/SPRINT_30_DAYS.md` gate rows | the two rates (155 and 103) the whole cadence decision rests on |
 | `git show 2f24056:docs/SPRINT_30_DAYS.md` (the pre-decision slate) | D-03's *measured* claims — the only measured numbers in the record |
 | `PPM_REVIEW.md` G5 column | the localization figures D-05 quotes |
@@ -37,7 +37,7 @@ That script is not a description of this file — it is the check this file repo
 | **D-01** | 36-month path needs v = **103** | 1,170 × 1000 ÷ (36 × 30 × 10.5) = **103.17** | ✅ valid |
 | **D-01** | 1,827 videos = **61 months** at 30/mo, **24 months** at 75/mo | 60.9 and 24.4 | ✅ valid |
 | **D-01** | $1,500/day of profit lands "month **26–32**" | simulating the ramp: month **28** at v=61, 23 at v=80, 34 at v=50, **41** at v=40 | ⚠️ **defect — band understated the downside; now "month 23–41, centre 28"** |
-| **D-02** | `VAL-01` is **6h**, against T06's **31.5h** | VAL-01 = 6.0h; T06 was 31.5h and is 36.0h now (SHR-01, REN-10 added) | ⚠️ **defect — stale figure; now dated "31.5h when decided, 36.0h now"** |
+| **D-02** | `VAL-01` is the first real launch episode through the factory | It is 6.0h and no longer gates or bypasses render/orchestration implementation | ✅ valid |
 | **D-03** | **21 of 30** titles carried the format label | 21 contain it, **20 begin with it** (`EP18` uses it mid-title) | ⚠️ **defect — imprecise; wording corrected in both docs** |
 | **D-03** | **24 distinct pillars**, largest 3, top-3 = 8, longest title 58 chars | 24, 3, 8, 58 — all exact | ✅ valid |
 | **D-04** | 51 → 56 items, 142.0h → 157.5h | five items sum to **15.5h**, 142.0 + 15.5 = 157.5 | ✅ valid |

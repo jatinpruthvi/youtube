@@ -6,13 +6,22 @@
 
 ## 1. Architectural Principles & Design Constraints
 
+The implementation improvements and AI/automation responsibility split are specified in
+[`ARCHITECTURE_IMPROVEMENTS.md`](ARCHITECTURE_IMPROVEMENTS.md).
+
+The implementation sequence, replay contract, `VAL-01` dependency correction, and AI execution template are specified in
+[`IMPLEMENTATION_READINESS.md`](IMPLEMENTATION_READINESS.md).
+
+Cost ceilings and unit-cost controls are specified in
+[`COST_OPTIMIZATION.md`](COST_OPTIMIZATION.md).
+
 Every architectural decision is governed by five non-negotiable constraints:
 
 | Constraint | Engineering Implication |
 | :--- | :--- |
 | **~$100/mo Infrastructure Budget** | Zero SaaS bloat. Free public economic APIs, self-hosted GPU TTS (MeloTTS/Kokoro) + WhisperX forced alignment, prompt-cached calls to the current front-tier model through a provider-agnostic adapter (one alternate provider as fallback), hardware NVENC encoding, and a CPU control plane plus on-demand RTX 4090 budget. |
 | **100% Fact-Grounded Data** | LLMs **never** generate statistics from memory. Every number originates from versioned API snapshots (World Bank, FRED, OECD, IMF, OWID, DBnomics, UN Data) stored in the local SQLite warehouse and audited via deterministic post-script verification. |
-| **4K 60FPS Documentary Grade** *(launch preset 1440p60, `DECISIONS.md` D-12; 4K60 is the post-YPP upgrade)* | Naive single-threaded Manim Cairo renders take 10–20 hours per 15-min 4K60 video. Solved via **atomic scene DAG parallelism**, **static texture caching**, **OpenGL/Skia GPU rasterization**, and **zero-temp-PNG NVENC streaming**. |
+| **1440p60 Documentary Grade** *(launch preset, `DECISIONS.md` D-12; 4K60 is a separately measured post-YPP upgrade)* | Resolve the template/scene graph independently of output resolution. Use atomic scene DAG parallelism, static texture caching, OpenGL/Skia GPU rasterization, and direct NVENC streaming. |
 | **High-Retention & Anti-Demonetization** | Built to defeat YouTube's "Repetitious / Mass-Produced Content" filters: deep causal narration, visual template entropy enforcement (new visual every 35–50s), human 3-minute QA gate, and rich sound design. |
 | **Solo Developer Maintainability** | Monolithic Python 3.12 repository, SQLite state store (PostgreSQL when scaling; no heavy K8s/microservices), idempotent resumable pipeline stages, and Telegram/Discord mobile notifications for one-tap approval. |
 

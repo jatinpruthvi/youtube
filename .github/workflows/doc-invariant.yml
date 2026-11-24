@@ -38,3 +38,6 @@ jobs:
 
       - name: Validate the tracker graph
         run: python3 scripts/track.py validate
+
+      - name: Check cross-document consistency
+        run: python3 scripts/check_consistency.py

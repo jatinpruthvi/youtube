@@ -11,7 +11,7 @@ Universal, model-agnostic operating instructions for **all AI coding models and 
 * **Mission:** Build an AI-powered, automated data documentary factory generating **$1,500–$2,000/day ($45k–$60k/month) of profit** from pure platform ad revenue (YouTube AdSense + Facebook In-Stream) within 24–36 months.
 * **Budget Cap:** **~$100/month** — Hetzner CPX41 control plane always on plus an on-demand RTX 4090 worker for ~2 h/day (single-GPU VPS as fallback) — zero unnecessary paid SaaS, prompt-cached front-tier LLM script generation through a provider-agnostic adapter with a registry fallback (`docs/DECISIONS.md` D-07), free public economic APIs, self-hosted MeloTTS/Kokoro.
 * **Fact Grounding:** **0% hallucination tolerance.** Every number spoken or rendered must trace back to a frozen snapshot row in the SQLite warehouse, fetched from World Bank, FRED, OECD, IMF, OWID, DBnomics or UN Data through the FastMCP server, and carried by a verified `DataBrief` Fact ID (`F001..Fxxx`).
-* **Output Standard:** 10–18 min · **1440p60 at launch** (`1080p30` on the `VAL-01` slice; **4K `3840×2160` 60FPS** is `REN-10`, gated behind YPP — `DECISIONS.md` D-12) · `-14 LUFS` · English-first + automated **de/fr/ja** metadata & SRTs (the revenue set, priced per market in `PPM_REVIEW.md` sec.0) + **es-419/pt-BR/hi** captions only (reach, no RPM claim) + Facebook In-Stream cut.
+* **Output Standard:** 10–18 min · **1440p60 at launch** (`1080p30` fallback; **4K `3840×2160` 60FPS** is `REN-10`, gated behind YPP — `DECISIONS.md` D-12) · `-14 LUFS` · English-first + automated **de/fr/ja** metadata & SRTs (the revenue set, priced per market in `PPM_REVIEW.md` sec.0) + **es-419/pt-BR/hi** captions only (reach, no RPM claim) + eligibility-gated Facebook In-Stream cut.
 
 ---
 
@@ -22,7 +22,11 @@ Always consult these before planning or writing code:
 | File | Role |
 | :--- | :--- |
 | `docs/ARCHITECTURE.md` | Full system architecture, 10 module specs, 4K60 NVENC strategy, ~$100/mo unit economics (CPX41 + on-demand 4090) |
-| `docs/DECISIONS.md` | Decision record D-01…D-18: cadence ramp, falsification gate (`VAL-01`), query-shaped titles, tracker completeness, captions-before-metadata, Facebook eligibility gate, provider-agnostic LLM layer, contracts/fixtures, anti-demonetization strategy, views-per-video levers, single-cluster concentration, 1440p60-at-launch, audio fact-audit, monetization/calendar constraints |
+| `docs/ARCHITECTURE_IMPROVEMENTS.md` | 20 architecture improvements and the AI/automation responsibility split |
+| `docs/IMPLEMENTATION_READINESS.md` | AI execution playbook, implementation sequencing, replay requirements, cost gates, and first-episode completion criteria |
+| `docs/AI_AUTOMATION_PLAYBOOK.md` | 20 view/profit improvements and their implementation loop |
+| `docs/COST_OPTIMIZATION.md` | 20 cost reductions and measured cost-saving controls |
+| `docs/DECISIONS.md` | Decision record D-01…D-18: capacity-led cadence, launch episode, query-shaped titles, tracker completeness, captions-before-metadata, Facebook eligibility gate, provider-neutral LLM layer, contracts/fixtures, provenance, views-per-video levers, concentrated editorial slate, 1440p60-at-launch, audio fact-audit, monetization constraints |
 | `docs/BASELINE.md` | Baseline register: every input tiered (measured / derived-with-band / unmeasured), the banded RPM and GPU corrections, the `v × RPM` library grid, the YPP and limited-ads findings, and the 20 pre-registered decision rules |
 | `docs/DECISION_AUDIT.md` | Per-decision audit: every figure in `DECISIONS.md` re-derived, plus the unmeasured inputs. `python3 scripts/check_decisions.py` is the check it reports on |
 | `docs/TRACKER.md` | Human-readable 62-item Master Track List across 12 tracks and 4 phases |

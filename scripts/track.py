@@ -30,10 +30,10 @@ VALID_STATUSES = ("todo", "in_progress", "done", "blocked")
 VALID_PRIORITIES = ("P0", "P1", "P2")
 
 PHASE_LABELS = {
-    "P0_MVP_DAYS_1_7": "Phase 0: Pipeline MVP (Days 1–10)",
-    "P1_SPRINT_DAYS_8_30": "Phase 1: Launch Sprint, 30 episodes (Days 11–33)",
-    "P2_OPT_MONTHS_2_6": "Phase 2: Monetization & Retention Optimization (Months 2–6)",
-    "P3_SCALE_MONTHS_7_36": "Phase 3: Multi-Channel Network Scale (Months 7–36)",
+    "P0_MVP_DAYS_1_7": "Phase 0: Core Factory",
+    "P1_SPRINT_DAYS_8_30": "Phase 1: Publishing and Early Operations",
+    "P2_OPT_MONTHS_2_6": "Phase 2: Monetization and Retention",
+    "P3_SCALE_MONTHS_7_36": "Phase 3: Scale and Network",
 }
 
 STATUS_BOX = {
