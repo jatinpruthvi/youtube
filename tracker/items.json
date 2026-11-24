@@ -701,15 +701,15 @@
     {
       "id": "PUB-04",
       "track": "T09",
-      "phase": "P1_SPRINT_DAYS_8_30",
-      "priority": "P1",
+      "phase": "P0_MVP_DAYS_1_7",
+      "priority": "P0",
       "status": "todo",
       "effort_hours": 2.5,
-      "title": "Build session bridging: playlist/series slots, end-screen bridge to one named next video, pinned comment",
+      "title": "Build subscriber-conversion engineering: series playlists, named-next end screens, pinned 'start here'",
       "dependencies": [
         "PUB-01"
       ],
-      "acceptance_criteria": "Every upload lands in a pillar playlist, its end screen points at one named next episode rather than a subscribe prompt, and the pinned comment carries the chapter list plus the dataset link. Session-time and views-per-viewer from Browse/Suggested are logged in SQLite so the effect is measurable rather than assumed; session duration is the channel-level signal that decides the next upload's impressions (VIEW_OPTIMIZATION sections 5 and 6)."
+      "acceptance_criteria": "Every upload lands in a series playlist ordered by the intended viewing sequence, its end screen names one next episode rather than a subscribe prompt, and the pinned comment carries the chapter list, the dataset link and a 'start here' pointer. Subscribers gained per 1,000 views and per episode are logged in SQLite, ranked, and reviewed weekly. Subscribers are the YPP gate (1,000 at a 1% subscribe rate implies ~3,333 views/video, BASELINE.md section 8), so conversion is instrumented from EP01 and is a P0 rather than a Days-18-25 nicety."
     },
     {
       "id": "ORC-01",
@@ -820,7 +820,7 @@
       "dependencies": [
         "PUB-01"
       ],
-      "acceptance_criteria": "Daily cron ingests video-level performance and geo RPM splits (US/UK/CA/AU share) into SQLite."
+      "acceptance_criteria": "Daily cron ingests video-level performance and geo RPM splits (US/UK/CA/AU share) into SQLite. Also records subscribers gained per 1,000 views and per episode, and the estimated-revenue-per-1,000-views figure needed to detect limited ads (BASELINE.md section 8, rule R15)."
     },
     {
       "id": "ANA-02",

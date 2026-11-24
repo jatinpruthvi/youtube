@@ -1,6 +1,6 @@
 # 30 Videos in 30 Days — Production & Launch Tracker
 
-> **Rule:** **30 episodes in 33 days, all inside one cluster** — 1/day from Day 4, after the Day 1–3 demand research and falsification slice (`VAL-01`). One flagship English channel, 10–18 min fact-grounded documentaries, **1080p30 on the slice and 1440p60 from `EP01`** (4K60 is a post-YPP upgrade, [DECISIONS.md](DECISIONS.md) D-12). Automated de/fr/ja captions & localized metadata (the revenue set), es-419/pt-BR/hi captions (reach), and Facebook cuts **only once the Page is confirmed eligible** (D-06).
+> **Rule:** **30 episodes, all inside one cluster, on a calendar set by your available hours** (`DECISIONS.md` D-16) — the day-1–3 demand research and falsification slice (`VAL-01`) first, then one episode per slot. The table below replaces the old fixed "33 days", which no calendar could hold. One flagship English channel, 10–18 min fact-grounded documentaries, **1080p30 on the slice and 1440p60 from `EP01`** (4K60 is a post-YPP upgrade, [DECISIONS.md](DECISIONS.md) D-12). Automated de/fr/ja captions & localized metadata (the revenue set), es-419/pt-BR/hi captions (reach), and Facebook cuts **only once the Page is confirmed eligible** (D-06).
 
 ---
 
@@ -65,6 +65,21 @@ to this number: 22.22 views/video/day needs 5,015 videos, 61 needs 1,827, 155 ne
 relationship into a decision; a dashboard metric turns it into an observation taken after 40 hours of work that cannot be un-spent.
 
 ---
+
+## The calendar is a function of your hours
+
+The build is **170.5h** and review is **2–4h per episode** (`BASELINE.md` §8). 30 episodes therefore cost **230–290h**, and the
+sprint length is that number divided by the hours you actually have:
+
+| Capacity | 30 episodes in | Episodes per week | Sanity check |
+| :--- | :---: | :---: | :--- |
+| Side project, 3h/day | **77–97 days** | 2–3 | the honest default if this is not your job yet |
+| Part-time, 5h/day | **46–58 days** | 4–5 | the profile `D-01`'s cadence ramp assumes |
+| Full-time, 8h/day | **29–36 days** | 6–7 | the old "33 days" was only ever true here |
+| Full-time + one hire from Day 30 | **29 days** | 7 | the hire is a reviewer, not a builder |
+
+Record the profile in `BASELINE.md`'s rule R19 on Day 1 and let it set every later date. A calendar that ignores this table is the
+same error as a revenue model that ignores `v`.
 
 ## Where the Phase-0 overflow goes
 

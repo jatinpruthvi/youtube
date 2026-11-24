@@ -8,7 +8,7 @@ here, once, with the arithmetic that decided them.
 
 ---
 
-## Summary of the fifteen decisions
+## Summary of the seventeen decisions
 
 | ID | Decision | Consequence in the repo | Evidence class |
 | :--- | :--- | :--- | :--- |
@@ -27,6 +27,8 @@ here, once, with the arithmetic that decided them.
 | **D-13** | **Every input is tiered in a register, and the decisions are pre-registered** | `BASELINE.md` added; `RPM_ad` named; GPU metered; σ retired; rules R1–R12 locked | nine inputs were guesses, and a guess plus a late decision is how a plan rationalises itself |
 | **D-14** | **The 0% hallucination claim covers the audio, not just the script** | `AUD-06` added: ASR back-check of every spoken numeral against the Fact IDs | `SCR-03` audits text; a TTS engine can still say the wrong number on screen |
 | **D-15** | **Monetization and the operator's calendar are the real constraints; the back catalogue is free inventory** | `ANA-06` added; rules R13–R18 locked | YPP needs **v ≈ 111** at a 1% sub conversion — 1.8x the plan's 61 — and a 40% limited-ad rate needs 1.7x the library |
+| **D-16** | **The sprint calendar is a function of available hours, and subscriber conversion is P0** | `SPRINT_30_DAYS.md` gains a capacity table (77–97 / 46–58 / 29–36 days); `PUB-04` promoted to P0 | 230–290h of work cannot fit a fixed 33-day window at any plausible capacity |
+| **D-17** | **Cadence is measurement-gated, and the commodity-versus-editorial bet is chosen explicitly** | `D-01`'s time-based ramp becomes conditional on R9/R10/R15/R20 | the plan assumes mass-production cost *and* editorial RPM; that pair cannot both be true |
 
 Total plan effort moves from 142.0h to **170.5h** (0/62 items). The 22.5h increase buys one falsification episode, one test harness,
 three levers that were priced but never scheduled, and the three views-per-video levers in D-10.
@@ -35,7 +37,7 @@ three levers that were priced but never scheduled, and the three views-per-video
 
 ## D-01 — Cadence ramps to 75/month; 1/day is a proof sprint, not the revenue path
 
-**Decision.** Publish 1/day for the first 30 days as a *proof* sprint (30 episodes, YPP progress, first retention baseline). Then ramp: 30/month through month 3, 45/month through month 6, 60/month through month 9, and 75/month from month 10, adding one approval/QA hire at roughly $700 of labour cost per month at the ramp point.
+**Decision.** Publish the 30-episode proof sprint on a calendar set by available hours (`D-16`), then ramp **only when a measurement says to**: 30/month until the YPP readings exist, 45–60/month after a positive `RPM_ad` and limited-ad signal (rule R20), 75/month only after that signal holds for 90 days — adding one approval/QA hire at roughly $700 of labour cost per month at each step. **Originally this decision ramped on a calendar; `D-17` replaced the calendar with a trigger**, because a time-based ramp scales a strategy nobody has validated.
 
 **Why.** `SPRINT_30_DAYS.md` already derives the gate honestly: holding $1,500/day of profit at 1/day you must sustain **155** views/video/day for a 24-month path or **103** for a 36-month path, against the plan's own assumption of **61**. Believing you will beat the plan's per-video view rate by 1.7–2.5x is not a plan; it is a hope. Cadence is the variable the operator controls, and the memo already prices it: 1,827 videos is 61 months at 30/month and 24 months at 75/month.
 
@@ -159,6 +161,7 @@ automated, at roughly $700 of labour cost per month (an assumption, not a quote)
 | `TOP-04`'s refusal rule in the editorial queue; the cohort-trend gate in `SPRINT_30_DAYS.md` | D-10 |
 | `scripts/check_baseline.py` — tiers, bands, retirement instruments and rules R1–R18 | D-13 |
 | `AUD-06` blocking every publish; `ANA-06` on the monthly cron; rules R13–R18 in `BASELINE.md` | D-14, D-15 |
+| The capacity table in `SPRINT_30_DAYS.md`; `PUB-04` at P0; rules R19–R20 | D-16, D-17 |
 | `python3 scripts/track.py validate` and `python3 scripts/check_docs.py` | D-04 and every figure in this file |
 
 ---
@@ -326,3 +329,54 @@ does not improve 5% relative, and seed a second channel by month 6 so the whole 
 **Consequence.** 60 → 62 items, 166.5h → 170.5h. Six new pre-registered rules. The next decision the operator faces — scale or
 stop at Day 45 — is unchanged, but the readings that drive it now include subscribers per view and the limited-ad share rather
 than views alone.
+
+---
+
+## D-16 — The calendar is a function of the operator's hours
+
+**Decision.** The sprint is no longer "30 episodes in 33 days". It is 30 episodes on a calendar derived from available hours, using
+one of three profiles, recorded on Day 1 (rule **R19**):
+
+| Capacity | 30 episodes in | Episodes per week |
+| :--- | :---: | :---: |
+| 3h/day (side project) | **77–97 days** | 2–3 |
+| 5h/day (part-time) | **46–58 days** | 4–5 |
+| 8h/day (full-time) | **29–36 days** | 6–7 |
+
+Subscriber conversion is simultaneously promoted to **P0**: `PUB-04` moves from the Days 18–25 window to Day 4 work, and `ANA-01`
+now records subscribers per 1,000 views per episode.
+
+**Why.** The build is 170.5h and review is 2–4h per episode, so 30 episodes cost **230–290h**. The old 33-day window implied
+7–8.8h/day *before* anything goes wrong, and it was only ever true for a full-time operator who also happened to have no review
+overruns. Meanwhile the finding that forced the second change: at a 1% subscribe rate the YPP subscriber gate needs ~3,333
+views/video, i.e. the same v ≈ 111 as the 36-month path. Conversion is the gate, and it is the one term the operator controls —
+so the session bridge, the series order and the "start here" pointer stop being polish and become P0 infrastructure.
+
+**Consequence.** Every later date in `SPRINT_30_DAYS.md` is now derived rather than asserted. The `PUB-04` promotion costs nothing —
+2.5h, moved earlier — and it is the only item that can move subscribers per view.
+
+**Rejected.** Publishing the 33-day plan and quietly slipping. A calendar that cannot be met teaches the operator to skip the
+approval gate, which is the one gate protecting the channel asset.
+
+---
+
+## D-17 — Cadence is measurement-gated, and the strategy bet is named
+
+**Decision.** Two changes that belong together.
+
+1. **No time-based cadence ramp.** 30 videos/month is a **ceiling** until the YPP readings exist. Above that, the numbers come from
+   R20: `RPM_ad` ≥ $8.24 and limited-ad exposure ≤ 20% unlocks 60–75/month; below $6.24 or above 30% exposure freezes cadence at 30
+   and redirects the marginal hour to editorial quality.
+2. **The strategy is named, not assumed.** The plan currently buys the **cost base of commodity production** ($1.17–1.67 of cost per
+   episode, templated visuals, TTS) and the **RPM of editorial finance content** (`RPM_ad` $10.50). Those are different businesses.
+   The register now forces the choice at the YPP reading rather than leaving it implicit for 24 months.
+
+**Why.** This is the deepest flaw the audit found and the hardest to see: every individual number is defensible, and the *pair* is
+not. Commodity content earns commodity RPM; editorial finance content earns $8–$16 *because* it carries editorial labour the model
+does not budget. Rule R20 makes the pair falsifiable within one quarter of monetization instead of at month 24.
+
+**Consequence.** `D-01`'s 45/60/75 ramp, `D-12`'s 4K60 upgrade and the hire schedule are all now conditional on a reading rather
+than a date. That is deliberate: a plan that cannot be wrong early costs three years to discover it was wrong.
+
+**Rejected.** Choosing the strategy now, on paper. There is no evidence in this repository for either side of it — the choice belongs
+to the first month of AdSense data, and R20 is the smallest possible test of it.

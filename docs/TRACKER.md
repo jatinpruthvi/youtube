@@ -20,8 +20,8 @@ python3 scripts/track.py set INF-01 done  # Mark item done & auto-sync this Mark
 ### By Phase
 | Phase | Items Done | Total Effort |
 | :--- | :---: | :---: |
-| **Phase 0: Pipeline MVP (Days 1–10)** | 0 / 37 | 105.0h |
-| **Phase 1: Launch Sprint, 30 episodes (Days 11–33)** | 0 / 17 | 40.5h |
+| **Phase 0: Pipeline MVP (Days 1–10)** | 0 / 38 | 107.5h |
+| **Phase 1: Launch Sprint, 30 episodes (Days 11–33)** | 0 / 16 | 38.0h |
 | **Phase 2: Monetization & Retention Optimization (Months 2–6)** | 0 / 6 | 16.0h |
 | **Phase 3: Multi-Channel Network Scale (Months 7–36)** | 0 / 2 | 9.0h |
 
@@ -234,7 +234,7 @@ python3 scripts/track.py set INF-01 done  # Mark item done & auto-sync this Mark
 | ⬜ Todo | `PUB-02` | `P0` | `P1` | 3h | `PUB-01`, `AUD-03` | **Build Automated Metadata & SRT Subtitle Localizer (German, French, Japanese revenue set)**<br/><sub>✓ Translates title and description into de, fr and ja and uploads accurate time-coded SRTs for those three via YouTube localizations and captions APIs; ships es-419/pt-BR/hi captions only (reach, no revenue claim) and no ar. A market only receives localized metadata once captions in that language ship in the same commit - a German title over English audio is a negative-EV bounce (DECISIONS.md D-05). The language list is config (config/languages.json), not code.</sub> |
 | ⬜ Todo | `PUB-03` | `P1` | `P1` | 3.5h | `REN-09`, `AUD-03` | **Build Facebook In-Stream Cut Generator (3s visual hook + burned captions) & Graph API Uploader**<br/><sub>✓ Eligibility is confirmed on the actual Page before any render code is written (DECISIONS.md D-06); once eligible, renders an FB-ready MP4 with high-contrast burned captions and uploads it on a schedule. If the program is not open to the Page, the item is closed as not-applicable and the Facebook revenue line is dropped from the model rather than assumed.</sub> |
 | ⬜ Todo | `ANC-01` | `P1` | `P2` | 3.5h | `PUB-01` | **Build the ancillary revenue lane: per-episode dataset page, SVG chart exports and an embeddable feed**<br/><sub>✓ Every episode publishes a dataset page (CSV, chart SVGs, methodology note, source citation) on a static site plus an embeddable feed, and external-traffic watch-time share is logged in SQLite. Profit Multiplier 5 is the $330-$440/day ancillary line at the goal, so this lane is instrumented from the first episode instead of assumed.</sub> |
-| ⬜ Todo | `PUB-04` | `P1` | `P1` | 2.5h | `PUB-01` | **Build session bridging: playlist/series slots, end-screen bridge to one named next video, pinned comment**<br/><sub>✓ Every upload lands in a pillar playlist, its end screen points at one named next episode rather than a subscribe prompt, and the pinned comment carries the chapter list plus the dataset link. Session-time and views-per-viewer from Browse/Suggested are logged in SQLite so the effect is measurable rather than assumed; session duration is the channel-level signal that decides the next upload's impressions (VIEW_OPTIMIZATION sections 5 and 6).</sub> |
+| ⬜ Todo | `PUB-04` | `P0` | `P0` | 2.5h | `PUB-01` | **Build subscriber-conversion engineering: series playlists, named-next end screens, pinned 'start here'**<br/><sub>✓ Every upload lands in a series playlist ordered by the intended viewing sequence, its end screen names one next episode rather than a subscribe prompt, and the pinned comment carries the chapter list, the dataset link and a 'start here' pointer. Subscribers gained per 1,000 views and per episode are logged in SQLite, ranked, and reviewed weekly. Subscribers are the YPP gate (1,000 at a 1% subscribe rate implies ~3,333 views/video, BASELINE.md section 8), so conversion is instrumented from EP01 and is a P0 rather than a Days-18-25 nicety.</sub> |
 
 <details>
 <summary>Checklist View — T09 (0/5)</summary>
@@ -243,7 +243,7 @@ python3 scripts/track.py set INF-01 done  # Mark item done & auto-sync this Mark
 - [ ] **`PUB-02`** (P0, 3h) — Build Automated Metadata & SRT Subtitle Localizer (German, French, Japanese revenue set)
 - [ ] **`PUB-03`** (P1, 3.5h) — Build Facebook In-Stream Cut Generator (3s visual hook + burned captions) & Graph API Uploader
 - [ ] **`ANC-01`** (P1, 3.5h) — Build the ancillary revenue lane: per-episode dataset page, SVG chart exports and an embeddable feed
-- [ ] **`PUB-04`** (P1, 2.5h) — Build session bridging: playlist/series slots, end-screen bridge to one named next video, pinned comment
+- [ ] **`PUB-04`** (P0, 2.5h) — Build subscriber-conversion engineering: series playlists, named-next end screens, pinned 'start here'
 
 </details>
 
@@ -292,7 +292,7 @@ python3 scripts/track.py set INF-01 done  # Mark item done & auto-sync this Mark
 
 | Status | ID | Priority | Phase | Est. | Dependencies | Item & Acceptance Criteria |
 | :---: | :--- | :---: | :--- | :---: | :--- | :--- |
-| ⬜ Todo | `ANA-01` | `P1` | `P1` | 3h | `PUB-01` | **Build YouTube Analytics & Revenue daily ETL into SQLite (CTR, AVD, RPM, retention curves, geo)**<br/><sub>✓ Daily cron ingests video-level performance and geo RPM splits (US/UK/CA/AU share) into SQLite.</sub> |
+| ⬜ Todo | `ANA-01` | `P1` | `P1` | 3h | `PUB-01` | **Build YouTube Analytics & Revenue daily ETL into SQLite (CTR, AVD, RPM, retention curves, geo)**<br/><sub>✓ Daily cron ingests video-level performance and geo RPM splits (US/UK/CA/AU share) into SQLite. Also records subscribers gained per 1,000 views and per episode, and the estimated-revenue-per-1,000-views figure needed to detect limited ads (BASELINE.md section 8, rule R15).</sub> |
 | ⬜ Todo | `ANA-02` | `P1` | `P2` | 3h | `ANA-01`, `TOP-03` | **Build Retention Drop-Off Diagnostic & RPM-per-Topic Feedback Loop**<br/><sub>✓ Weekly Telegram report correlates >3% retention drops to exact scene templates and updates topic scorer weights.</sub> |
 | ⬜ Todo | `ANA-03` | `P2` | `P3` | 4h | `ANA-01`, `ORC-01` | **Build Automated Annual Dataset Refresh Trigger ('2027/2028 Edition' re-render pipeline)**<br/><sub>✓ Detects new World Bank / OECD annual releases and queues refreshed sequel episodes for top-earning evergreen videos.</sub> |
 | ⬜ Todo | `ANA-04` | `P2` | `P3` | 5h | `ANA-02`, `CMP-03` | **Add Multi-Channel Config Isolation & Multi-Language Audio Dubbing (YouTube MLA for de/fr/ja)**<br/><sub>✓ Single GPU pipeline serves 3+ niche channels via channel_id configs and optional de/fr/ja audio tracks, priced at the PPM_REVIEW.md sec.0 revenue-set blend.</sub> |

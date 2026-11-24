@@ -34,6 +34,7 @@ DOC = read("docs/BASELINE.md")
 DECISIONS = read("docs/DECISIONS.md")
 AUDIT = read("docs/DECISION_AUDIT.md")
 ARCH = read("docs/ARCHITECTURE.md")
+SPRINT = read("docs/SPRINT_30_DAYS.md")
 
 ITEMS = json.load(open("tracker/items.json", encoding="utf-8"))["items"]
 AD_SHARE, RPM_AD, RPM_TOTAL_BAND = 0.78, 10.5, (8.0, 16.0)
@@ -190,6 +191,38 @@ for item in ("AUD-06", "ANA-06"):
     ck.ck(f"{item} exists in the tracker", item in {i["id"] for i in ITEMS}, item)
 ck.ck("AUD-06 blocks publish on a mismatch",
       "fails the episode" in next(i for i in ITEMS if i["id"] == "AUD-06")["acceptance_criteria"], "no blocker")
+
+# ---- 9. plan consequences: capacity, promotion, gated cadence ------------
+for rid in ("R19", "R20"):
+    ck.ck(f"rule {rid} exists", any(rid in " ".join(r) for r in rule_rows), rid)
+ck.ck("R19 binds the calendar to a capacity profile",
+      any("R19" in " ".join(r) and "hours per day" in " ".join(r) for r in rule_rows), "R19 missing")
+ck.ck("R20 gates cadence on both RPM and limited ads",
+      any("R20" in " ".join(r) and "RPM_ad" in " ".join(r) and "exposure" in " ".join(r) for r in rule_rows), "R20 missing")
+ck.ck("R15's instrument admits the API gap",
+      "does not return a limited-ads flag" in DOC, "R15 still assumes an instrument that does not exist")
+ck.ck("R18 is a restore drill, not a second channel",
+      "recovery drill" in DOC and "INF-04" in DOC, "R18 unchanged")
+
+BUILD, PER_EP = 170.5, (2, 4)
+for cap, lo, hi in ((3, 77, 97), (5, 46, 58), (8, 29, 36)):
+    want_lo, want_hi = (BUILD + 30 * PER_EP[0]) / cap, (BUILD + 30 * PER_EP[1]) / cap
+    ck.ck(f"capacity {cap}h/day -> {lo}-{hi} days",
+          abs(want_lo - lo) < 1 and abs(want_hi - hi) < 1, f"{want_lo:.0f}-{want_hi:.0f}")
+for band in ("**77–97 days**", "**46–58 days**", "**29–36 days**"):
+    ck.ck(f"sprint shows {band}", band in SPRINT, band)
+ck.ck("sprint no longer promises a fixed 33-day window",
+      "30 episodes in 33 days" not in SPRINT, "stale 33-day claim")
+by_id = {i["id"]: i for i in ITEMS}
+ck.ck("PUB-04 promotes subscriber conversion to P0",
+      by_id["PUB-04"]["priority"] == "P0" and by_id["PUB-04"]["phase"] == "P0_MVP_DAYS_1_7",
+      f'{by_id["PUB-04"]["priority"]} {by_id["PUB-04"]["phase"]}')
+ck.ck("ANA-01 records subscribers per 1,000 views",
+      "subscribers gained per 1,000 views" in by_id["ANA-01"]["acceptance_criteria"], "not instrumented")
+ck.ck("D-01 no longer ramps on a calendar",
+      "ramped on a calendar; `D-17` replaced the calendar with a trigger" in DECISIONS, "D-01 still time-based")
+ck.ck("the strategy bet is named in the record",
+      "commodity production" in DECISIONS and "editorial finance" in DECISIONS, "D-17 missing")
 
 ck.ck("README links the baseline register", "BASELINE.md" in read("README.md"), "not linked")
 ck.ck("AGENTS links the baseline register", "BASELINE.md" in read("AGENTS.md"), "not linked")
