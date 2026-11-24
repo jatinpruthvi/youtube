@@ -1,10 +1,10 @@
 # 30 Videos in 30 Days — Production & Launch Tracker
 
-> **Rule:** **30 episodes, all inside one cluster, on a calendar set by your available hours** (`DECISIONS.md` D-16) — the day-1–3 demand research and falsification slice (`VAL-01`) first, then one episode per slot. The table below replaces the old fixed "33 days", which no calendar could hold. One flagship English channel, 10–18 min fact-grounded documentaries, **1080p30 on the slice and 1440p60 from `EP01`** (4K60 is a post-YPP upgrade, [DECISIONS.md](DECISIONS.md) D-12). Automated de/fr/ja captions & localized metadata (the revenue set), es-419/pt-BR/hi captions (reach), and Facebook cuts **only once the Page is confirmed eligible** (D-06).
+> **Rule:** build a concentrated editorial slate, not a fixed production quota. The first and later episodes use the complete 1440p60 factory. Publishing cadence is derived from measured build, QA, approval, and platform throughput. 1080p30 is a fallback and 4K60 is a post-YPP upgrade ([DECISIONS.md](DECISIONS.md) D-12). Facebook output remains eligibility-gated ([DECISIONS.md](DECISIONS.md) D-06).
 
 ---
 
-> **Sequencing is decided, not open.** [`DECISIONS.md`](DECISIONS.md) fixes the cadence ramp (D-01), the falsification gate (D-02), the slate shape (D-03), the captions-before-metadata rule (D-05) and the Facebook eligibility gate (D-06). Value precedence for `THM-01`, `TOP-03`, `PUB-02`, `PUB-03` and `CMP-04` remains in [`IMPROVEMENT_VALUE_AT_2K.md`](IMPROVEMENT_VALUE_AT_2K.md) §7; Phase 0 is 93.0h of work, which is why it is no longer compressed into five days.
+> **Sequencing is decided, not open.** [`DECISIONS.md`](DECISIONS.md) fixes capacity-led publishing (D-01), the real first launch episode (D-02), the concentrated editorial slate (D-11), captions-before-metadata (D-05), and the Facebook eligibility gate (D-06). The tracker is the source of truth for implementation dependencies.
 
 ## ✅ Video-30 views/video/day gate — thresholds derived
 
@@ -66,45 +66,31 @@ relationship into a decision; a dashboard metric turns it into an observation ta
 
 ---
 
-## The calendar is a function of your hours
+## Capacity-led production
 
-The build is **170.5h** and review is **2–4h per episode** (`BASELINE.md` §8). 30 episodes therefore cost **230–290h**, and the
-sprint length is that number divided by the hours you actually have:
+Publishing capacity is the measured minimum of:
 
-| Capacity | 30 episodes in | Episodes per week | Sanity check |
-| :--- | :---: | :---: | :--- |
-| Side project, 3h/day | **77–97 days** | 2–3 | the honest default if this is not your job yet |
-| Part-time, 5h/day | **46–58 days** | 4–5 | the profile `D-01`'s cadence ramp assumes |
-| Full-time, 8h/day | **29–36 days** | 6–7 | the old "33 days" was only ever true here |
-| Full-time + one hire from Day 30 | **29 days** | 7 | the hire is a reviewer, not a builder |
+1. topic/data readiness,
+2. end-to-end build time,
+3. render queue capacity,
+4. QA and fact-audit time,
+5. operator review time,
+6. platform quota and approval throughput.
 
-Record the profile in `BASELINE.md`'s rule R19 on Day 1 and let it set every later date. A calendar that ignores this table is the
-same error as a revenue model that ignores `v`.
+The schedule is recorded as episodes/week, production hours/week, review hours/week, and median cost/episode. A fixed output
+count is never used to justify more work. The next item is expanded only if measured quality and policy health remain stable.
 
-## Where the Phase-0 overflow goes
+## Execution sequence
 
-Phase 0 is 101.0h of work across 35 items, and no calendar makes that fit Days 1–10 alone. The deferral order is fixed rather than
-improvised: `REN-03`–`REN-08` (templates) slide into the Days 18–25 window because the static path in `VAL-01` already produces
-publishable episodes; `DAT-04`, `DAT-05`, `REN-07`, `REN-08` and `TOP-03` are P1 and are the last to be picked up; and nothing in
-T01/T02/T04/T05 (`INF-*`, `DAT-01`/`02`/`06`/`07`/`09`, `SCR-*`, `AUD-*`) is deferrable, because a later start there moves every
-episode rather than one.
-
-## Execution Rhythm (How a Solo Dev Hits 30-in-30 Without Burnout)
-
-| Window | Primary Focus | Output Target |
+| Phase | Primary work | Exit condition |
 | :--- | :--- | :--- |
-| **Days 1–3 (Falsification slice)** | `VAL-01`: one episode assembled by hand — hand-authored `DataBrief` (1 indicator, ~40 countries), single static-slide template, 1080p30, TTS + -14 LUFS master, `QAG-01` QC, `THM-01` thumbnails. Publish it and start the 14-day clock. | 1 published slice; the format's first retention evidence exists |
-| **Days 4–10 (Factory build + daily publish)** | `INF-01`→`INF-03`, `DAT-01`/`DAT-02`/`DAT-09`, `SCR-01`→`SCR-03`, `AUD-01`/`AUD-03`/`AUD-05`, `REN-01`/`REN-09`, `PUB-01`. Publish 1/day on the 1080p30 static path meanwhile. | `EP01`–`EP07` live; the pipeline runs end to end unattended |
-| **Days 11–17 (4K60 engine + the go/no-go)** | `REN-02` core engine, templates 1–4, `ORC-01` resumable DAG, `QAG-02` approval bot. **Day 17: read `VAL-01` at 14 days** — ≥20 views/video/day keeps the 4K60 investment, <10 stops the sprint and re-cuts the slate. | `EP08`–`EP14` live; 4K60 code either justified or stopped by evidence |
-| **Days 18–25 (Surfaces + measurement)** | Templates 5–8, `PUB-04` session bridging, `SHR-01` Shorts extractor, `PUB-02` captions-first localization (never metadata without captions, D-05), `ANA-01` analytics ETL, `ORC-02` cron. 1440p60 throughout — 4K60 is deferred (D-12). | `EP15`–`EP22` live; first real CTR/AVD table |
-| **Days 26–33 (Optimize on measurement)** | Repackage the top-CTR angles, `THM-02` mobile legibility, `ANC-01` dataset pages, `TOP-04` verdicts on the next 30 queries. Facebook stays untouched pending `PUB-03` eligibility (D-06). | **`EP23`–`EP30` live — 30/30 published** |
-| **Days 34–45 (The hard gate)** | Nothing new is built. `ANA-01` gives the cohort trend from `EP01`–`EP30`; `ANA-05` refreshes the top 10. **Day 45 decides: scale or stop** — details below. | A written go/no-go, and the deferred work either released or cancelled |
+| **Factory foundation** | infrastructure, contracts, migrations, warehouse, providers, fixtures | clean checkout creates and replays a frozen fixture episode |
+| **Episode system** | editorial queue, script/scene, fact-audits, TTS/alignment, 1440p60 render | one complete approved episode can be rebuilt from immutable hashes |
+| **Publishing system** | thumbnails, QC, approval, upload, chapters, captions, analytics | an approved episode publishes and returns measured telemetry |
+| **Measured optimization** | topic performance, retention, CTR, RPM, refreshes, localization, eligible Facebook | each new surface has a recorded unit value and kill/retain decision |
+| **Scale** | batching, workers, remaining templates, second-channel isolation | batch size grows only when review and policy capacity remain acceptable |
 
-### Daily Solo-Developer Operating Schedule (India Standard Time — IST)
-* **02:00 – 06:30 IST (Automated):** GPU VPS executes ETL → script + fact audit → GPU TTS + WhisperX → scene render (1080p30 static path for `EP01`–`EP14`, 4K60 NVENC from `EP15`) → QC + 3 thumbnails.
-* **08:00 – 08:15 IST (15 min human):** Review Telegram approval bundle on phone (30s hook clip + mobile-size thumbnail test + fact ledger) → reply `/approve`.
-* **08:15 – 08:30 IST (Automated):** Resumable upload to YouTube (scheduled for **19:30 IST / 14:00 UTC** Tier-1 US East morning / EU afternoon peak) + de/fr/ja captions with metadata in the same commit (plus es-419/pt-BR/hi captions). Facebook cut only if `PUB-03` eligibility was confirmed.
-* **Rest of Day:** Engineering improvements, new visual templates, and retention analysis.
+Automated steps may build the next queued episode; they never publish or spend outside a configured approval and budget gate.
 
 ---
 
@@ -162,8 +148,8 @@ produce six unreadable numbers *and* divide the one asset that compounds: cluste
 
 ## 30-Day Exit KPIs (Definition of Sprint Success)
 
-- [ ] **30/30 episodes** published by Day 33 (1080p30 static path for `EP01`–`EP14`, native 4K60 from `EP15`), zero fact-audit violations, zero copyright/policy strikes.
-- [ ] **`VAL-01` read recorded on Day 17** as views/video/day, and the `REN-02` decision written down either way — the sprint's first job is evidence, not output.
+- [ ] Publishing capacity is measured and recorded as episodes/week, build/review hours, and cost/episode, zero fact-audit violations, zero copyright/policy strikes.
+- [ ] `VAL-01` is published through the complete 1440p60 factory and contributes measured operating telemetry.
 - [ ] **Average end-to-end automated pipeline time** ≤ 45 minutes per episode on the CPX41 control plane + on-demand RTX 4090 worker.
 - [ ] **Operating spend** verified as a cost of ≤ $100–$115/month (compute + LLM API + storage).
 - [ ] **Baseline telemetry captured** across all 30 videos: Top 5 CTR hooks, Top 5 Average View Duration (AVD) pacing styles, and Tier-1 (US/UK/CA/AU) audience percentage ≥ 55%.

@@ -136,17 +136,13 @@ ck.ck("Phase 3 labelled pre-goal", "pre-goal" in phase3.lower() and "not the tar
 phase4 = next((r for r in rows if "Phase 4" in r), "")
 ck.ck("Phase 4 contains the goal", "contains the goal" in phase4.lower())
 
-# ---------- D. the sprint gate table is per-day only ---------------------
+# ---------- D. capacity-led launch plan is per-day/economics disciplined ----
 sprint = read("docs/SPRINT_30_DAYS.md")
-gate = "\n".join(table_after(sprint.split("\n"), "| Path | Months at 30/month |"))
-section = sprint[sprint.index("## ✅ Video-30 views/video/day gate"):sprint.index("## Execution Rhythm")]
-ck.ck("sprint gate table found", bool(gate), "header not found")
-ck.ck("sprint gate is per-day only (no money per month)",
-      not re.search(r"\$[\d,]+[^|]{0,10}(?:/|per)\s*(?:mo|month)", section), section[:120])
-ck.ck("sprint gate states both paths", "24-month path" in gate and "36-month path" in gate)
-ck.ck("sprint gate names the rate column", "v required at $10.50 RPM" in gate)
-ck.ck("sprint gate stakes the daily goal", "$1,500" in section and "$2,000/day" in section)
-ck.ck("sprint gate is not a blank decision", "not chosen" not in section)
-ck.ck("sprint has no $2,850", "2,850" not in sprint)
+ck.ck("launch plan is capacity-led",
+      "capacity-led" in sprint.lower() and "fixed quota" not in sprint.lower(), "launch plan is still fixed")
+ck.ck("launch plan names measured production capacity",
+      "build/review" in sprint.lower() or "measured minimum" in sprint.lower(), "capacity metrics missing")
+ck.ck("launch plan is not a false 30-in-30 promise",
+      "30/30 episodes" not in sprint and "30-in-30" not in sprint.lower(), "stale fixed sprint remains")
 
 sys.exit(ck.report())

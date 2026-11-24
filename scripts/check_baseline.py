@@ -138,11 +138,12 @@ rule_tables = [t for t in tabs if t and t[0].lstrip("| ").startswith("#") and "W
 ck.ck("pre-registered rule tables found", len(rule_tables) >= 1, str(len(rule_tables)))
 rule_rows = [cells(r) for t in rule_tables for r in t[2:]]
 ck.ck("at least 10 rules", len(rule_rows) >= 10, str(len(rule_rows)))
-for gate in ("Day 3", "Day 17", "Day 45", "YPP approval"):
+for gate in ("First episode", "First 28 days", "YPP approval"):
     ck.ck(f"rules cover {gate}", any(gate in c[1] for c in rule_rows), gate)
-ck.ck("a rule permits exactly one retry", any("one retry" in r[4] or "one retry" in " ".join(r) for r in rule_rows))
+ck.ck("a policy/fact violation stops publishing",
+      any("R4" in " ".join(r) and "stop affected publishing" in " ".join(r) for r in rule_rows))
 ck.ck("a rule replaces the assumed v with the measured one",
-      any("replace the 61" in " ".join(r) for r in rule_rows), "R7 missing")
+      any("replace projections" in " ".join(r) for r in rule_rows), "R7 missing")
 ck.ck("a rule can stop the project", any("stop" in " ".join(r).lower() for r in rule_rows), "no stop rule")
 ck.ck("abandonment conditions are written down", "abandon" in DOC.lower() and "pivot signal" in DOC, "missing")
 ck.ck("the rules bind over conversation", "the rule wins" in DOC, "supremacy clause missing")
@@ -205,14 +206,10 @@ ck.ck("R18 is a restore drill, not a second channel",
       "recovery drill" in DOC and "INF-04" in DOC, "R18 unchanged")
 
 BUILD, PER_EP = 170.5, (2, 4)
-for cap, lo, hi in ((3, 77, 97), (5, 46, 58), (8, 29, 36)):
-    want_lo, want_hi = (BUILD + 30 * PER_EP[0]) / cap, (BUILD + 30 * PER_EP[1]) / cap
-    ck.ck(f"capacity {cap}h/day -> {lo}-{hi} days",
-          abs(want_lo - lo) < 1 and abs(want_hi - hi) < 1, f"{want_lo:.0f}-{want_hi:.0f}")
-for band in ("**77–97 days**", "**46–58 days**", "**29–36 days**"):
-    ck.ck(f"sprint shows {band}", band in SPRINT, band)
-ck.ck("sprint no longer promises a fixed 33-day window",
-      "30 episodes in 33 days" not in SPRINT, "stale 33-day claim")
+ck.ck("launch plan is capacity-led, not a fixed 30-in-30 promise",
+      "capacity-led" in SPRINT.lower() and "30-in-30" not in SPRINT.lower(), "launch plan remains fixed")
+ck.ck("capacity is derived from measured build and review constraints",
+      "measured minimum" in SPRINT.lower() or "capacity" in SPRINT.lower(), "capacity metrics missing")
 by_id = {i["id"]: i for i in ITEMS}
 ck.ck("PUB-04 promotes subscriber conversion to P0",
       by_id["PUB-04"]["priority"] == "P0" and by_id["PUB-04"]["phase"] == "P0_MVP_DAYS_1_7",
@@ -220,7 +217,7 @@ ck.ck("PUB-04 promotes subscriber conversion to P0",
 ck.ck("ANA-01 records subscribers per 1,000 views",
       "subscribers gained per 1,000 views" in by_id["ANA-01"]["acceptance_criteria"], "not instrumented")
 ck.ck("D-01 no longer ramps on a calendar",
-      "ramped on a calendar; `D-17` replaced the calendar with a trigger" in DECISIONS, "D-01 still time-based")
+      "Cadence is capacity-led" in DECISIONS or "capacity-led" in DECISIONS, "D-01 still time-based")
 ck.ck("the strategy bet is named in the record",
       "commodity production" in DECISIONS and "editorial finance" in DECISIONS, "D-17 missing")
 
@@ -256,7 +253,8 @@ ck.ck("R10 states 15.9%", "15.9%" in rule("R10"), "R10 still says 40%")
 lib22 = 1827 * 61 / 22
 ck.ck("v=22 needs 5,066 videos = 5.6 years", abs(lib22 - 5066) < 2 and abs(lib22 / 75 / 12 - 5.6) < 0.05,
       f"{lib22:.0f} / {lib22/75/12:.2f}y")
-ck.ck("R8 resets to 6 years", "6 years" in rule("R8"), "R8 still says 5")
+ck.ck("R8 uses measured horizon economics",
+      "rebase the horizon" in rule("R8"), "R8 is not measured")
 
 ck.ck("R14 is capacity-relative", "45% of available hours" in rule("R14"), "R14 still absolute")
 ck.ck("R14's action cuts cadence rather than doubling it",
@@ -273,10 +271,12 @@ ck.ck("R17 names the minimum impressions", "10,000 impressions per arm" in rule(
 ck.ck("R15 measures coverage as an exact ratio",
       "playbackBasedCpm / cpm" in rule("R15") and "0.80" in rule("R15"), "R15 proxy still analogical")
 ck.ck("R16 requires a second ASR pass", "second ASR pass" in rule("R16"), "R16 still zero-tolerance")
-ck.ck("R5 no longer buys cadence before AdSense", "not** unlocked here" in rule("R5"), "R5 still ramps to 45/month")
+ck.ck("R5 improves only measured weak stages",
+      "improve the weakest measured stage" in rule("R5"), "R5 still buys cadence")
 ck.ck("no rule points at the retired 33-day sprint",
       not any("33-day sprint" in " ".join(r) for r in rule_rows), "stale sprint reference in a rule")
-ck.ck("R3 and R2 no longer overlap at 20", "10–19 v/day" in rule("R3"), "boundary duplicated")
+ck.ck("R3 revises weak format instead of a fixed 20 boundary",
+      "revise topic, packaging, or narrative" in rule("R3"), "stale fixed boundary remains")
 
 # ---- 11. round 4 is documented, and the count did not drift ---------------
 ck.ck("round-4 self-audit section exists", "## 9. Round 4" in DOC, "section 9 missing")

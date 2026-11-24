@@ -72,9 +72,22 @@
       "priority": "P0",
       "status": "todo",
       "effort_hours": 6,
-      "title": "Ship the Falsification Episode (hand-built 1080p30 thin slice) and publish it before any 4K60 render work",
-      "dependencies": [],
-      "acceptance_criteria": "One 10-14 min episode assembled by hand from a hand-authored DataBrief (one indicator, ~40 countries), a single static-slide template at 1080p30, TTS narration with a -14 LUFS master, QC pass and 3 thumbnails, published public on the flagship channel. A 14-day read is recorded as views/video/day in SQLite. Go/no-go: >=20 views/video/day keeps the format and unblocks REN-02; below 10 kills the topic shape before any 4K60 work is spent on it."
+      "title": "Produce and publish the first launch episode through the real end-to-end pipeline",
+      "dependencies": [
+        "INF-03",
+        "DAT-07",
+        "DAT-08",
+        "TOP-03",
+        "SCR-03",
+        "AUD-05",
+        "AUD-06",
+        "REN-09",
+        "THM-02",
+        "QAG-02",
+        "PUB-03",
+        "ORC-02"
+      ],
+      "acceptance_criteria": "A 10-14 minute episode uses the real warehouse, frozen DataBrief, SceneGraph, TTS/alignment, 1440p60 render, text/audio/visual fact-audit, QC, thumbnails, approval, and private-or-public YouTube publishing path. One reproducible episode is published; pipeline stage time, cost, operator review time, artifact hashes, replay evidence, and every manual intervention are recorded. The episode is launch inventory and establishes operating telemetry."
     },
     {
       "id": "INF-01",
@@ -83,9 +96,9 @@
       "priority": "P0",
       "status": "todo",
       "effort_hours": 2,
-      "title": "Provision Hetzner CPX41 control plane + on-demand RTX 4090 worker within ~$100/mo budget",
+      "title": "Provision the control plane and a provision-on-demand GPU worker within the monthly cost budget",
       "dependencies": [],
-      "acceptance_criteria": "CPX41 reachable over SSH with the cron/SQLite/FastMCP stack installed; an on-demand RTX 4090 worker provisions and destroys cleanly via API for a 2-hour render window; >=200GB NVMe free."
+      "acceptance_criteria": "The control plane is reachable over SSH with SQLite and the pipeline stack installed; a GPU worker provisions, encodes, and destroys cleanly from a script; at least 200GB NVMe is available; actual monthly spend remains within the approved budget. A local/developer-machine fallback is documented."
     },
     {
       "id": "INF-02",
@@ -98,7 +111,7 @@
       "dependencies": [
         "INF-01"
       ],
-      "acceptance_criteria": "ffmpeg -encoders shows h264_nvenc and hevc_nvenc; test 4K60 5-second GPU encode completes in <3 seconds."
+      "acceptance_criteria": "ffmpeg -encoders shows h264_nvenc and hevc_nvenc; benchmarked 1080p30, 1440p60, and optional 4K60 5-second encodes report resolution, FPS, bitrate, and elapsed time."
     },
     {
       "id": "INF-03",
@@ -133,11 +146,11 @@
       "priority": "P1",
       "status": "todo",
       "effort_hours": 1,
-      "title": "Set up API spend guardrails & monthly cost telemetry (Claude API + GPU runtime + R2)",
+      "title": "Set up provider spend and total operating-cost telemetry",
       "dependencies": [
         "INF-03"
       ],
-      "acceptance_criteria": "Hard Anthropic monthly spend cap set; daily cost summary logged to SQLite and sent via Telegram if >$4/day."
+      "acceptance_criteria": "A configured hard spend cap exists for model and GPU providers; daily source, LLM, GPU, storage, and transfer costs are logged to SQLite and alerted when the configurable budget threshold is exceeded."
     },
     {
       "id": "DAT-01",
@@ -150,7 +163,7 @@
       "dependencies": [
         "INF-03"
       ],
-      "acceptance_criteria": "`sqlite3 data/production.db < data/schema.sql` initializes idempotently in WAL mode with 217 ISO-3 countries, regions, currencies, flag paths and GeoJSON IDs."
+      "acceptance_criteria": "`sqlite3 data/production.db < data/schema.sql` initializes idempotently in WAL mode with migrations, foreign-key enforcement, source/license metadata, 217 ISO-3 countries, regions, currencies, flag paths, GeoJSON IDs, and a backup/restore smoke test."
     },
     {
       "id": "DAT-02",
@@ -265,11 +278,11 @@
       "priority": "P0",
       "status": "todo",
       "effort_hours": 2,
-      "title": "Create Editorial Queue DB & seed initial 30-Video Launch Slate mapped to real API indicators",
+      "title": "Create the editorial queue and seed a concentrated launch slate from real API indicators",
       "dependencies": [
         "DAT-01"
       ],
-      "acceptance_criteria": "30 topics stored with status, target indicator codes, query-shaped title candidates and thumbnail concepts, seeded as ONE cluster 30 deep (20 salary/take-home + 10 adjacent cost-of-living, DECISIONS.md D-11): no format-label titles, no two episodes sharing a thesis, and every title a query a person would type."
+      "acceptance_criteria": "A prioritized candidate pool, rather than a fixed publish quota, is stored with status, indicator codes, query-shaped title candidates, thumbnail concepts, source coverage, refresh date, and operator decision history. It begins with salary/take-home and adjacent cost-of-living topics, but weak or duplicate topics are rejected instead of filled to a target count."
     },
     {
       "id": "TOP-02",
@@ -291,11 +304,11 @@
       "priority": "P1",
       "status": "todo",
       "effort_hours": 2,
-      "title": "Implement automated Topic Scorer (Tier-1 demand, CPM weight, data completeness, curiosity gap)",
+      "title": "Implement the evidence-based topic scorer",
       "dependencies": [
         "TOP-02"
       ],
-      "acceptance_criteria": "Ranks candidate topics 0-100 and auto-promotes top-scoring unused topics into the daily pipeline queue."
+      "acceptance_criteria": "Ranks 0-100 using 50% measured search demand, 25% auction value, and 25% angle novelty; source verifiability and policy safety are hard filters. It returns a reasoned verdict and never promotes a topic automatically without the configured approval state."
     },
     {
       "id": "TOP-04",
@@ -308,7 +321,7 @@
       "dependencies": [
         "TOP-01"
       ],
-      "acceptance_criteria": "Every queued episode carries a recorded demand verdict before the ETL stage: the top-3 competitor results for the exact query, their age in years, and their views/day (the stale-result score, VIEW_OPTIMIZATION section 2.2). An episode with no query volume or with recent top results is refused by the queue instead of being produced. Ten minutes of research per episode; this is the only mechanism that removes no-demand videos before they dilute views/video/day (DECISIONS.md D-10)."
+      "acceptance_criteria": "Every queued episode carries a recorded demand verdict before ETL: exact query, top competitors, publish age, views/day, source coverage, policy risk, snapshot, and operator decision. Episodes with no defensible demand or policy-verifiable source coverage are refused rather than filled to a schedule. The evidence and override reason are retained for later cohort analysis."
     },
     {
       "id": "SCR-01",
@@ -347,7 +360,7 @@
       "dependencies": [
         "SCR-02"
       ],
-      "acceptance_criteria": "Extracts every number/rank/percentage in narration, cross-checks against DataBrief (+-0.5% tolerance), and auto-repairs mismatches."
+      "acceptance_criteria": "Extracts every script and visual-overlay number, rank, percentage, year, unit, and range; maps each to a Fact ID or rejects it. Rounding and unit rules are explicit, mismatches are repairable only through a new grounded SceneGraph, and golden fixtures cover currencies, percentages, ranks, dates, and ranges."
     },
     {
       "id": "SCR-04",
@@ -373,7 +386,7 @@
       "dependencies": [
         "INF-02"
       ],
-      "acceptance_criteria": "MeloTTS synthesizes clean 48kHz broadcast narration per scene at >10x real-time with $0 marginal API cost; Azure fallback triggers on any flagged pronunciation."
+      "acceptance_criteria": "The locked local voice synthesizes clean 48kHz narration per scene and reports version/hash/runtime data; provider fallback is explicit and priced. Failure, missing voice assets, or flagged pronunciation blocks render rather than silently switching voice."
     },
     {
       "id": "AUD-02",
@@ -448,11 +461,11 @@
       "priority": "P0",
       "status": "todo",
       "effort_hours": 3,
-      "title": "Establish 4K 60FPS Documentary Visual Design System (palette, typography, safe margins, source footer)",
+      "title": "Establish the resolution-independent documentary visual design system",
       "dependencies": [
         "INF-03"
       ],
-      "acceptance_criteria": "style_guide.yaml + font/flag/Natural Earth GeoJSON asset pack verified legible at both 4K TV and 360px mobile sizes. It also publishes the single `RenderSpec` Pydantic contract (scene_id, template, data bindings, camera move, safe zones, SFX cues, duration) plus one golden fixture, so all 8 templates bind data the same way instead of embedding their own binding logic."
+      "acceptance_criteria": "style_guide.yaml and font/flag/Natural Earth asset packs are verified at 1440p60 and 360px mobile preview. A RenderSpec Pydantic contract binds every template with Fact IDs, resolution preset, source footer, safe zones, timing, camera, and SFX fields; one golden fixture proves the contract."
     },
     {
       "id": "REN-02",
@@ -461,13 +474,12 @@
       "priority": "P0",
       "status": "todo",
       "effort_hours": 4,
-      "title": "Build the 1440p60-first render engine (atomic scene worker pool + static texture cache + NVENC pipe)",
+      "title": "Build the 1440p60 launch render engine (atomic scenes, cache, and direct NVENC)",
       "dependencies": [
         "INF-02",
-        "REN-01",
-        "VAL-01"
+        "REN-01"
       ],
-      "acceptance_criteria": "Streams raw 2560x1440 60fps RGB frames directly to hevc_nvenc/h264_nvenc with zero intermediate PNG bloat; benchmark >=25fps. The same pipeline renders 4K60 through REN-10's preset, so this item changes resolution, not architecture (DECISIONS.md D-12: 2.2x the pixels for a difference a mobile viewer cannot resolve, held until YPP)."
+      "acceptance_criteria": "Streams raw 2560x1440 60fps RGB frames directly to NVENC with zero intermediate PNG bloat; benchmark >=25fps. The same pipeline supports 1080p30 fallback and 4K60 as a configuration preset; resolution is not embedded in template code."
     },
     {
       "id": "REN-03",
@@ -480,7 +492,7 @@
       "dependencies": [
         "REN-02"
       ],
-      "acceptance_criteria": "Renders buttery-smooth 4K60 Top-15 bar race synchronized to WhisperX word highlights."
+      "acceptance_criteria": "Renders a smooth launch-preset Top-15 bar race synchronized to WhisperX word highlights at 1440p60. Golden fixtures verify Fact-ID bindings, labels, source footer, mobile legibility, and AV timing."
     },
     {
       "id": "REN-04",
@@ -541,11 +553,11 @@
       "priority": "P1",
       "status": "todo",
       "effort_hours": 3,
-      "title": "Implement Template 8: DistributionHistogram + Pre-Baked 4K60 Ambient Motion Backgrounds",
+      "title": "Implement Template 8: DistributionHistogram + Pre-Baked Ambient Motion Background",
       "dependencies": [
         "REN-02"
       ],
-      "acceptance_criteria": "Bell-curve percentile visualizer + 3 reusable 4K60 subtle dark-mode animated backdrop loops."
+      "acceptance_criteria": "Bell-curve percentile visualizer plus 3 reusable subtle launch-resolution animated backdrop loops, with 1080p30/1440p60 asset variants and no unlicensed visual assets."
     },
     {
       "id": "REN-09",
@@ -554,7 +566,7 @@
       "priority": "P0",
       "status": "todo",
       "effort_hours": 2.5,
-      "title": "Build Scene Concatenator, Master Audio-Video Muxer & YouTube 4K60 Export Preset",
+      "title": "Build Scene Concatenator, Master Muxer & Resolution Export Presets",
       "dependencies": [
         "AUD-05",
         "REN-03",
@@ -562,7 +574,7 @@
         "REN-05",
         "REN-06"
       ],
-      "acceptance_criteria": "Assembles full 10-18 min 4K60 MP4 with faststart atom, 0ms AV drift, and verified playback in VLC/YouTube. Master export defaults to a 1440p60 preset at ~12-16 Mbps; the 4K60 preset is REN-10 (D-12)."
+      "acceptance_criteria": "Assembles a 10-18 minute launch MP4 with faststart atom, <=150ms AV drift, verified playback, and 1440p60 export; 1080p30 fallback and 4K60 presets are separately tested and export metadata is recorded."
     },
     {
       "id": "SHR-01",
@@ -651,11 +663,11 @@
       "priority": "P0",
       "status": "todo",
       "effort_hours": 3,
-      "title": "Configure Google Cloud OAuth & YouTube Data API v3 Resumable Uploader (chapters + scheduling)",
+      "title": "Configure YouTube OAuth and resumable publishing",
       "dependencies": [
         "QAG-02"
       ],
-      "acceptance_criteria": "Uploads 4K60 master as scheduled video at optimal Tier-1 UTC slot with chapter timestamps and custom thumbnail."
+      "acceptance_criteria": "Uploads a launch-preset master privately or as scheduled with chapter timestamps and custom thumbnail; retry, quota, duplicate, and partial-upload behavior are covered by fixtures."
     },
     {
       "id": "PUB-02",
@@ -678,7 +690,7 @@
       "priority": "P1",
       "status": "todo",
       "effort_hours": 3.5,
-      "title": "Build Facebook In-Stream Cut Generator (3s visual hook + burned captions) & Graph API Uploader",
+      "title": "Build the eligible Facebook In-Stream cut and uploader",
       "dependencies": [
         "REN-09",
         "AUD-03"
@@ -692,11 +704,11 @@
       "priority": "P1",
       "status": "todo",
       "effort_hours": 3.5,
-      "title": "Build the ancillary revenue lane: per-episode dataset page, SVG chart exports and an embeddable feed",
+      "title": "Build per-episode provenance pages and embeddable data assets",
       "dependencies": [
         "PUB-01"
       ],
-      "acceptance_criteria": "Every episode publishes a dataset page (CSV, chart SVGs, methodology note, source citation) on a static site plus an embeddable feed, and external-traffic watch-time share is logged in SQLite. Profit Multiplier 5 is the $330-$440/day ancillary line at the goal, so this lane is instrumented from the first episode instead of assumed."
+      "acceptance_criteria": "Every episode publishes a dataset page (frozen CSV, chart SVGs, methodology, source citation, snapshot hash, and license) on a static host with embeddable assets. External traffic and watch-time are logged in SQLite, while ancillary revenue remains an instrumented experiment rather than a baseline assumption."
     },
     {
       "id": "PUB-04",
@@ -735,13 +747,12 @@
       "priority": "P1",
       "status": "todo",
       "effort_hours": 2,
-      "title": "Configure Daily Autonomous Cron / Systemd Timer for the 1/day production cadence",
+      "title": "Configure capacity-based batch scheduling",
       "dependencies": [
         "ORC-01",
-        "QAG-02",
-        "VAL-01"
+        "QAG-02"
       ],
-      "acceptance_criteria": "Automatically builds next queued episode overnight IST so approval bundle arrives every morning at 08:00 IST. The cron is enabled only after the VAL-01 14-day read, so automation never multiplies an unvalidated format."
+      "acceptance_criteria": "A systemd timer or cron processes the next approved queue item within configured capacity limits and leaves no autonomous publish without approval. It enforces weekday/weekend, retry, cost, and concurrency limits and produces a review bundle at the configured time."
     },
     {
       "id": "CMP-01",
@@ -750,9 +761,9 @@
       "priority": "P0",
       "status": "todo",
       "effort_hours": 2,
-      "title": "Create Flagship YouTube Channel & Facebook Page (branding, banner, about, Tier-1 English positioning)",
+      "title": "Create the flagship YouTube channel and baseline channel identity",
       "dependencies": [],
-      "acceptance_criteria": "Channel branded as authoritative global data documentary network; verification enabled for custom thumbnails & >15 min uploads."
+      "acceptance_criteria": "Channel branding clearly identifies its original data-documentary role; custom thumbnail and long-upload eligibility are enabled; the channel name, description, links, and owner/access controls are recorded."
     },
     {
       "id": "CMP-02",
@@ -766,7 +777,7 @@
         "AUD-04",
         "SCR-03"
       ],
-      "acceptance_criteria": "Every episode ships with persistent source overlays, >=5 unique visual templates, analytical commentary, and verified asset licenses."
+      "acceptance_criteria": "Every episode ships with persistent source overlays, analytical commentary, verified provenance/license manifests, and no unsupported claims or unlicensed commercial assets. The checklist is a published gate report, not a visual-template-count proxy."
     },
     {
       "id": "CMP-03",
@@ -775,12 +786,12 @@
       "priority": "P1",
       "status": "todo",
       "effort_hours": 3,
-      "title": "Apply for YouTube Partner Program (1k subs + 4k watch hrs) & Facebook In-Stream Monetization",
+      "title": "Complete platform monetization applications",
       "dependencies": [
         "CMP-01",
         "CMP-02"
       ],
-      "acceptance_criteria": "Both YouTube AdSense and Facebook In-Stream approved with clean policy standing and mid-roll ads enabled."
+      "acceptance_criteria": "YouTube YPP status is recorded after CMP-01/CMP-02; Facebook eligibility is recorded separately and only enables PUB-03 if the actual Page is approved. Neither success is assumed, and policy status is retained with evidence."
     },
     {
       "id": "CMP-04",
@@ -794,7 +805,7 @@
         "CMP-03",
         "CMP-05"
       ],
-      "acceptance_criteria": "W-8BEN approved (15% US withholding vs 24%/30%), Indian bank SWIFT USD settlement tested, e-FIRA workflow documented."
+      "acceptance_criteria": "AdSense tax and payout settings are completed using current official guidance; Indian SWIFT settlement is tested and e-FIRA handling is documented. Any withholding result is recorded rather than guaranteed."
     },
     {
       "id": "CMP-05",
@@ -843,12 +854,12 @@
       "priority": "P2",
       "status": "todo",
       "effort_hours": 4,
-      "title": "Build Automated Annual Dataset Refresh Trigger ('2027/2028 Edition' re-render pipeline)",
+      "title": "Build the automated dataset-refresh trigger",
       "dependencies": [
         "ANA-01",
         "ORC-01"
       ],
-      "acceptance_criteria": "Detects new World Bank / OECD annual releases and queues refreshed sequel episodes for top-earning evergreen videos."
+      "acceptance_criteria": "Detects new source releases, diffs frozen snapshots, identifies meaningful editorial/data changes, and queues refresh candidates only for eligible evergreen episodes. It verifies the output and records source/version changes; it does not append a meaningless year label."
     },
     {
       "id": "ANA-04",
@@ -857,12 +868,12 @@
       "priority": "P2",
       "status": "todo",
       "effort_hours": 5,
-      "title": "Add Multi-Channel Config Isolation & Multi-Language Audio Dubbing (YouTube MLA for de/fr/ja)",
+      "title": "Add multi-channel configuration isolation",
       "dependencies": [
         "ANA-02",
         "CMP-03"
       ],
-      "acceptance_criteria": "Single GPU pipeline serves 3+ niche channels via channel_id configs and optional de/fr/ja audio tracks, priced at the PPM_REVIEW.md sec.0 revenue-set blend."
+      "acceptance_criteria": "The pipeline isolates channel credentials, branding, queue, warehouse scope, audience, publishing targets, and output assets by channel_id. A run for one channel cannot mutate another. Language/dubbing support remains separately gated because MLA availability is provider/platform controlled."
     },
     {
       "id": "ANA-05",

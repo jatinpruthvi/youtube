@@ -12,8 +12,8 @@ here, once, with the arithmetic that decided them.
 
 | ID | Decision | Consequence in the repo | Evidence class |
 | :--- | :--- | :--- | :--- |
-| **D-01** | Cadence ramps 30 → 45 → 60 → 75 videos/month; 1/day is a *proof sprint*, not the revenue path | `SPRINT_30_DAYS.md` rhythm + `docs/PROFIT_MULTIPLIERS.md` hit-rate target | derived from the sprint gate's own arithmetic |
-| **D-02** | A 6-hour falsification episode (`VAL-01`) ships and is measured **before** any 4K60 render code | `VAL-01` added; `REN-02`, `ORC-02` now depend on it | 0 episodes published today |
+| **D-01** | Cadence is capacity-led, not calendar-led | `SPRINT_30_DAYS.md` rhythm + build/review telemetry | derived from measured operator capacity |
+| **D-02** | The first episode uses the real end-to-end factory; there is no throwaway proof gate | `VAL-01` is part of the normal launch pipeline | 0 episodes published today |
 | **D-03** | Titles become queries; the topic scorer stops paying for production convenience. **Its 6-pillar spread is superseded by D-11** | `TOP-01` reseeded, `ARCHITECTURE.md` Module 1 reweighted | measured: 21/30 format-label titles, 24 pillars, 4 near-duplicate pairs |
 | **D-04** | Tracker grows 51 → 56 items; every priced lever gets an item | `VAL-01`, `DAT-09`, `SHR-01`, `ANC-01`, `CMP-05` added | two of seven multipliers had no item |
 | **D-05** | Localized metadata ships only for markets that ship captions in the same commit | `PUB-02` acceptance criterion; localization uplift held as ceiling | `VIEW_OPTIMIZATION.md` §7 |
@@ -27,18 +27,18 @@ here, once, with the arithmetic that decided them.
 | **D-13** | **Every input is tiered in a register, and the decisions are pre-registered** | `BASELINE.md` added; `RPM_ad` named; GPU metered; σ retired; rules R1–R12 locked | nine inputs were guesses, and a guess plus a late decision is how a plan rationalises itself |
 | **D-14** | **The 0% hallucination claim covers the audio, not just the script** | `AUD-06` added: ASR back-check of every spoken numeral against the Fact IDs | `SCR-03` audits text; a TTS engine can still say the wrong number on screen |
 | **D-15** | **Monetization and the operator's calendar are the real constraints; the back catalogue is free inventory** | `ANA-06` added; rules R13–R18 locked | YPP needs **v ≈ 111** at a 1% sub conversion — 1.8x the plan's 61 — and a 40% limited-ad rate needs 1.7x the library |
-| **D-16** | **The sprint calendar is a function of available hours, and subscriber conversion is P0** | `SPRINT_30_DAYS.md` gains a capacity table (77–97 / 46–58 / 29–36 days); `PUB-04` promoted to P0 | 230–290h of work cannot fit a fixed 33-day window at any plausible capacity |
+| **D-16** | **Publishing capacity is measured and subscriber conversion is P0** | `SPRINT_30_DAYS.md` is replaced by a capacity-led execution sequence; `PUB-04` remains P0 | build, review, policy, demand, and platform throughput determine the safe cadence |
 | **D-17** | **Cadence is measurement-gated, and the commodity-versus-editorial bet is chosen explicitly** | `D-01`'s time-based ramp becomes conditional on R9/R10/R15/R20 | the plan assumes mass-production cost *and* editorial RPM; that pair cannot both be true |
 | **D-18** | **Every threshold in the rule set must be derived and machine-checked — twelve of them were not** | R2–R5, R8–R10, R13–R17, R20 corrected; `check_baseline.py` re-derives each | round 3 audited the arithmetic and left the thresholds unaudited; two of them were harmful |
 
-Total plan effort moves from 142.0h to **170.5h** (0/62 items). The 22.5h increase buys one falsification episode, one test harness,
+Total plan effort moves from 142.0h to **170.5h** (0/62 items). The 22.5h increase buys the first real launch episode, one test harness,
 three levers that were priced but never scheduled, and the three views-per-video levers in D-10.
 
 ---
 
-## D-01 — Cadence ramps to 75/month; 1/day is a proof sprint, not the revenue path
+## D-01 — Cadence is capacity-led
 
-**Decision.** Publish the 30-episode proof sprint on a calendar set by available hours (`D-16`), then ramp **only when a measurement says to**: 30/month until the YPP readings exist, 45–60/month after a positive `RPM_ad` and limited-ad signal (rule R20), 75/month only after that signal holds for 90 days — adding one approval/QA hire at roughly $700 of labour cost per month at each step. **Originally this decision ramped on a calendar; `D-17` replaced the calendar with a trigger**, because a time-based ramp scales a strategy nobody has validated.
+**Decision.** Set publishing cadence from measured build capacity, review capacity, audience demand, policy health, effective RPM, and limited-ad coverage. No fixed monthly ramp is an engineering dependency. Add reviewers or workers only after a measured bottleneck exists.
 
 **Why.** `SPRINT_30_DAYS.md` already derives the gate honestly: holding $1,500/day of profit at 1/day you must sustain **155** views/video/day for a 24-month path or **103** for a 36-month path, against the plan's own assumption of **61**. Believing you will beat the plan's per-video view rate by 1.7–2.5x is not a plan; it is a hope. Cadence is the variable the operator controls, and the memo already prices it: 1,827 videos is 61 months at 30/month and 24 months at 75/month.
 
@@ -54,19 +54,21 @@ automated, at roughly $700 of labour cost per month (an assumption, not a quote)
 
 ---
 
-## D-02 — The falsification episode ships before the 4K60 factory
+## D-02 — The first episode uses the real factory
 
-**Decision.** `VAL-01` (6h, no dependencies) assembles one 10–14 minute episode **by hand**: a hand-authored `DataBrief` from one indicator across ~40 countries, a single static-slide template at 1080p30, TTS narration mastered to -14 LUFS, QC, three thumbnails, published public on the flagship channel. Fourteen days later the read is recorded as views per video per day. **≥20 keeps the format and unblocks `REN-02`; below 10 kills the topic shape** before a single line of 4K60 render code exists.
+**Decision.** `VAL-01` is the first launch episode, not a throwaway thin slice or a separate wait-to-build gate. It uses the real warehouse, frozen `DataBrief`, SceneGraph, narration, 1440p60 rendering, QC, approval, publishing, and analytics paths.
 
-**Why.** There are zero episodes, zero uploads and zero revenue rows in this repository. The single largest track (`T06`, 31.5h when this was decided, 36.0h now) is justified entirely by assumption, and the render engine is the most expensive irreversible bet in the plan. A 1080p30 static-slide slice costs 6 hours instead of 31.5 and every asset it produces — warehouse rows, `DataBrief`, script, narration, QC, thumbnails — is reused unchanged by the real pipeline. This is the cheapest falsification available.
+**Why.** A separate proof implementation duplicates work and can create two pipeline architectures. The first episode should produce a launch asset while measuring the complete factory's correctness, cost, and operating time.
 
-**Consequence.** `REN-02` (core render engine) and `ORC-02` (daily cron) now carry `VAL-01` as a dependency, so neither can start on faith. The sprint keeps building the data, script and audio layers in parallel during the 14-day observation window; only the expensive render and the automation wait.
+**Consequence.** `VAL-01` is a terminal integration item with dependencies on the production components it exercises,
+including the renderer, orchestration, data, script audit, audio, QC, thumbnail, and publishing paths. It is not a separate
+proof gate, and no production component is implemented only for a throwaway episode.
 
-**Rejected.** Building all eight templates, then discovering the format does not retain. That is the standard way automated channels die: 90 hours spent before the first evidence arrives.
+**Rejected.** Maintaining a hand-built 1080p30 side pipeline followed by a later rewrite at 1440p60.
 
 ---
 
-## D-03 — Six pillars x five query-shaped titles, and the scorer stops paying for convenience
+## D-03 — Query-shaped titles, and the scorer stops paying for convenience
 
 **Decision.** Every title is rewritten as a query a person would type, ≤60 characters, with no format label, and the topic scorer stops paying for production convenience. *(The 6-pillars-x-5 spread this decision originally carried is superseded by D-11 — the title rules below are what survived.)* The topic scorer becomes **50% proven demand + 25% auction value + 25% angle novelty**, with data verifiability demoted from a 25% weight to a **hard filter**.
 
@@ -80,7 +82,7 @@ automated, at roughly $700 of labour cost per month (an assumption, not a quote)
 
 ## D-04 — Every priced lever gets an item (51 → 56)
 
-**Decision.** Add five items: `VAL-01` (falsification episode), `DAT-09` (record/replay fixture harness), `SHR-01` (60s Shorts extractor), `ANC-01` (dataset page, SVG exports, syndication feed), `CMP-05` (the `W8BEN_CHECKLIST.md` artifact).
+**Decision.** Add five items: `VAL-01` (first launch episode), `DAT-09` (record/replay fixture harness), `SHR-01` (60s Shorts extractor), `ANC-01` (dataset page, SVG exports, syndication feed), `CMP-05` (the `W8BEN_CHECKLIST.md` artifact).
 
 **Why.** `PROFIT_MULTIPLIERS.md` prices seven levers, and **two of them had no tracker item at all**: multiplier 4 (Shorts funnel, worth $4.20–$10.50 per episode at $10.50 RPM) and multiplier 5 (the $330–$440/day ancillary line at the goal). Multiplier 7 depends on a compliance file that no item produced. `AGENTS.md` §5 mandates offline deterministic tests while four connectors talk to seven live APIs, and no item funded the harness. A tracker that presents 51 items as the complete plan while three priced levers sit outside it is not the source of truth.
 
@@ -221,7 +223,7 @@ Six pillars of five therefore produces **six unreadable numbers**, and it spends
 authority. Browse and suggested — the surfaces that carry the volume above search — recommend *within* a cluster, so 30 episodes
 on salary data is a channel the recommender can classify, while five videos on taxes is a channel it cannot.
 
-**Consequence.** The slate is re-cut (`SPRINT_30_DAYS.md`), still 30 episodes, still 1/day, still every title a query. `TOP-01`
+**Consequence.** The slate is concentrated and uses query-shaped titles. Production volume is set by measured capacity, not a fixed episode count.
 seeds the single-cluster queue with all 30 query candidates. `TOP-04`'s demand verdict now runs on 30 queries inside one cluster,
 which makes the research cumulative instead of scattered across six unrelated subjects.
 

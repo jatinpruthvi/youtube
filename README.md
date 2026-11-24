@@ -8,14 +8,18 @@
 
 | Document / Tool | Purpose |
 | :--- | :--- |
-| **[`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md)** | Full technical architecture blueprint: end-to-end DAG, 4K60 GPU rendering solution, zero-hallucination data grounding, ~$100/mo unit economics, anti-demonetization guardrails, and 36-month scaling model. |
+| **[`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md)** | Full technical architecture blueprint: end-to-end DAG, resolution-independent rendering, fact-grounded data, ~$100/mo unit economics, policy guardrails, and measured scaling model. |
+| **[`docs/ARCHITECTURE_IMPROVEMENTS.md`](docs/ARCHITECTURE_IMPROVEMENTS.md)** | 20 architecture improvements with AI/automation implementation rules, contracts, state, provenance, replay, publishing, observability, recovery, and plugin isolation. |
+| **[`docs/IMPLEMENTATION_READINESS.md`](docs/IMPLEMENTATION_READINESS.md)** | AI execution playbook: corrected build dependencies, typed contracts, immutable artifacts, state transitions, replay, cost gates, compliance, and the `VAL-01` completion gate. |
+| **[`docs/AI_AUTOMATION_PLAYBOOK.md`](docs/AI_AUTOMATION_PLAYBOOK.md)** | 20 view/profit improvements plus the AI proposal and deterministic automation boundaries for each stage. |
+| **[`docs/COST_OPTIMIZATION.md`](docs/COST_OPTIMIZATION.md)** | 20 cost reductions with AI/automation controls, cost telemetry, acceptance gates, and rollback rules. |
 | **[`docs/PROFIT_MULTIPLIERS.md`](docs/PROFIT_MULTIPLIERS.md)** | Deep implementation guide for the 7 profit multipliers: mid-roll ad pacing, commercial CPM keyword seeding, thumbnail contrast detection, 60s hook Shorts funnel, ancillary revenue, 2-3 videos/day throughput, and W-8BEN tax optimization. |
 | **[`docs/VIEW_OPTIMIZATION.md`](docs/VIEW_OPTIMIZATION.md)** | View-optimization specification: topic selection and the stale-result test, query-shaped packaging, per-surface playbooks, localized audio, Shorts as both funnel and topic probe, back-catalogue repackaging, measurement and its noise, and every lever priced in $/day against the plan's own baseline. |
-| **[`docs/DECISIONS.md`](docs/DECISIONS.md)** | **Decision record (D-01…D-18)** — the eighteen operating calls made before any pipeline code: cadence ramp, falsification gate, slate shape, tracker completeness, captions-before-metadata, Facebook eligibility gate, provider-agnostic LLM layer, contracts and fixtures, anti-demonetization strategy, the views-per-video levers, single-cluster concentration, the 1440p60-at-launch cut, the audio fact-audit, and the monetization/calendar constraints. |
+| **[`docs/DECISIONS.md`](docs/DECISIONS.md)** | **Decision record (D-01…D-18)** — operating calls covering capacity-led cadence, first launch inventory, editorial concentration, tracker completeness, captions-before-metadata, Facebook eligibility, provider-neutral LLMs, contracts and fixtures, provenance, views-per-video levers, 1440p60 launch, audio fact-audit, and monetization constraints. |
 | **[`docs/BASELINE.md`](docs/BASELINE.md)** | **The baseline register** — every input tiered as measured / derived-with-band / unmeasured, the three data corrections (ad-side RPM naming, metered GPU, σ retired), the `v × RPM` library grid, the YPP and limited-ads findings, and **20 pre-registered decision rules** locked before any data arrives. Enforced by `scripts/check_baseline.py`. |
 | **[`docs/DECISION_AUDIT.md`](docs/DECISION_AUDIT.md)** | **Audit of every number in the decision record** — each claim re-derived from first principles, the five defects it found and fixed, and the nine inputs that remain unmeasured. Enforced by `scripts/check_decisions.py` (155 assertions). |
 | **[`docs/TRACKER.md`](docs/TRACKER.md)** | Complete **62-item Master Track List** organized across **12 architectural tracks** and **4 execution phases** with dependencies, effort estimates, and acceptance criteria. |
-| **[`docs/SPRINT_30_DAYS.md`](docs/SPRINT_30_DAYS.md)** | **30 Videos in 30 Days** execution schedule + 30 high-CPM, API-verifiable documentary episode specs with stage checklists. |
+| **[`docs/SPRINT_30_DAYS.md`](docs/SPRINT_30_DAYS.md)** | Capacity-led launch sequence + concentrated API-verifiable episode slate with stage checklists. |
 | **[`tracker/items.json`](tracker/items.json)** | Machine-readable single source of truth for all 62 architecture tracker items. |
 | **[`scripts/track.py`](scripts/track.py)** | Zero-dependency Python CLI to track progress, list unblocked tasks, update statuses, and auto-sync `docs/TRACKER.md`. |
 
@@ -36,12 +40,12 @@ Front-tier LLM API (Prompt Cached) ──► SceneGraph JSON ──► Automated
 Local GPU TTS (MeloTTS/Kokoro, Azure fallback) + WhisperX Word Timestamps ──► FFmpeg -14 LUFS Master + Ducking/SFX
         │
         ▼
-Parallel 4K 60FPS GPU Renderer (25–45 Atomic Scenes + Direct NVENC Pipe) ──► Master MP4
+Parallel 1440p60 GPU Renderer (25–45 Atomic Scenes + Direct NVENC Pipe) ──► Master MP4
         │
         ▼
 Automated QC + 3-Variant Playwright Thumbnails ──► Telegram 3-Min Mobile Approval Gate
         │
-        ├──► YouTube Data API v3 (English 4K60 + de/fr/ja Metadata & SRT + es-419/pt-BR/hi Captions)
+        ├──► YouTube Data API v3 (1440p60 English + de/fr/ja Metadata & SRT + es-419/pt-BR/hi Captions)
         └──► Facebook Graph API (In-Stream Cut + Burned Captions)
                 │
                 ▼
@@ -73,9 +77,9 @@ python3 scripts/track.py set INF-01 done
 ## Key Numbers & Guardrails
 
 * **Target Output Spec:** 10–18 min · **1440p60 at launch, 4K (`3840×2160`) 60 FPS from the first post-YPP upgrade** · `-14 LUFS` · `100% API-verified facts` (`docs/DECISIONS.md` D-12)
-* **Target Render Time:** ~20–35 min per 15-min episode via scene-level parallelism + direct NVENC piping
+* **Target Render Time:** measured per launch preset; scene-level 1440p60 output uses direct NVENC piping
 * **Monthly Operating Budget:** ~$72–$105/month of cost (GPU compute + prompt-cached front-tier LLM API + Cloudflare R2 + free public APIs + local GPU TTS)
-* **Immediate Launch Goal:** **one falsification episode first (`VAL-01`), then 30 episodes on a capacity-set calendar (29–97 days, `D-16`)** on one flagship channel — evidence before factory (`docs/DECISIONS.md` D-01, D-02).
+* **Launch Goal:** publish the first episode through the complete factory and continue a concentrated editorial queue at a capacity-safe cadence, replacing assumptions with measured output and operating telemetry.
 
 ---
 

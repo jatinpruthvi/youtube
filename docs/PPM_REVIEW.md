@@ -206,9 +206,9 @@ the same group move the same variable and **cannot be added to each other**.
 
 | ID | Item | Kind | Group | Verdict | $/month delta (arithmetic) | Worth the hours? |
 |---|---|---|---|---|---|---|
-| `VAL-01` | Ship the Falsification Episode (hand-built 1080p30 thin slice) and publi... <sub>6h - P0</sub> | g | - | **Gate** | $0 directly - it authorises or cancels the 31.5h T06 spend before it is made, and supplies a views/video/day number 30 episodes earlier | Yes - the highest risk removal per hour in the plan |
+| `VAL-01` | Produce and publish the first launch episode through the real end-to-end pipeline... <sub>6h - P0</sub> | g | - | **Gate** | $0 directly - it is the first normal production asset and supplies complete operating telemetry | Yes - required launch evidence |
 | `ORC-01` | Build Resumable Episode DAG Orchestrator (SQLite state machine with sce... <sub>3.5h - P0</sub> | c | - | No impact | $0 - resumability saves rework, not revenue | No - $0/mo |
-| `ORC-02` | Configure Daily Autonomous Cron / Systemd Timer for 30-in-30 Production... <sub>2h - P1</sub> | c | - | No impact | $0 - the cron is the cadence switch for REN-02's throughput | No - $0/mo |
+| `ORC-02` | Configure capacity-based batch scheduling... <sub>2h - P1</sub> | c | - | No impact | $0 - scheduling saves labour only when measured capacity is known | No - $0/mo until active |
 
 ### T11 - Compliance, Monetization & India Payout Setup
 
@@ -562,7 +562,7 @@ had no funding.
 
 | ID | Item | Kind | Group | Verdict | Claim (as shown: per day, or per episode) | Worth the hours? |
 |---|---|---|---|---|---|---|
-| `VAL-01` | Falsification episode: one hand-built 1080p30 slice, published, 14-day read | g | - | **Gate** | $0 directly. It turns the 40-94 views/video/day axis into a measurement, and it can cancel 31.5h of render work before that work exists | Yes - 6h buys the plan's first evidence |
+| `VAL-01` | First launch episode through the real 1440p60 factory | g | - | **Gate** | $0 directly. It establishes complete operating telemetry and is launch inventory | Yes - required end-to-end acceptance |
 | `DAT-09` | Record/replay fixture harness for all 7 providers | c | - | No impact | $0 of revenue; it is what makes "offline deterministic tests" true rather than aspirational | Yes - 2h, and every connector test after it is trustworthy |
 | `SHR-01` | 60s Shorts hook extractor with burned captions and long-form link | a | G8 | Moves PPM (new) | 400-1,000 long-form views x $10.50 RPM / 1000 = **$4.20-$10.50 per episode**, earned once per episode over the Short's lifetime | Yes - the cheapest new surface in the plan |
 | `ANC-01` | Dataset page, SVG chart exports, embeddable feed per episode | a | G8 | Moves PPM (new) | 22% of revenue = **$330-$440/day of revenue** at the $1,500-$2,000 goals - the ancillary line no item previously touched | Yes - $95/h at the likely base, and it is demonetisation insurance |
