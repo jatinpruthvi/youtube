@@ -1,8 +1,8 @@
-# Per-item PPM review - all 60 tracker items
+# Per-item PPM review - all 62 tracker items
 
 > **Revision note.** The original review covered the 51 items that existed when it was written. `DECISIONS.md` D-04 added five
 > (`VAL-01`, `DAT-09`, `SHR-01`, `ANC-01`, `CMP-05`), reviewed in their own rows and in **section 9**; `DECISIONS.md` D-10 later added
-> three more (`TOP-04`, `PUB-04`, `ANA-05`), reviewed in section 10, and D-12 added `REN-10`. The
+> three more (`TOP-04`, `PUB-04`, `ANA-05`), reviewed in section 10, D-12 added `REN-10`, and D-14/D-15 added `AUD-06` and `ANA-06`. The
 > group arithmetic in sections 2-5 is left exactly as derived for the twelve-item package, because none of the five changes a
 > group total: three are $0 levers and two open a new group (G8) that was never additive to the twelve.
 
@@ -13,7 +13,7 @@ Answer for every item in `tracker/items.json`, in tracker order, with the arithm
 
 ## 0. Which inputs are measured, and which are assumed
 
-**This repository contains no measured performance data.** `src/` does not exist, so no pipeline has run; all 60 tracker items
+**This repository contains no measured performance data.** `src/` does not exist, so no pipeline has run; all 62 tracker items
 are `todo`, so no episode has been produced, nothing has been uploaded, and no revenue or analytics row exists anywhere in the
 repo. There is no YouTube Studio export, no CTR log, no RPM history and no invoice in this repository.
 
@@ -21,7 +21,7 @@ So the honest position is: **the revenue side is entirely assumed; the only hard
 
 | Input | Value used | Status | Where it comes from | Plausible range |
 |---|---|---|---|---|
-| Published episodes | 0 | **MEASURED** | tracker: 60/60 items `todo` | 0 |
+| Published episodes | 0 | **MEASURED** | tracker: 62/62 items `todo` | 0 |
 | Revenue earned to date | $0 | **MEASURED** | no channel exists (`CMP-01` todo) | $0 |
 | Library size | 900 videos | ASSUMED | `01-ai-data-documentary-branches.md`, Month 13-16 projection row | 360 - 1,500 |
 | Views per video per day | **40 / 61 / 94** (low / likely / high) | ASSUMED | branches projection rows: 61 at Month 13-16 (55,000 / 900), 94 at Month 25-28 (170,000 / 1,800); 40 is this review's floor | 40 - 94 |
@@ -161,6 +161,7 @@ the same group move the same variable and **cannot be added to each other**.
 | `AUD-03` | Integrate WhisperX / stable-ts Forced Word-Level Alignment <sub>2.5h - P0</sub> | c | - | No impact | $0 - alignment enables captions/SRT export only | No - $0/mo |
 | `AUD-04` | Curate royalty-free ambient documentary BGM stems & micro-SFX library w... <sub>2h - P0</sub> | c | - | No impact | $0 - licence manifest is strike insurance | No - $0/mo |
 | `AUD-05` | Build FFmpeg Audio Mixer (sidechain BGM ducking, timestamped SFX inject... <sub>3h - P0</sub> | a | - | No impact | $0 - YouTube re-normalises loudness itself; -14 LUFS does not change RPM | No - $0/mo |
+| `AUD-06` | Build the spoken-number back-check: ASR the TTS audio and diff the nume... <sub>2h - P0</sub> | c | - | Risk spine | $0 - it protects the claim the whole channel is built on; a wrong number spoken over a correct chart is unpriceable damage | Yes - $0/mo, and it is the only check that audits the artefact rather than the intermediate file |
 
 ### T06 - 4K 60FPS GPU Rendering & Visual Template Library
 
@@ -227,6 +228,7 @@ the same group move the same variable and **cannot be added to each other**.
 | `ANA-02` | Build Retention Drop-Off Diagnostic & RPM-per-Topic Feedback Loop <sub>3h - P1</sub> | a | G3 | Moves PPM | +4% views from the retention/RPM loop = **+$302 / $461 / $711** - inside G3, so it repeats SCR-04's claim | Yes - $154/h |
 | `ANA-03` | Build Automated Annual Dataset Refresh Trigger ('2027/2028 Edition' re-... <sub>4h - P2</sub> | a | G6 | Moves PPM | refresh 100 of 900 at +60%: 2,400 / 3,660 / 5,640 extra v/day x 30 / 1000 x $7 = **+$504 / $769 / $1,184** | Yes - $192/h |
 | `ANA-04` | Add Multi-Channel Config Isolation & Multi-Language Audio Dubbing (YouT... <sub>5h - P2</sub> | a | G5 | Moves PPM | +15% views at the same $3.73 revenue-set blend: 5,400 / 8,235 / 12,690 v/day x 30 / 1000 x $3.73 = **+$605 / $922 / $1,421** - G5 leader | Yes - $184/h |
+| `ANA-06` | Build the monthly back-catalogue repackage pass (title + thumbnail ref... <sub>2h - P1</sub> | a | G1 | Moves PPM, **capped by G1's leader** | CTR applied to impressions that already exist, on videos that already exist: the only v lever with no production cost and no library dilution. Sized inside G1, so it cannot be added to `THM-01` | Yes - nothing per episode after the first pass |
 
 ## 2. Why these deltas cannot simply be added
 
@@ -396,15 +398,16 @@ enough to change the order.
 A low rank is not a reason to skip an item: `REN-02` and `PUB-02` are prerequisites for items above them, and `PUB-02` is the floor
 of G5. `SHR-01` and `ANC-01` are ranked in section 9 instead, because they move variables this table's twelve never touched.
 
-## 5. The 45 items that do not move PPM
+## 5. The 46 items that do not move PPM
 
-Fifteen items move PPM - the twelve in section 4, `SHR-01` and `ANC-01` in group G8 (section 9), and `ANA-05` inside G6. The other
-45 do not, and adding them to a forecast is how the plan's earlier numbers got inflated: 4 with negligible cost savings, 6
-unpriceable, and 35 at exactly $0.
+Sixteen items move PPM - the twelve in section 4, `SHR-01` and `ANC-01` in group G8 (section 9), `ANA-05` inside G6, and `ANA-06`
+inside G1. The other 46 do not, and adding them to a forecast is how the plan's earlier numbers got inflated: 4 with negligible
+cost savings, 6 unpriceable, and 36 at exactly $0.
 
 * **Gates - not deltas:** `CMP-01`, `CMP-03`, `PUB-01`, `VAL-01`. The base already assumes they passed, so they cannot be counted twice.
 * **Risk spine - large if a failure happens, $0 until it does:** `DAT-02`, `DAT-03`, `DAT-06`, `DAT-07`, `SCR-03`, `CMP-02`,
-  `AUD-04`, `QAG-01`, `DAT-09`. A demonetisation or a strike costs more than the entire base; that is insurance, not a lever.
+  `AUD-04`, `QAG-01`, `DAT-09`, `AUD-06`. `AUD-06` is the sharpest case in the list: the repository's one non-negotiable claim is
+  0% hallucination, and nothing else verifies what the voice actually says. A demonetisation or a strike costs more than the entire base; that is insurance, not a lever.
 * **Labour savers:** `DAT-08`, `ORC-01`, `ORC-02`, `QAG-02`, `ANA-01`, `INF-05`. Hours, not dollars.
 * **Negligible cost wins (counted, in group C):** `INF-01` +$12, `INF-04` +$2, `SCR-02` +$2, `AUD-01` +$5 - $21/month at every
   base, all under $7/h at the tracker's own effort estimates.

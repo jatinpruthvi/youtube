@@ -114,6 +114,8 @@ added = {
     "D-04": ["VAL-01", "DAT-09", "SHR-01", "ANC-01", "CMP-05"],
     "D-10": ["TOP-04", "PUB-04", "ANA-05"],
     "D-12": ["REN-10"],
+    "D-14": ["AUD-06"],
+    "D-15": ["ANA-06"],
 }
 running = 142.0
 for label, ids in added.items():

@@ -17,6 +17,7 @@ It also fails if the register loses its tier key, if a Tier U input stops
 naming the instrument that retires it, if the pre-registered rules stop covering
 the two gates, and if any figure drifts from the recomputation.
 """
+import json
 import math
 import os
 import re
@@ -34,6 +35,7 @@ DECISIONS = read("docs/DECISIONS.md")
 AUDIT = read("docs/DECISION_AUDIT.md")
 ARCH = read("docs/ARCHITECTURE.md")
 
+ITEMS = json.load(open("tracker/items.json", encoding="utf-8"))["items"]
 AD_SHARE, RPM_AD, RPM_TOTAL_BAND = 0.78, 10.5, (8.0, 16.0)
 INFRA_PER_DAY, GOAL = 2.64, 1500
 PLAN_LIBRARY = 1827
@@ -131,9 +133,9 @@ ck.ck("corner case needs 2.3x the library", abs(4186 / PLAN_LIBRARY - 2.29) < 0.
 ck.ck("corner case is 56 months at 75/mo", abs(4186 / 75 - 55.8) < 0.5, str(4186 / 75))
 
 # ---- 6. pre-registered rules -------------------------------------------
-rules = table_starting("#")
-ck.ck("pre-registered rule table found", rules is not None)
-rule_rows = [cells(r) for r in (rules or [])[2:]]
+rule_tables = [t for t in tabs if t and t[0].lstrip("| ").startswith("#") and "When" in t[0]]
+ck.ck("pre-registered rule tables found", len(rule_tables) >= 1, str(len(rule_tables)))
+rule_rows = [cells(r) for t in rule_tables for r in t[2:]]
 ck.ck("at least 10 rules", len(rule_rows) >= 10, str(len(rule_rows)))
 for gate in ("Day 3", "Day 17", "Day 45", "YPP approval"):
     ck.ck(f"rules cover {gate}", any(gate in c[1] for c in rule_rows), gate)
@@ -147,6 +149,47 @@ ck.ck("the rules bind over conversation", "the rule wins" in DOC, "supremacy cla
 # ---- 7. the register is referenced, not orphaned ------------------------
 ck.ck("the register does not hardcode an assertion count",
       not re.search(r"\d,\d{3} assertions", DOC), "a self-referential count will drift")
+
+# ---- 8. round 3: the monetization gate, the calendar, limited ads --------
+WATCH_H, SUBS, EPISODES, DURATION_MIN, AVD = 4000, 1000, 30, 14, 0.40
+min_per_view = DURATION_MIN * AVD
+views_for_hours = WATCH_H * 60 / min_per_view
+ck.ck("YPP watch hours need 42,857 views", abs(views_for_hours - 42857) < 1, f"{views_for_hours:.0f}")
+ck.ck("that is 1,429 views per video", abs(views_for_hours / EPISODES - 1429) < 1, f"{views_for_hours/EPISODES:.0f}")
+subs_views = SUBS / 0.01
+ck.ck("1,000 subs at 1% needs 100,000 views", subs_views == 100000, str(subs_views))
+ck.ck("that is 3,333 views per video", abs(subs_views / EPISODES - 3333.3) < 1, f"{subs_views/EPISODES:.0f}")
+ck.ck("implied v is 111 at 1% conversion", abs(subs_views / EPISODES / 30 - 111.1) < 0.5,
+      f"{subs_views/EPISODES/30:.1f}")
+ck.ck("111 is 1.8x the assumed 61", abs(111.1 / 61 - 1.82) < 0.02, f"{111.1/61:.2f}")
+for s_ in ("42,857", "1,429", "3,333", "v ≈ 111", "1.8x"):
+    ck.ck(f"register states {s_}", s_ in DOC, s_)
+
+review_lo, review_hi = 33 * 2 / 33, 33 * 4 / 33
+build_per_day = 170.5 / 45
+ck.ck("sustained load is 5.8-7.8h per day",
+      abs(build_per_day + review_lo - 5.8) < 0.05 and abs(build_per_day + review_hi - 7.8) < 0.05,
+      f"{build_per_day + review_lo:.1f}-{build_per_day + review_hi:.1f}")
+ck.ck("register states 5.8-7.8", "5.8–7.8" in DOC and "170.5h" in DOC, "labour line missing")
+
+for share, rpm_eff, lib in ((0.20, 8.40, 2287), (0.40, 6.30, 3050)):
+    eff = RPM_AD * (1 - share)
+    want = (GOAL + INFRA_PER_DAY) * AD_SHARE * 1000 / (61 * eff)
+    ck.ck(f"{share:.0%} limited ads -> RPM_ad ${rpm_eff:.2f}", abs(eff - rpm_eff) < 0.01, f"{eff:.2f}")
+    ck.ck(f"{share:.0%} limited ads -> library {lib}", abs(want - lib) < 2, f"{want:.0f}")
+ck.ck("register states the limited-ads table", "$8.40" in DOC and "3,050" in DOC, "limited-ads table missing")
+
+for rid in ("R13", "R14", "R15", "R16", "R17", "R18"):
+    ck.ck(f"rule {rid} exists", any(rid in " ".join(r) for r in rule_rows), rid)
+ck.ck("R16 makes a spoken number a blocker", any("R16" in " ".join(r) and "blocker" in " ".join(r).lower()
+                                                for r in rule_rows), "R16 missing")
+ck.ck("R14 protects the approval gate", any("R14" in " ".join(r) and "QAG-02" in " ".join(r) for r in rule_rows))
+ck.ck("a second channel is required by month 6", any("R18" in " ".join(r) and "second channel" in " ".join(r).lower()
+                                                    for r in rule_rows), "R18 missing")
+for item in ("AUD-06", "ANA-06"):
+    ck.ck(f"{item} exists in the tracker", item in {i["id"] for i in ITEMS}, item)
+ck.ck("AUD-06 blocks publish on a mismatch",
+      "fails the episode" in next(i for i in ITEMS if i["id"] == "AUD-06")["acceptance_criteria"], "no blocker")
 
 ck.ck("README links the baseline register", "BASELINE.md" in read("README.md"), "not linked")
 ck.ck("AGENTS links the baseline register", "BASELINE.md" in read("AGENTS.md"), "not linked")

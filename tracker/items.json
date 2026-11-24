@@ -429,6 +429,19 @@
       "acceptance_criteria": "Master audio hits -14.0 +- 0.5 LUFS, <= -1.0 dBTP true peak, smooth BGM ducking, and exact frame-synced SFX hits."
     },
     {
+      "id": "AUD-06",
+      "track": "T05",
+      "phase": "P0_MVP_DAYS_1_7",
+      "priority": "P0",
+      "status": "todo",
+      "effort_hours": 2,
+      "title": "Build the spoken-number back-check: ASR the TTS audio and diff the numerals against the fact ledger",
+      "dependencies": [
+        "AUD-03"
+      ],
+      "acceptance_criteria": "Each scene's synthesised narration is decoded with a local ASR model and every spoken numeral is normalised to a value and diffed against that scene's DataBrief Fact IDs; any mismatch, missing number or extra number fails the episode before render. The script fact-audit (SCR-03) proves the TEXT is grounded and proves nothing about the AUDIO, so a TTS engine can read 82,000 as eighty-two hundred and the channel's 0% hallucination claim is still false on screen. Runs on every episode; golden fixture for the number normaliser included."
+    },
+    {
       "id": "REN-01",
       "track": "T06",
       "phase": "P0_MVP_DAYS_1_7",
@@ -863,6 +876,20 @@
         "ANA-01"
       ],
       "acceptance_criteria": "The ten best-performing episodes are re-rendered with refreshed source rows and re-released (same video where YouTube permits an update, new episode where the dataset changed materially), with a recorded views delta at day 28 per episode. A refresh adds views without adding library, so it is the only lever that raises views/video/day with no dilution (DECISIONS.md D-10); ANA-03 automates this trigger later, ANA-05 proves it once by hand."
+    },
+    {
+      "id": "ANA-06",
+      "track": "T12",
+      "phase": "P1_SPRINT_DAYS_8_30",
+      "priority": "P1",
+      "status": "todo",
+      "effort_hours": 2,
+      "title": "Build the monthly back-catalogue repackage pass (title + thumbnail refresh on high-impression, low-CTR videos)",
+      "dependencies": [
+        "ANA-01",
+        "THM-01"
+      ],
+      "acceptance_criteria": "For every video with >=1,000 impressions in the trailing 28 days and CTR below the channel median, two new thumbnails and one query-shaped title variant are generated and applied (title and thumbnail edits are permitted at any time on the Data API), with before/after CTR logged at day 28. Test & Compare has no public API, so the A/B launch happens through the QAG-02 approval bot. This is the only views-per-video lever that costs no new production and no new library (DECISIONS.md D-15)."
     }
   ]
 }

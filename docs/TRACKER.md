@@ -2,7 +2,7 @@
 
 > **Project:** Automated Data Documentary Network  
 > **Mission:** $1,500-$2,000/day ($45k-$60k/month) of profit from pure platform ad revenue in 24-36 months  
-> **Progress:** **0/60 items (0%)** · **166.5h remaining** of **166.5h total**
+> **Progress:** **0/62 items (0%)** · **170.5h remaining** of **170.5h total**
 
 <!-- Generated from tracker/items.json via `python3 scripts/track.py sync-md` -->
 
@@ -20,8 +20,8 @@ python3 scripts/track.py set INF-01 done  # Mark item done & auto-sync this Mark
 ### By Phase
 | Phase | Items Done | Total Effort |
 | :--- | :---: | :---: |
-| **Phase 0: Pipeline MVP (Days 1–10)** | 0 / 36 | 103.0h |
-| **Phase 1: Launch Sprint, 30 episodes (Days 11–33)** | 0 / 16 | 38.5h |
+| **Phase 0: Pipeline MVP (Days 1–10)** | 0 / 37 | 105.0h |
+| **Phase 1: Launch Sprint, 30 episodes (Days 11–33)** | 0 / 17 | 40.5h |
 | **Phase 2: Monetization & Retention Optimization (Months 2–6)** | 0 / 6 | 16.0h |
 | **Phase 3: Multi-Channel Network Scale (Months 7–36)** | 0 / 2 | 9.0h |
 
@@ -32,14 +32,14 @@ python3 scripts/track.py set INF-01 done  # Mark item done & auto-sync this Mark
 | **T02** | [Fact-Grounded Economic Data Layer (SQLite + FastMCP)](#t02-fact-grounded-economic-data-layer-sqlite--fastmcp) | 0 / 9 | 25.0h |
 | **T03** | [Topic Intelligence & Editorial Queue](#t03-topic-intelligence--editorial-queue) | 0 / 4 | 9.0h |
 | **T04** | [Claude Narrative Script & Fact-Audit Engine](#t04-claude-narrative-script--fact-audit-engine) | 0 / 4 | 12.0h |
-| **T05** | [Voiceover, Forced Alignment & Audio Mastering](#t05-voiceover-forced-alignment--audio-mastering) | 0 / 5 | 12.0h |
+| **T05** | [Voiceover, Forced Alignment & Audio Mastering](#t05-voiceover-forced-alignment--audio-mastering) | 0 / 6 | 14.0h |
 | **T06** | [4K 60FPS GPU Rendering & Visual Template Library](#t06-4k-60fps-gpu-rendering--visual-template-library) | 0 / 11 | 36.0h |
 | **T07** | [Thumbnail Factory & A/B Packaging](#t07-thumbnail-factory--ab-packaging) | 0 / 2 | 4.5h |
 | **T08** | [Automated QA Gate & Mobile Approval Bot](#t08-automated-qa-gate--mobile-approval-bot) | 0 / 2 | 5.5h |
 | **T09** | [Localization & Multi-Platform Publishing](#t09-localization--multi-platform-publishing) | 0 / 5 | 15.5h |
 | **T10** | [Pipeline Orchestrator & Crash-Resumable DAG](#t10-pipeline-orchestrator--crash-resumable-dag) | 0 / 3 | 11.5h |
 | **T11** | [Compliance, Monetization & India Payout Setup](#t11-compliance-monetization--india-payout-setup) | 0 / 5 | 10.0h |
-| **T12** | [Analytics Feedback Loop & Multi-Channel Scale](#t12-analytics-feedback-loop--multi-channel-scale) | 0 / 5 | 17.5h |
+| **T12** | [Analytics Feedback Loop & Multi-Channel Scale](#t12-analytics-feedback-loop--multi-channel-scale) | 0 / 6 | 19.5h |
 
 ---
 
@@ -136,7 +136,7 @@ python3 scripts/track.py set INF-01 done  # Mark item done & auto-sync this Mark
 </details>
 
 ## T05: Voiceover, Forced Alignment & Audio Mastering
-*Zero-marginal-cost GPU TTS, pronunciation lexicon, WhisperX word timestamps, BGM ducking, SFX sync, and -14 LUFS mastering.* (**0/5 complete**)
+*Zero-marginal-cost GPU TTS, pronunciation lexicon, WhisperX word timestamps, BGM ducking, SFX sync, and -14 LUFS mastering.* (**0/6 complete**)
 
 | Status | ID | Priority | Phase | Est. | Dependencies | Item & Acceptance Criteria |
 | :---: | :--- | :---: | :--- | :---: | :--- | :--- |
@@ -145,15 +145,17 @@ python3 scripts/track.py set INF-01 done  # Mark item done & auto-sync this Mark
 | ⬜ Todo | `AUD-03` | `P0` | `P0` | 2.5h | `AUD-01` | **Integrate WhisperX / stable-ts Forced Word-Level Alignment**<br/><sub>✓ Outputs per-scene word timestamp JSON (start_ms, end_ms) accurate within +-40ms to drive visual animation triggers.</sub> |
 | ⬜ Todo | `AUD-04` | `P0` | `P0` | 2h | `INF-03` | **Curate royalty-free ambient documentary BGM stems & micro-SFX library with license manifest**<br/><sub>✓ At least 6 loopable BGM tracks + 15 crisp SFX stored in assets/ with documented commercial licenses in assets/licenses.json.</sub> |
 | ⬜ Todo | `AUD-05` | `P0` | `P0` | 3h | `AUD-03`, `AUD-04` | **Build FFmpeg Audio Mixer (sidechain BGM ducking, timestamped SFX injection, 2-pass -14 LUFS mastering)**<br/><sub>✓ Master audio hits -14.0 +- 0.5 LUFS, <= -1.0 dBTP true peak, smooth BGM ducking, and exact frame-synced SFX hits.</sub> |
+| ⬜ Todo | `AUD-06` | `P0` | `P0` | 2h | `AUD-03` | **Build the spoken-number back-check: ASR the TTS audio and diff the numerals against the fact ledger**<br/><sub>✓ Each scene's synthesised narration is decoded with a local ASR model and every spoken numeral is normalised to a value and diffed against that scene's DataBrief Fact IDs; any mismatch, missing number or extra number fails the episode before render. The script fact-audit (SCR-03) proves the TEXT is grounded and proves nothing about the AUDIO, so a TTS engine can read 82,000 as eighty-two hundred and the channel's 0% hallucination claim is still false on screen. Runs on every episode; golden fixture for the number normaliser included.</sub> |
 
 <details>
-<summary>Checklist View — T05 (0/5)</summary>
+<summary>Checklist View — T05 (0/6)</summary>
 
 - [ ] **`AUD-01`** (P0, 3h) — Deploy local GPU TTS (MeloTTS primary, Kokoro-82M alternate, Azure Neural fallback) with a locked narrator voice
 - [ ] **`AUD-02`** (P0, 1.5h) — Build Pronunciation Lexicon & SSML/Pause Preprocessor for countries, currencies, and acronyms
 - [ ] **`AUD-03`** (P0, 2.5h) — Integrate WhisperX / stable-ts Forced Word-Level Alignment
 - [ ] **`AUD-04`** (P0, 2h) — Curate royalty-free ambient documentary BGM stems & micro-SFX library with license manifest
 - [ ] **`AUD-05`** (P0, 3h) — Build FFmpeg Audio Mixer (sidechain BGM ducking, timestamped SFX injection, 2-pass -14 LUFS mastering)
+- [ ] **`AUD-06`** (P0, 2h) — Build the spoken-number back-check: ASR the TTS audio and diff the numerals against the fact ledger
 
 </details>
 
@@ -286,7 +288,7 @@ python3 scripts/track.py set INF-01 done  # Mark item done & auto-sync this Mark
 </details>
 
 ## T12: Analytics Feedback Loop & Multi-Channel Scale
-*YouTube/FB analytics ETL, retention drop-off diagnostics, RPM optimization, annual refreshes, and multi-channel cloning.* (**0/5 complete**)
+*YouTube/FB analytics ETL, retention drop-off diagnostics, RPM optimization, annual refreshes, and multi-channel cloning.* (**0/6 complete**)
 
 | Status | ID | Priority | Phase | Est. | Dependencies | Item & Acceptance Criteria |
 | :---: | :--- | :---: | :--- | :---: | :--- | :--- |
@@ -295,14 +297,16 @@ python3 scripts/track.py set INF-01 done  # Mark item done & auto-sync this Mark
 | ⬜ Todo | `ANA-03` | `P2` | `P3` | 4h | `ANA-01`, `ORC-01` | **Build Automated Annual Dataset Refresh Trigger ('2027/2028 Edition' re-render pipeline)**<br/><sub>✓ Detects new World Bank / OECD annual releases and queues refreshed sequel episodes for top-earning evergreen videos.</sub> |
 | ⬜ Todo | `ANA-04` | `P2` | `P3` | 5h | `ANA-02`, `CMP-03` | **Add Multi-Channel Config Isolation & Multi-Language Audio Dubbing (YouTube MLA for de/fr/ja)**<br/><sub>✓ Single GPU pipeline serves 3+ niche channels via channel_id configs and optional de/fr/ja audio tracks, priced at the PPM_REVIEW.md sec.0 revenue-set blend.</sub> |
 | ⬜ Todo | `ANA-05` | `P1` | `P2` | 2.5h | `ANA-01` | **Run the first refresh wave: re-master and re-release the top 10 episodes when their datasets update**<br/><sub>✓ The ten best-performing episodes are re-rendered with refreshed source rows and re-released (same video where YouTube permits an update, new episode where the dataset changed materially), with a recorded views delta at day 28 per episode. A refresh adds views without adding library, so it is the only lever that raises views/video/day with no dilution (DECISIONS.md D-10); ANA-03 automates this trigger later, ANA-05 proves it once by hand.</sub> |
+| ⬜ Todo | `ANA-06` | `P1` | `P1` | 2h | `ANA-01`, `THM-01` | **Build the monthly back-catalogue repackage pass (title + thumbnail refresh on high-impression, low-CTR videos)**<br/><sub>✓ For every video with >=1,000 impressions in the trailing 28 days and CTR below the channel median, two new thumbnails and one query-shaped title variant are generated and applied (title and thumbnail edits are permitted at any time on the Data API), with before/after CTR logged at day 28. Test & Compare has no public API, so the A/B launch happens through the QAG-02 approval bot. This is the only views-per-video lever that costs no new production and no new library (DECISIONS.md D-15).</sub> |
 
 <details>
-<summary>Checklist View — T12 (0/5)</summary>
+<summary>Checklist View — T12 (0/6)</summary>
 
 - [ ] **`ANA-01`** (P1, 3h) — Build YouTube Analytics & Revenue daily ETL into SQLite (CTR, AVD, RPM, retention curves, geo)
 - [ ] **`ANA-02`** (P1, 3h) — Build Retention Drop-Off Diagnostic & RPM-per-Topic Feedback Loop
 - [ ] **`ANA-03`** (P2, 4h) — Build Automated Annual Dataset Refresh Trigger ('2027/2028 Edition' re-render pipeline)
 - [ ] **`ANA-04`** (P2, 5h) — Add Multi-Channel Config Isolation & Multi-Language Audio Dubbing (YouTube MLA for de/fr/ja)
 - [ ] **`ANA-05`** (P1, 2.5h) — Run the first refresh wave: re-master and re-release the top 10 episodes when their datasets update
+- [ ] **`ANA-06`** (P1, 2h) — Build the monthly back-catalogue repackage pass (title + thumbnail refresh on high-impression, low-CTR videos)
 
 </details>

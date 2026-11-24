@@ -48,6 +48,12 @@ views/video/day = views(last 28 days) / published videos / 28
 | Reading captured | ⬜ blocked until 30 episodes are published and `ANA-01` has 28 days of trailing data |
 | Recorded where | `ANA-01`'s SQLite analytics table; quote the reading here when it exists |
 
+**The same reading decides monetization.** YPP needs 1,000 subscribers + 4,000 watch hours, and the subscriber gate is the harder
+one: at a 1% subscribe rate it needs 3,333 views per video across 30 videos, i.e. **v ≈ 111** — the same number as the 36-month
+path. Watch hours need only 1,429 views per video. So the Day-17 and Day-45 readings answer *both* questions at once: whether the
+format compounds, and whether the channel becomes monetizable at this cadence. Subscribers per view is the term to watch, because
+it is the one the end-screen and series structure of `PUB-04` can move (`BASELINE.md` §8, rules R13–R18).
+
 **What actually moves v, since publishing does not.** Six mechanisms raise views per video per day, and only three of them are
 items on the tracker in Phase 0-1 (`VIEW_OPTIMIZATION.md` §15 ranks all six with their evidence class). The order matters: query
 selection is decided before production and dominates; CTR only converts impressions that exist; satisfaction decides *future*

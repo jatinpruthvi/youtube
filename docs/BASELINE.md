@@ -144,3 +144,87 @@ Stated once, so it is not negotiated under pressure:
 4. **Ancillary stays under 5%** and v is under 40 — the revenue side is then a pure advertising business at the bottom of its band.
 
 Any one of those is a pivot signal. Two together is a stop signal.
+
+---
+
+## 8. Review round 3 — five findings that change what we watch
+
+The register above bands the inputs the plan already had. This section is the domain review: what the plan never modelled at all.
+
+### Finding 1 — the monetization gate needs *more* views than the revenue gate does
+
+YPP requires **1,000 subscribers + 4,000 public watch hours**. Nobody has priced that, and it is the actual revenue switch.
+
+| Gate | At 40% AVD on a 14-min video | Views needed over 30 videos | Per video |
+| :--- | :--- | :---: | :---: |
+| 4,000 watch hours | 5.6 min per view | 42,857 | **1,429** |
+| 1,000 subs at 0.5% conversion | — | 200,000 | 6,667 |
+| 1,000 subs at 1% conversion | — | 100,000 | 3,333 |
+| 1,000 subs at 2% conversion | — | 50,000 | 1,667 |
+| 1,000 subs at 3% conversion | — | 33,333 | 1,111 (hours bind) |
+
+**Watch hours are easy; subscribers are the gate.** At a normal 1% conversion the subscriber requirement is 3,333 views per video,
+i.e. **v ≈ 111 over 30 days — 1.8x the plan's assumed 61.** The subscriber gate and the v gate (`SPRINT_30_DAYS.md`) are the same
+number, and the plan quoted neither. Subscriber *conversion* is also the most controllable variable in the whole model: end
+screens, series structure and the `PUB-04` session bridge move it, whereas v is decided by demand we do not control.
+
+### Finding 2 — the binding constraint is the operator's calendar, not the GPU
+
+| Work | Load |
+| :--- | :--- |
+| Review at 2–4h per episode, 30 episodes a month | 60–120h of labour per month |
+| The 33-day sprint at 1/day | 2–4h per day of review, on top of |
+| 170.5h of build across 45 days | 3.8h per day |
+| **Sustained total** | **5.8–7.8h per day for 45 days, no days off** |
+
+`D-01` put the first hire at the cadence ramp (month 10). The review load starts on **Day 4**. Every other constraint in this plan
+— GPU time, LLM tokens, render throughput — was modelled to the minute; the one resource that cannot be bought back is the
+operator's evening, and it is the first thing to break.
+
+### Finding 3 — the two core assumptions are anti-correlated, and nothing says so
+
+| Assumption | What it requires |
+| :--- | :--- |
+| cost per episode of $1.17–$1.67 | near-zero editorial labour: templated visuals, TTS narration, automated assembly |
+| `RPM_ad` $10.50 | advertiser-friendly, brand-safe, *original* finance content — the highest editorial bar on the platform |
+
+The plan assumes **the cost base of mass production and the RPM of editorial content at the same time.** Those pull in opposite
+directions, and the mechanism that connects them is measurably unfriendly: YouTube's policy on inauthentic and repetitious content
+does not reduce views, it reduces *advertising* — which is precisely the term the model scales.
+
+### Finding 4 — "limited ads" is the failure mode that looks like success
+
+If a share of impressions carry limited or no ads, the views still arrive and the revenue does not:
+
+| Limited-ad share of impressions | Effective `RPM_ad` | Library needed for the goal |
+| :---: | :---: | :---: |
+| 0% | $10.50 | 1,830 |
+| 20% | $8.40 | 2,287 |
+| 40% | $6.30 | **3,050** |
+
+The 40% case lands at the **bottom edge of the register's own band** and demands 1.7x the library. This is the single most
+plausible way the business misses without anyone noticing: every dashboard looks healthy except the one column nobody pulls.
+
+### Finding 5 — one channel is the whole asset
+
+100% of revenue comes from one channel on one AdSense account until Phase 3, which the plan dates to months 7–36. At 75 videos a
+month a single policy strike removes the entire business, not one video. The register's job is to say this out loud once, and the
+rule is to seed a second channel — even a small one — before the library is large enough to be worth losing.
+
+### The two gaps this round closed in the tracker
+
+| Gap | Why it was a gap | Item |
+| :--- | :--- | :--- |
+| The fact-audit covered the **text**, not the **audio** | `SCR-03` proves the script is grounded and proves nothing about what the voice says. A TTS engine reading 82,000 as "eighty-two hundred" leaves a false claim on screen with a green audit | `AUD-06` — ASR back-check of every spoken numeral against the Fact IDs |
+| Nothing repackaged the **back catalogue** | Title and thumbnail editing is free and permitted at any time; Test & Compare has no API, so it needs a human in the approval bot. This is the only v lever with no production cost and no library dilution | `ANA-06` — monthly refresh on high-impression, low-CTR videos |
+
+### Rules added (continuing R-series)
+
+| # | When | Reading | Threshold | Action, fixed in advance |
+| :---: | :--- | :--- | :--- | :--- |
+| **R13** | after 15 episodes | subscribers per view | < 0.5% | the packaging or the series structure is the problem, not the cadence: fix end screens and series order before adding a single episode |
+| **R14** | any 5 consecutive days | operator review hours | > 3h per day | drop to 60 videos a month; never skip `QAG-02`, and never let `AUD-06` slide to save time |
+| **R15** | YPP approval + 28 days | share of impressions with limited ads | > 20% | the mass-production/RPM combination is broken: cut cadence, raise editorial quality, and re-derive the library before scaling |
+| **R16** | every episode | spoken-numeral mismatches from `AUD-06` | any | blocker. Nothing publishes; fix the pronunciation lexicon or the number formatter first |
+| **R17** | monthly, from 10 videos with impressions | back-catalogue CTR after `ANA-06` repackage | < 5% relative gain in 28 days | stop the pass, it is costing an hour for nothing; revisit at 100 videos |
+| **R18** | month 6 | second channel seeded | not seeded | seed one. The single-channel exposure is unacceptable once the library passes 300 videos |

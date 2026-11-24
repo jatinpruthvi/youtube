@@ -8,7 +8,7 @@ here, once, with the arithmetic that decided them.
 
 ---
 
-## Summary of the thirteen decisions
+## Summary of the fifteen decisions
 
 | ID | Decision | Consequence in the repo | Evidence class |
 | :--- | :--- | :--- | :--- |
@@ -25,8 +25,10 @@ here, once, with the arithmetic that decided them.
 | **D-11** | **One cluster, 30 deep** — not six pillars of five | `SPRINT_30_DAYS.md` slate rebuilt (20 salary + 10 cost-of-living); concentration from Day 1, not Day 90 | a 5-video pillar reads 32–118 at 90% confidence: unmeasurable |
 | **D-12** | **1440p60 is the launch preset; 4K60 is a post-YPP upgrade.** No Facebook, no dubbing, no 4K engine before Day 45 | `REN-02` rescoped, `REN-10` added (2h deferred), sprint rhythm re-cut | 4K60 is 2.25x the pixels for ~6–10 GPU-hours a month; zero evidence it lifts CTR for static charts on mobile |
 | **D-13** | **Every input is tiered in a register, and the decisions are pre-registered** | `BASELINE.md` added; `RPM_ad` named; GPU metered; σ retired; rules R1–R12 locked | nine inputs were guesses, and a guess plus a late decision is how a plan rationalises itself |
+| **D-14** | **The 0% hallucination claim covers the audio, not just the script** | `AUD-06` added: ASR back-check of every spoken numeral against the Fact IDs | `SCR-03` audits text; a TTS engine can still say the wrong number on screen |
+| **D-15** | **Monetization and the operator's calendar are the real constraints; the back catalogue is free inventory** | `ANA-06` added; rules R13–R18 locked | YPP needs **v ≈ 111** at a 1% sub conversion — 1.8x the plan's 61 — and a 40% limited-ad rate needs 1.7x the library |
 
-Total plan effort moves from 142.0h to **166.5h** (0/60 items). The 22.5h increase buys one falsification episode, one test harness,
+Total plan effort moves from 142.0h to **170.5h** (0/62 items). The 22.5h increase buys one falsification episode, one test harness,
 three levers that were priced but never scheduled, and the three views-per-video levers in D-10.
 
 ---
@@ -155,7 +157,8 @@ automated, at roughly $700 of labour cost per month (an assumption, not a quote)
 | Acceptance criteria on `TOP-01`, `REN-01`, `SCR-01`, `ORC-01`, `DAT-02`, `PUB-02`, `PUB-03` | D-03, D-05, D-06, D-08 |
 | `docs/SPRINT_30_DAYS.md` rhythm table and slate | D-01, D-03 |
 | `TOP-04`'s refusal rule in the editorial queue; the cohort-trend gate in `SPRINT_30_DAYS.md` | D-10 |
-| `scripts/check_baseline.py` — tiers, bands, retirement instruments and rules R1–R12 | D-13 |
+| `scripts/check_baseline.py` — tiers, bands, retirement instruments and rules R1–R18 | D-13 |
+| `AUD-06` blocking every publish; `ANA-06` on the monthly cron; rules R13–R18 in `BASELINE.md` | D-14, D-15 |
 | `python3 scripts/track.py validate` and `python3 scripts/check_docs.py` | D-04 and every figure in this file |
 
 ---
@@ -274,3 +277,52 @@ register is checked by `scripts/check_baseline.py`, so a band cannot quietly bec
 
 **Rejected.** Collecting "better estimates" first. There is no better estimate available without publishing, and the register makes
 that fact operational instead of hidden.
+
+---
+
+## D-14 — The fact-audit has to cover the spoken audio
+
+**Decision.** `AUD-06` (2h) decodes each scene's synthesised narration with a local ASR model, normalises every spoken numeral to a
+value, and diffs it against that scene's `DataBrief` Fact IDs. Any mismatch, missing number or invented number is a blocker
+(rule **R16**).
+
+**Why.** The channel's central promise is **0% hallucination**, and `SCR-03` audits the **script**. It cannot audit the voice. A TTS
+engine reading `82,000` as "eighty-two hundred", or `1.2%` as "one point two" with the percent dropped, leaves a false claim on
+screen with a green audit result — and the failure is invisible to every check in this repository. The same class of error covers
+ordinals in rankings ("fourth" vs "fourteenth"), which is exactly what a ranking documentary is made of.
+
+**Consequence.** Two hours of work, one local ASR pass per episode (~seconds of GPU), and the pipeline's one non-negotiable claim
+becomes true of the artefact rather than of the intermediate file. The golden fixture in the acceptance criterion means the
+normaliser is tested offline like every other component.
+
+**Rejected.** Proof-listening the rendered audio. That is 14 minutes of human attention per episode to find a defect a diff finds in
+seconds, and it breaks the first time the operator is tired.
+
+---
+
+## D-15 — Monetization gate, operator calendar, and the free inventory nobody used
+
+**Decision.** Three findings from the domain review enter the register as numbers and rules, not prose:
+
+1. **YPP is the revenue switch and subscribers are the gate.** At a 40% AVD on a 14-minute video, 4,000 watch hours needs only
+   **1,429 views per video** across 30 videos. 1,000 subscribers at a **1% conversion** needs **3,333** — i.e. **v ≈ 111**, which
+   is **1.8x** the v = 61 the whole model is written against. Rule **R13**: if subscribers per view is under 0.5% after 15 episodes,
+   fix packaging and series order before adding an episode, because conversion is the one term we control.
+2. **The operator is the constraint.** 30 episodes a month at 2–4h of review each is 60–120h of labour, on top of 170.5h of build
+   across 45 days — **5.8–7.8 hours a day sustained**. Every other resource in this plan was modelled to the minute. Rule **R14**:
+   above 3h of review a day, cut to 60 videos a month; never skip the approval gate to buy time.
+3. **Limited ads is the silent failure.** Views keep arriving and revenue does not. A 20% limited-ad share takes effective
+   `RPM_ad` to $8.40 (2,287 videos needed) and 40% takes it to $6.30 (**3,050 videos**). Rule **R15** measures the share at YPP,
+   before any scaling decision.
+
+`ANA-06` (2h) adds the one **free** lever this review found: a monthly pass that repackages high-impression, low-CTR videos with new
+titles and thumbnails. Title and thumbnail edits are permitted at any time, they need no new production, and they add no library —
+the only v mechanism in this repository with no dilution at all. Rules **R17** and **R18** bound it: stop the pass if 28-day CTR
+does not improve 5% relative, and seed a second channel by month 6 so the whole business is not one strike away from zero.
+
+**Why this is one decision and not three.** They share a single cause: the plan modelled the *pipeline* exhaustively and the
+*business* not at all. The pipeline has five arithmetic checks; the business had none until this register.
+
+**Consequence.** 60 → 62 items, 166.5h → 170.5h. Six new pre-registered rules. The next decision the operator faces — scale or
+stop at Day 45 — is unchanged, but the readings that drive it now include subscribers per view and the limited-ad share rather
+than views alone.
