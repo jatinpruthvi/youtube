@@ -1,4 +1,10 @@
-# Per-item PPM review - all 51 tracker items
+# Per-item PPM review - all 62 tracker items
+
+> **Revision note.** The original review covered the 51 items that existed when it was written. `DECISIONS.md` D-04 added five
+> (`VAL-01`, `DAT-09`, `SHR-01`, `ANC-01`, `CMP-05`), reviewed in their own rows and in **section 9**; `DECISIONS.md` D-10 later added
+> three more (`TOP-04`, `PUB-04`, `ANA-05`), reviewed in section 10, D-12 added `REN-10`, and D-14/D-15 added `AUD-06` and `ANA-06`. The
+> group arithmetic in sections 2-5 is left exactly as derived for the twelve-item package, because none of the five changes a
+> group total: three are $0 levers and two open a new group (G8) that was never additive to the twelve.
 
 Mission question: *would improving, accelerating or resequencing this item increase PPM, and by how much per month?*
 Answer for every item in `tracker/items.json`, in tracker order, with the arithmetic shown.
@@ -7,7 +13,7 @@ Answer for every item in `tracker/items.json`, in tracker order, with the arithm
 
 ## 0. Which inputs are measured, and which are assumed
 
-**This repository contains no measured performance data.** `src/` does not exist, so no pipeline has run; all 51 tracker items
+**This repository contains no measured performance data.** `src/` does not exist, so no pipeline has run; all 62 tracker items
 are `todo`, so no episode has been produced, nothing has been uploaded, and no revenue or analytics row exists anywhere in the
 repo. There is no YouTube Studio export, no CTR log, no RPM history and no invoice in this repository.
 
@@ -15,7 +21,7 @@ So the honest position is: **the revenue side is entirely assumed; the only hard
 
 | Input | Value used | Status | Where it comes from | Plausible range |
 |---|---|---|---|---|
-| Published episodes | 0 | **MEASURED** | tracker: 51/51 items `todo` | 0 |
+| Published episodes | 0 | **MEASURED** | tracker: 62/62 items `todo` | 0 |
 | Revenue earned to date | $0 | **MEASURED** | no channel exists (`CMP-01` todo) | $0 |
 | Library size | 900 videos | ASSUMED | `01-ai-data-documentary-branches.md`, Month 13-16 projection row | 360 - 1,500 |
 | Views per video per day | **40 / 61 / 94** (low / likely / high) | ASSUMED | branches projection rows: 61 at Month 13-16 (55,000 / 900), 94 at Month 25-28 (170,000 / 1,800); 40 is this review's floor | 40 - 94 |
@@ -127,6 +133,7 @@ the same group move the same variable and **cannot be added to each other**.
 | `DAT-06` | Build Data Normalizer (ISO-3 reconciliation, PPP vs Nominal tagging, mi... <sub>3h - P0</sub> | c | - | No impact | $0 - prevents ISO/unit mismatches (error risk) | No - $0/mo |
 | `DAT-07` | Build Deterministic Statistical Analyzer & DataBrief JSON + Fact-ID Led... <sub>3.5h - P0</sub> | c | - | No impact | $0 - the fact ledger is the hallucination defence; a failure costs more than the base | No - $0/mo |
 | `DAT-08` | Build FastMCP data-grounding server (get_indicator, rank_countries, get... <sub>3h - P0</sub> | c | - | No impact | $0 - saves ~5h/mo labour and ~$1.50/mo retry tokens (below the noise floor) | No - $0/mo |
+| `DAT-09` | Build the record/replay HTTP fixture harness so every connector test runs... <sub>2h - P0</sub> | c | - | No impact | $0 - without it, 7 live providers make the offline-test rule unenforceable and CI silently becomes a network test | No - $0/mo, and it makes every later item's test claim real |
 
 ### T03 - Topic Intelligence & Editorial Queue
 
@@ -141,7 +148,7 @@ the same group move the same variable and **cannot be added to each other**.
 | ID | Item | Kind | Group | Verdict | $/month delta (arithmetic) | Worth the hours? |
 |---|---|---|---|---|---|---|
 | `SCR-01` | Define Pydantic SceneGraph JSON Schema (acts, scenes, visual templates,... <sub>3h - P0</sub> | c | - | No impact | $0 - schema precondition for SCR-02..04 | No - $0/mo |
-| `SCR-02` | Engineer versioned Claude 3.5 Sonnet prompts with prompt caching and a... <sub>4h - P0</sub> | b | C | Negligible | prompt caching cuts a script from $0.15 to $0.08 x 30 = **+$2** at every base (plan: >=70% input-token savings) | No - $0.50/h |
+| `SCR-02` | Engineer versioned front-tier-model prompts with prompt caching and a re... <sub>4h - P0</sub> | b | C | Negligible | prompt caching cuts a script from $0.30 to $0.15 of cost x 30 = **+$2** at every base (plan: >=70% input-token savings) | No - $0.50/h |
 | `SCR-03` | Build Zero-Hallucination Automated Fact-Audit Gate & targeted auto-repa... <sub>3h - P0</sub> | c | - | No impact | $0 - one ungrounded number risks a strike; counted only when it prevents that | No - $0/mo |
 | `SCR-04` | Add Retention Pacing Linter (0-35s hook, open loops, pattern interrupts... <sub>2h - P1</sub> | a | G3 | Moves PPM | +4% views = 4% x ($7,560 / $11,529 / $17,766) = **+$302 / $461 / $711** - G3 leader | Yes - $230/h |
 
@@ -154,6 +161,7 @@ the same group move the same variable and **cannot be added to each other**.
 | `AUD-03` | Integrate WhisperX / stable-ts Forced Word-Level Alignment <sub>2.5h - P0</sub> | c | - | No impact | $0 - alignment enables captions/SRT export only | No - $0/mo |
 | `AUD-04` | Curate royalty-free ambient documentary BGM stems & micro-SFX library w... <sub>2h - P0</sub> | c | - | No impact | $0 - licence manifest is strike insurance | No - $0/mo |
 | `AUD-05` | Build FFmpeg Audio Mixer (sidechain BGM ducking, timestamped SFX inject... <sub>3h - P0</sub> | a | - | No impact | $0 - YouTube re-normalises loudness itself; -14 LUFS does not change RPM | No - $0/mo |
+| `AUD-06` | Build the spoken-number back-check: ASR the TTS audio and diff the nume... <sub>2h - P0</sub> | c | - | Risk spine | $0 - it protects the claim the whole channel is built on; a wrong number spoken over a correct chart is unpriceable damage | Yes - $0/mo, and it is the only check that audits the artefact rather than the intermediate file |
 
 ### T06 - 4K 60FPS GPU Rendering & Visual Template Library
 
@@ -168,6 +176,8 @@ the same group move the same variable and **cannot be added to each other**.
 | `REN-07` | Implement Template 6: HistoricalLineRace & Template 7: AnimatedBubbleSc... <sub>4h - P1</sub> | a | U | Not quantifiable | Unknown - needs: CTR and AVD of the two new templates vs the bar-chart baseline over 10 videos | Maybe - after 10 videos |
 | `REN-08` | Implement Template 8: DistributionHistogram + Pre-Baked 4K60 Ambient Mo... <sub>3h - P1</sub> | c | - | No impact | $0 - backgrounds are polish, not distribution | No - $0/mo |
 | `REN-09` | Build Scene Concatenator, Master Audio-Video Muxer & YouTube 4K60 Expor... <sub>2.5h - P0</sub> | c | - | No impact | $0 - muxer/export is the last mile of REN-02 | No - $0/mo |
+| `REN-10` | Add the 4K60 (3840x2160) preset to the render engine once the channel is... <sub>2h - P2</sub> | c | - | No impact | $0 - a preset, not a lever. It is 2.2x the pixels and bitrate of 1440p60 for a difference mobile cannot resolve, which is why D-12 defers it behind YPP | No - $0/mo, and it saves ~30h of T06 ahead of the Day-45 gate |
+| `SHR-01` | Build the 60s Shorts hook extractor (climax clip, burned captions, long... <sub>2.5h - P1</sub> | a | G8 | Moves PPM (new group) | 400-1,000 long-form views x $10.50 RPM / 1000 = **+$4.20-$10.50 per episode**, earned once over the Short's life, not per day - priced in full in section 6 | Yes - $1.70-$4.20 per hour, but it is the cheapest new-surface experiment in the plan |
 
 ### T07 - Thumbnail Factory & A/B Packaging
 
@@ -189,12 +199,14 @@ the same group move the same variable and **cannot be added to each other**.
 |---|---|---|---|---|---|---|
 | `PUB-01` | Configure Google Cloud OAuth & YouTube Data API v3 Resumable Uploader (... <sub>3h - P0</sub> | c | - | No impact | $0 - upload gate; without it revenue is exactly $0 | No - $0/mo |
 | `PUB-02` | Build Automated Metadata & SRT Subtitle Localizer (German, French, Jap... <sub>3h - P0</sub> | a | G5 | Moves PPM | +5% views in the revenue set at the $3.73 blend (sec.0.1): 1,800 / 2,745 / 4,230 v/day x 30 / 1000 x $3.73 = **+$202 / $307 / $474** - G5 low bound | Yes - $102/h |
-| `PUB-03` | Build Facebook In-Stream Cut Generator (3s visual hook + burned caption... <sub>3.5h - P1</sub> | a | G4 | Moves PPM | plan's FB floor +15% on rendered revenue = 15% x ($7,560 / $11,529 / $17,766) = **+$1,134 / $1,729 / $2,665** | Yes - $494/h |
+| `PUB-03` | Build Facebook In-Stream Cut Generator (3s visual hook + burned caption... <sub>3.5h - P1</sub> | a | G4 | Moves PPM, **now gated** | plan's FB floor +15% on rendered revenue = 15% x ($7,560 / $11,529 / $17,766) = **+$1,134 / $1,729 / $2,665** - but `DECISIONS.md` D-06 removes it from the base case until the Page is confirmed eligible | Yes - $494/h only after eligibility; $0/h before it |
+| `ANC-01` | Build the ancillary revenue lane: per-episode dataset page, SVG exports and... <sub>3.5h - P1</sub> | a | G8 | Moves PPM (new group) | 22% of revenue = **$330-$440/day of revenue** at the $1,500-$2,000 goals - the only item that touches the line the plan leaves at 0% of the tracker, priced in full in section 6 | Yes - $95/h at the likely base, and it doubles as demonetisation insurance |
 
 ### T10 - Pipeline Orchestrator & Crash-Resumable DAG
 
 | ID | Item | Kind | Group | Verdict | $/month delta (arithmetic) | Worth the hours? |
 |---|---|---|---|---|---|---|
+| `VAL-01` | Ship the Falsification Episode (hand-built 1080p30 thin slice) and publi... <sub>6h - P0</sub> | g | - | **Gate** | $0 directly - it authorises or cancels the 31.5h T06 spend before it is made, and supplies a views/video/day number 30 episodes earlier | Yes - the highest risk removal per hour in the plan |
 | `ORC-01` | Build Resumable Episode DAG Orchestrator (SQLite state machine with sce... <sub>3.5h - P0</sub> | c | - | No impact | $0 - resumability saves rework, not revenue | No - $0/mo |
 | `ORC-02` | Configure Daily Autonomous Cron / Systemd Timer for 30-in-30 Production... <sub>2h - P1</sub> | c | - | No impact | $0 - the cron is the cadence switch for REN-02's throughput | No - $0/mo |
 
@@ -206,6 +218,7 @@ the same group move the same variable and **cannot be added to each other**.
 | `CMP-02` | Implement Anti-Demonetization Policy Checklist & Citation/License Audit... <sub>1.5h - P0</sub> | c | - | No impact | $0 - demonetisation insurance | No - $0/mo |
 | `CMP-03` | Apply for YouTube Partner Program (1k subs + 4k watch hrs) & Facebook I... <sub>3h - P1</sub> | g | - | No impact | $0 - unlocks the existing revenue; not a delta | No - gate, not a lever |
 | `CMP-04` | Complete India USD Payout & Tax Optimization (AdSense SWIFT, US Form W-... <sub>2h - P1</sub> | a | T | Moves PPM | W-8BEN 30% to 15% on 40% US-origin revenue (assumed, 25-55%) = 6% x ($7,560 / $11,529 / $17,766) = **+$454 / $692 / $1,066** | Yes - $346/h |
+| `CMP-05` | Write the docs/compliance/W8BEN_CHECKLIST.md filing artifact that CMP-04... <sub>1.5h - P1</sub> | c | T | No impact on PPM | $0 of PPM - it is the artifact CMP-04 executes, and CMP-04's +$70/day is cash retained, a withholding line, not a revenue lever | Yes - $0/mo, but it is the difference between claiming and doing |
 
 ### T12 - Analytics Feedback Loop & Multi-Channel Scale
 
@@ -215,6 +228,7 @@ the same group move the same variable and **cannot be added to each other**.
 | `ANA-02` | Build Retention Drop-Off Diagnostic & RPM-per-Topic Feedback Loop <sub>3h - P1</sub> | a | G3 | Moves PPM | +4% views from the retention/RPM loop = **+$302 / $461 / $711** - inside G3, so it repeats SCR-04's claim | Yes - $154/h |
 | `ANA-03` | Build Automated Annual Dataset Refresh Trigger ('2027/2028 Edition' re-... <sub>4h - P2</sub> | a | G6 | Moves PPM | refresh 100 of 900 at +60%: 2,400 / 3,660 / 5,640 extra v/day x 30 / 1000 x $7 = **+$504 / $769 / $1,184** | Yes - $192/h |
 | `ANA-04` | Add Multi-Channel Config Isolation & Multi-Language Audio Dubbing (YouT... <sub>5h - P2</sub> | a | G5 | Moves PPM | +15% views at the same $3.73 revenue-set blend: 5,400 / 8,235 / 12,690 v/day x 30 / 1000 x $3.73 = **+$605 / $922 / $1,421** - G5 leader | Yes - $184/h |
+| `ANA-06` | Build the monthly back-catalogue repackage pass (title + thumbnail ref... <sub>2h - P1</sub> | a | G1 | Moves PPM, **capped by G1's leader** | CTR applied to impressions that already exist, on videos that already exist: the only v lever with no production cost and no library dilution. Sized inside G1, so it cannot be added to `THM-01` | Yes - nothing per episode after the first pass |
 
 ## 2. Why these deltas cannot simply be added
 
@@ -382,25 +396,27 @@ item, because they all scale with revenue together; only the fixed-dollar items 
 enough to change the order.
 
 A low rank is not a reason to skip an item: `REN-02` and `PUB-02` are prerequisites for items above them, and `PUB-02` is the floor
-of G5.
+of G5. `SHR-01` and `ANC-01` are ranked in section 9 instead, because they move variables this table's twelve never touched.
 
-## 5. The 39 items that do not move PPM
+## 5. The 46 items that do not move PPM
 
-Twelve items move PPM. The other 39 do not, and adding them to a forecast is how the plan's earlier numbers got inflated: 4 with
-negligible cost savings, 4 unpriceable, and 31 at exactly $0.
+Sixteen items move PPM - the twelve in section 4, `SHR-01` and `ANC-01` in group G8 (section 9), `ANA-05` inside G6, and `ANA-06`
+inside G1. The other 46 do not, and adding them to a forecast is how the plan's earlier numbers got inflated: 4 with negligible
+cost savings, 6 unpriceable, and 36 at exactly $0.
 
-* **Gates - not deltas:** `CMP-01`, `CMP-03`, `PUB-01`. The base already assumes they passed, so they cannot be counted twice.
+* **Gates - not deltas:** `CMP-01`, `CMP-03`, `PUB-01`, `VAL-01`. The base already assumes they passed, so they cannot be counted twice.
 * **Risk spine - large if a failure happens, $0 until it does:** `DAT-02`, `DAT-03`, `DAT-06`, `DAT-07`, `SCR-03`, `CMP-02`,
-  `AUD-04`, `QAG-01`. A demonetisation or a strike costs more than the entire base; that is insurance, not a lever.
+  `AUD-04`, `QAG-01`, `DAT-09`, `AUD-06`. `AUD-06` is the sharpest case in the list: the repository's one non-negotiable claim is
+  0% hallucination, and nothing else verifies what the voice actually says. A demonetisation or a strike costs more than the entire base; that is insurance, not a lever.
 * **Labour savers:** `DAT-08`, `ORC-01`, `ORC-02`, `QAG-02`, `ANA-01`, `INF-05`. Hours, not dollars.
 * **Negligible cost wins (counted, in group C):** `INF-01` +$12, `INF-04` +$2, `SCR-02` +$2, `AUD-01` +$5 - $21/month at every
   base, all under $7/h at the tracker's own effort estimates.
 * **Mechanism, not margin:** `REN-01`, `REN-03` to `REN-09`, `SCR-01`, `TOP-01`, `DAT-01`, `AUD-03`, `AUD-05`.
   `AUD-05` in particular: YouTube re-normalises loudness itself, so -14 LUFS does not change RPM.
 
-## 6. Not quantifiable from current data (four items)
+## 6. Not quantifiable from current data (six items)
 
-These have a real mechanism but no defensible size. Each gets the single measurement that would price it, and **all four are
+These have a real mechanism but no defensible size. Each gets the single measurement that would price it, and **all six are
 counted at $0 in section 3** - not at an invented number.
 
 | Item | Why it cannot be priced | The one measurement that fixes it |
@@ -409,6 +425,8 @@ counted at $0 in section 3** - not at an invented number.
 | `DAT-05` DBnomics/UN/IMF/OWID | same, four providers deep | the same gate metric, per provider |
 | `AUD-02` pronunciation lexicon | pronunciation plausibly affects retention, by an unknown amount | AVD on 5 episodes with vs without the lexicon |
 | `REN-07` template variety | novelty effect unknown | CTR and AVD of the two new templates vs the bar-chart baseline over 10 videos |
+| `TOP-04` demand gate | it removes no-demand episodes, which raises the measured ratio without adding views - the size depends on how many episodes it would have refused | share of queued episodes refused, and the trailing-28-day views of the accepted cohorts before vs after (VIEW_OPTIMIZATION 17) |
+| `PUB-04` session bridging | session duration plausibly raises the next upload's impressions, by an unknown amount | views-per-viewer and Browse/Suggested share before vs after on 10 matched episodes |
 
 ## 7. What this does not claim - and the plan's own fudge factors
 
@@ -533,3 +551,46 @@ Two things are therefore true at once. The goal is a views-and-RPM problem that 
 it. And the multiplier is worth having at any base: `THM-01` is $50/day at 40 views/video/day, $77/day at 61, and $118/day at 94,
 before a single extra video exists. The cheapest honest next step is still not one of the twelve: it is `ANA-01`, which replaces the
 whole 40-94 axis with a measured number after 30 published episodes - at $0/month of PPM.
+
+---
+
+## 9. The five items added by DECISIONS.md D-04
+
+These were missing from a tracker that presented itself as complete: two of the seven priced multipliers had no item at all, the
+compliance artifact multiplier 7 depends on was referenced but never scheduled, and the offline-test rule in `AGENTS.md` section 5
+had no funding.
+
+| ID | Item | Kind | Group | Verdict | Claim (as shown: per day, or per episode) | Worth the hours? |
+|---|---|---|---|---|---|---|
+| `VAL-01` | Falsification episode: one hand-built 1080p30 slice, published, 14-day read | g | - | **Gate** | $0 directly. It turns the 40-94 views/video/day axis into a measurement, and it can cancel 31.5h of render work before that work exists | Yes - 6h buys the plan's first evidence |
+| `DAT-09` | Record/replay fixture harness for all 7 providers | c | - | No impact | $0 of revenue; it is what makes "offline deterministic tests" true rather than aspirational | Yes - 2h, and every connector test after it is trustworthy |
+| `SHR-01` | 60s Shorts hook extractor with burned captions and long-form link | a | G8 | Moves PPM (new) | 400-1,000 long-form views x $10.50 RPM / 1000 = **$4.20-$10.50 per episode**, earned once per episode over the Short's lifetime | Yes - the cheapest new surface in the plan |
+| `ANC-01` | Dataset page, SVG chart exports, embeddable feed per episode | a | G8 | Moves PPM (new) | 22% of revenue = **$330-$440/day of revenue** at the $1,500-$2,000 goals - the ancillary line no item previously touched | Yes - $95/h at the likely base, and it is demonetisation insurance |
+| `CMP-05` | The `docs/compliance/W8BEN_CHECKLIST.md` artifact CMP-04 executes | c | T | No impact on PPM | $0 of PPM. CMP-04's **+$70/day** at the $1,500/day end is cash retained - a withholding line, not a revenue lever | Yes - 1.5h before the first payout cycle |
+
+**Why G8 is its own group, and why it is not added to sections 2-4.** G8's two items move different variables: the Shorts funnel
+adds *long-form views* to episodes that already exist, and the ancillary lane adds *revenue that is not advertising*. Neither
+multiplies ad revenue, so neither belongs in the CTR / RPM / throughput groups, and neither can be added to the twelve-item
+package without double counting the 22% ancillary share the memo already holds constant (`IMPROVEMENT_VALUE_AT_2K.md` 1.1-1.4).
+G8 is therefore priced and deliberately excluded from every total in this document.
+
+**What the two new movers do to the arithmetic above: nothing.** `SHR-01`'s claim is $4.20-$10.50 per episode against a
+fixed-dollar `REN-02` claim of $252-$592 per month of PPM arithmetic at the likely base, so it cannot reorder section 4. `ANC-01` is priced off
+revenue the base already assumes, so crediting it inside section 3 would count the same dollars twice.
+
+---
+
+## 10. The three items added by DECISIONS.md D-10 (views per video)
+
+`v = views / videos` is a ratio, so the only levers that raise it are more views on existing episodes, fewer bad episodes, or
+revenue-side surfaces. These three were missing from a tracker that had no line item for the metric the whole model rests on.
+
+| ID | Item | Kind | Group | Verdict | Claim | Worth the hours? |
+|---|---|---|---|---|---|---|
+| `TOP-04` | Pre-production demand gate: stale-result test and query-volume rubric per episode | g | - | **Filter** | $0 directly and unpriceable in size (section 6). It raises views/video/day by removing the denominator - the only mechanism in the plan that prevents a no-demand video from existing | Yes - 2h to build, 10 min per episode |
+| `PUB-04` | Session bridging: pillar playlist, named-next end screen, pinned comment | a | G9 | Moves PPM (new, unpriceable) | Session duration is the channel-level signal that allocates the next upload's impressions; no defensible size here (section 6) | Yes - 2.5h, and it costs nothing per episode after that |
+| `ANA-05` | First refresh wave: re-master the top 10 episodes when datasets update | a | G6 | Moves PPM, **capped by G6's leader** | A refresh adds views with **no new library**, so it is the one lever that raises views/video/day without dilution. G6's claim (100 refreshed videos at +60%) belongs to `ANA-03`; this is the single hand-run proof of it | Yes - 2.5h buys the first measurement of the refresh effect |
+
+**G9 is deliberately unpriceable and excluded from sections 2-4.** Session bridging has a documented mechanism and no measured size
+in this repository, exactly like the four items in section 6 - so it is counted at $0 there rather than given an invented percentage.
+`ANA-05` joins G6 because a refresh is a refresh whether a cron or the owner runs it, and counting both would double G6.

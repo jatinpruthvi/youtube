@@ -10,9 +10,9 @@ Every architectural decision is governed by five non-negotiable constraints:
 
 | Constraint | Engineering Implication |
 | :--- | :--- |
-| **~$100/mo Infrastructure Budget** | Zero SaaS bloat. Free public economic APIs, self-hosted GPU TTS (MeloTTS/Kokoro) + WhisperX forced alignment, prompt-cached Claude 3.5 Sonnet calls with GPT-4o fallback, hardware NVENC encoding, and a CPU control plane plus on-demand RTX 4090 budget. |
+| **~$100/mo Infrastructure Budget** | Zero SaaS bloat. Free public economic APIs, self-hosted GPU TTS (MeloTTS/Kokoro) + WhisperX forced alignment, prompt-cached calls to the current front-tier model through a provider-agnostic adapter (one alternate provider as fallback), hardware NVENC encoding, and a CPU control plane plus on-demand RTX 4090 budget. |
 | **100% Fact-Grounded Data** | LLMs **never** generate statistics from memory. Every number originates from versioned API snapshots (World Bank, FRED, OECD, IMF, OWID, DBnomics, UN Data) stored in the local SQLite warehouse and audited via deterministic post-script verification. |
-| **4K 60FPS Documentary Grade** | Naive single-threaded Manim Cairo renders take 10–20 hours per 15-min 4K60 video. Solved via **atomic scene DAG parallelism**, **static texture caching**, **OpenGL/Skia GPU rasterization**, and **zero-temp-PNG NVENC streaming**. |
+| **4K 60FPS Documentary Grade** *(launch preset 1440p60, `DECISIONS.md` D-12; 4K60 is the post-YPP upgrade)* | Naive single-threaded Manim Cairo renders take 10–20 hours per 15-min 4K60 video. Solved via **atomic scene DAG parallelism**, **static texture caching**, **OpenGL/Skia GPU rasterization**, and **zero-temp-PNG NVENC streaming**. |
 | **High-Retention & Anti-Demonetization** | Built to defeat YouTube's "Repetitious / Mass-Produced Content" filters: deep causal narration, visual template entropy enforcement (new visual every 35–50s), human 3-minute QA gate, and rich sound design. |
 | **Solo Developer Maintainability** | Monolithic Python 3.12 repository, SQLite state store (PostgreSQL when scaling; no heavy K8s/microservices), idempotent resumable pipeline stages, and Telegram/Discord mobile notifications for one-tap approval. |
 
@@ -91,13 +91,17 @@ flowchart TB
 ### Module 1: Topic Intelligence & Packaging Engine
 High RPM and high CTR are engineered **before** a single line of script is written.
 
-* **Topic Scoring Formula (`0–100`):**
-  $$\text{Score} = 0.30(\text{Tier-1 Search Demand}) + 0.25(\text{Estimated Niche CPM}) + 0.25(\text{API Data Richness}) + 0.20(\text{Curiosity Gap / Outlier Ratio})$$
+* **Topic Scoring Formula (`0–100`)** — reweighted in `DECISIONS.md` D-03 and D-10 so the score no longer pays for production convenience:
+  $$\text{Score} = 0.50(\text{Proven Search Demand}) + 0.25(\text{Estimated Niche CPM}) + 0.25(\text{Angle Novelty})$$
+  * **Data verifiability is a hard filter, not a weight.** "Can I make this easily?" is a production question; a topic that cannot be fully grounded in frozen warehouse rows is rejected before scoring, and the removed 25% moved to demand — measured from competitor views/day (`TOP-02`), not guessed.
+  * **One cluster, 30 deep** is the launch shape (`SPRINT_30_DAYS.md`, `DECISIONS.md` D-11): 20 salary/take-home episodes plus 10 adjacent cost-of-living ones. One dataset, many questions, never one template across many countries — and never six pillars of five, because a five-video cell cannot be read.
 * **High-CPM Evergreen Pillars (Tier-1 Finance/Econ CPM: $12–$28 gross / $8–$16 RPM):**
-  1. *Income, Salaries & Purchasing Power* (e.g., "Every Country Ranked by Real Average Salary")
-  2. *Cost of Living, Housing & Debt* (e.g., "Where a $100,000 Salary Actually Makes You Rich")
-  3. *Macro Wealth, GDP & Trade Flows* (e.g., "How the Top 10 Economies Changed Since 1960")
-  4. *Demographics, Taxes & Quality of Life* (e.g., "Every Country Ranked by Effective Tax Rate vs Services")
+  1. *Salaries & Take-Home* (e.g., "Average Salary by Country (2026): Take-Home Pay")
+  2. *Cost of Living & Housing* (e.g., "What $1,000 Buys in 50 Countries")
+  3. *Macro Wealth & Debt* (e.g., "Top 15 Economies Ranked, 1950 to 2050")
+  4. *Taxes & Retirement* (e.g., "Effective Tax Rate by Country: What You Actually Pay")
+  5. *Demographics & Labour* (e.g., "Fertility Rate by Country: The 2026 Demographic Cliff")
+  6. *US-vs-World, the Tier-1 hook* (e.g., "US vs Europe: Where a Salary Goes Further")
 * **Packaging First Rule:** Every queued episode must lock its **Title (≤60 chars)**, **3 Thumbnail Concepts**, and **Primary Hook Visual** before entering the ETL stage.
 
 ---
@@ -130,8 +134,9 @@ Eliminates LLM hallucinations permanently by treating economic data like a finan
 Transforms raw `DataBrief.json` into a **10–18 minute high-retention documentary** (1,600–2,700 words at ~155 WPM).
 
 * **Model & Cost Optimization:**
-  * Primary: **Claude 3.5 Sonnet** (~$0.05/script) for structured JSON + engaging documentary prose, with **Anthropic Prompt Caching** enabled on the system prompt, visual template catalog and style guide (~70% input-token savings).
-  * Fallback: **GPT-4o** (~$0.08/script) when the primary call fails the fact-audit gate twice.
+  * Primary: the **current front-tier model** resolved from `config/models.yaml` (Sonnet-class at build time), for structured JSON + engaging documentary prose, with **prompt caching** enabled on the system prompt, visual template catalog and style guide (~70% input-token savings).
+  * Fallback: the registry's alternate provider when the primary call fails the fact-audit gate twice.
+  * Model names are configuration, never code (`DECISIONS.md` D-07): a retired model is a config edit, and script cost is budgeted at **$0.15–$0.30 per episode** because the audit loop retries.
   * A local **Ollama + Llama 3.1 8B** handles metadata, tags and descriptions only — never narration (generic prose kills first-30s retention).
 * **Retention Blueprint (Enforced by Pydantic Schema):**
   1. **`0:00–0:35` Cold Hook & Visual Proof:** Immediate provocative contrast backed by a fast animated reveal + open loop ("By the end, you'll see why a $45,000 salary in Country X buys more than $110,000 in Country Y").
@@ -166,6 +171,11 @@ Documentary authority lives or dies on audio quality and frame-accurate synchron
 ### Module 5: 4K 60FPS GPU Rendering Engine (The Core Technical Differentiator)
 
 #### Solving the 4K 60FPS Performance Bottleneck
+
+> **Launch preset (`DECISIONS.md` D-12):** the pipeline, atomic scene graph, static caching and direct-pipe encoding below are
+> resolution-independent and ship at **1440p60** first — 3.69M pixels/frame against 8.29M, i.e. 2.2x cheaper in render time,
+> bitrate and upload. The **4K60 preset is `REN-10`**, gated behind YPP approval, because the repository holds no evidence that
+> resolution moves CTR or retention for static data charts, and mobile watch time cannot resolve the difference.
 A 15-minute 4K60 video contains **54,000 frames** (`3840 × 2160`). Naive Manim Community (Cairo CPU) rendering takes 10–20 hours and bloats disk I/O. Our architecture reduces this to **20–35 minutes**:
 
 1. **Atomic Scene Graph Splitting:**
@@ -222,10 +232,10 @@ Zero broken videos ever reach YouTube.
 ### Module 8: Localization & Multi-Platform Distribution
 * **YouTube Data API v3 (`src/publish/youtube.py`):**
   * Resumable chunked upload (`private` or `scheduled` at peak Tier-1 US/EU time: **14:00–16:00 UTC / 19:30–21:30 IST**).
-  * Automated **Localized Metadata (`localizations` object)** translated by Claude for the **revenue set — German (`de`), French (`fr`), Japanese (`ja`)** — localized Title + Description + Search Tags. The set is ordered by per-market RPM, not by population; the index and its derivation are in `PPM_REVIEW.md` sec.0.
+  * Automated **Localized Metadata (`localizations` object)** for the **revenue set — German (`de`), French (`fr`), Japanese (`ja`)** — localized Title + Description + Search Tags, **shipped only in the same commit as captions in that language** (`DECISIONS.md` D-05): a German title over English narration buys a bounce, which is a negative on the satisfaction signal that allocates impressions. The set is ordered by per-market RPM, not by population; the index and its derivation are in `PPM_REVIEW.md` sec.0.
   * Automated **Multi-Language Subtitles (`.srt`)** uploaded for `en`, `de`, `fr`, `ja`, plus **captions-only reach markets `es-419`, `pt-BR`, `hi`** (boosts global search indexing & watch time; no RPM is claimed for these). **Arabic (`ar`) is dropped** under the same decision: its RPM index is below every reach market's. The language list is configuration, not code.
   * Automated YouTube Chapter timestamps injected into description from `SceneGraph`.
-* **Facebook In-Stream Automation (`src/publish/facebook.py`):**
+* **Facebook In-Stream Automation (`src/publish/facebook.py`):** — **gated** (`DECISIONS.md` D-06): eligibility is confirmed on the actual Page before any render code is written, the Facebook line contributes $0 to the model until approval exists, and the plan's +15% lift is treated as upside rather than baseline.
   * Generates a secondary **Facebook-tuned cut** via FFmpeg:
     * Inserts a punchy 3-second kinetic hook card at `0:00` to capture muted newsfeed scrollers.
     * Burns in clean, high-contrast bottom captions (`ass` subtitle filter) since ~70% of FB feed starts muted.
@@ -269,8 +279,8 @@ Two proven deployment topologies that respect the **~$100/month** constraint:
 | Component | Specification / Provider | Est. Monthly Cost |
 | :--- | :--- | :---: |
 | **Control Plane VPS** | Hetzner CPX41 (8 vCPU, 16 GB RAM, 240 GB NVMe) — cron, SQLite, FastMCP data server, Python scripts, RSS parser, uploader | $27 |
-| **On-Demand GPU Worker** | RunPod / Vast.ai RTX 4090 (24 GB) provisioned by API for ~2 h/day (≈60 h/mo) — TTS, alignment, 4K60 render | $20–35 |
-| **Script LLM (Claude 3.5 Sonnet + caching)** | ~30 scripts + scene graphs + de/fr/ja localized metadata (~$0.05–0.30/video) | $10 |
+| **On-Demand GPU Worker** | RunPod / Vast.ai RTX 4090 (24 GB) provisioned by API for ~2 h/day (≈60 h/mo) — TTS, alignment, 1440p60 render — **provisioned as a ceiling; billed per episode** (`D-13`, `BASELINE.md` §3): the SLA implies 5.4–9.8 GPU-hours a month at the launch preset, i.e. $2.18–$3.91 of cost, so the line below is the cap and not the forecast | $20–35 |
+| **Script LLM (front-tier model + caching)** | ~30 scripts + scene graphs + de/fr/ja metadata; a cost of ~$0.15–$0.30 per video with the audit retries | $10 |
 | **Voiceover** | Self-hosted MeloTTS / Kokoro on the GPU worker, Azure Neural fallback | $5 |
 | **Economic Data APIs** | World Bank, FRED, OECD, IMF, OWID, DBnomics, UN Data | $0 |
 | **Storage** | Hetzner Volume / Backblaze B2 / Cloudflare R2 — 500 GB masters + backups | $5 |
@@ -298,6 +308,7 @@ youtube/
 ├── README.md
 ├── docs/
 │   ├── ARCHITECTURE.md            # This system architecture blueprint
+│   ├── DECISIONS.md               # Decision record: the 9 operating calls made before code
 │   ├── TRACKER.md                 # Complete item-by-item implementation checklist
 │   └── SPRINT_30_DAYS.md          # 30 Videos in 30 Days production & topic tracker
 ├── tracker/
@@ -306,6 +317,7 @@ youtube/
 │   └── track.py                   # CLI tool to view, filter & update tracker items
 ├── config/
 │   ├── settings.yaml              # Pipeline settings, render presets, upload schedule
+│   ├── models.yaml                # LLM registry: capability flags, cost, fallback order (D-07)
 │   ├── style_guide.yaml           # 4K60 colors, typography, safe margins, animation curves
 │   ├── pronunciation.json         # TTS phonetic dictionary
 │   └── prompts/                   # Versioned Claude prompt templates (cached)
@@ -316,6 +328,8 @@ youtube/
 │   ├── bgm/                       # Licensed ambient documentary music stems
 │   ├── sfx/                       # Micro-SFX pack (whoosh, pop, tick, riser)
 │   └── backgrounds/               # Pre-baked 4K60 looping dark-mode motion textures
+├── tests/
+│   └── fixtures/                  # Recorded provider cassettes, replayed offline (DAT-09)
 ├── data/
 │   ├── production.db              # SQLite warehouse (schema.sql applied) + analytics tables
 │   ├── schema.sql                 # Production schema (rss_items, videos, ats_snapshots, ...)
@@ -329,7 +343,7 @@ youtube/
     │   ├── normalizer.py          # ISO-3 mapping, PPP/CPI alignment, currency handling
     │   └── analyzer.py            # Deterministic ranking & stats -> DataBrief JSON
     ├── script/
-    │   ├── generator.py           # Claude 3.5 Sonnet client (GPT-4o fallback) + caching + structured output
+    │   ├── generator.py           # Provider-agnostic LLM adapter (config/models.yaml) + caching + structured output
     │   ├── schema.py              # Pydantic SceneGraph & retention rule validators
     │   └── fact_auditor.py        # Post-generation numeric fact verification gate
     ├── audio/

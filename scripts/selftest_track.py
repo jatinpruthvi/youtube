@@ -7,7 +7,7 @@ repository is never modified. Each case plants one broken graph and requires
 unmodified copy and requires it to pass.
 
 This exists because validate is the only thing standing between a typo'd
-dependency and a 51-item plan. A cycle, a dangling ID, a duplicate ID and an
+dependency and a 56-item plan. A cycle, a dangling ID, a duplicate ID and an
 unknown status all parse as JSON and every other command tolerates them, so if
 the checks are weakened or the exit status stops being propagated, the planted
 cases stop failing and this test fails with them. A validator that rejected
@@ -24,11 +24,20 @@ import tempfile
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from doccheck import ROOT, Checker
 
+def plant_cycle(d):
+    """Close a real loop: take a child that already has a dependency and make
+    its parent depend back on it. Planting the cycle on items[0] only worked
+    while items[0]/items[1] happened to be a dependency pair, which is a
+    property of the tracker's ordering and not of the validator."""
+    by_id = {i["id"]: i for i in d["items"]}
+    child = next(i for i in d["items"] if i["dependencies"])
+    parent = by_id[child["dependencies"][0]]
+    parent["dependencies"] = parent["dependencies"] + [child["id"]]
+
+
 # (case name, mutation of the parsed items.json, text the validator must print)
 CASES = [
-    ("dependency cycle",
-     lambda d: d["items"][0].__setitem__("dependencies", [d["items"][1]["id"]]),
-     "dependency cycle:"),
+    ("dependency cycle", plant_cycle, "dependency cycle:"),
     ("dangling dependency",
      lambda d: d["items"][0].__setitem__("dependencies", ["NOPE-99"]),
      "dangling dependency"),
