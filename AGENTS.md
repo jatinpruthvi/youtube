@@ -22,8 +22,8 @@ Always consult these before planning or writing code:
 | File | Role |
 | :--- | :--- |
 | `docs/ARCHITECTURE.md` | Full system architecture, 10 module specs, 4K60 NVENC strategy, ~$100/mo unit economics (CPX41 + on-demand 4090) |
-| `docs/DECISIONS.md` | Decision record D-01…D-09: cadence ramp, falsification gate (`VAL-01`), 6x5 slate, tracker completeness, captions-before-metadata, Facebook eligibility gate, provider-agnostic LLM layer, contracts/fixtures, anti-demonetization strategy |
-| `docs/TRACKER.md` | Human-readable 56-item Master Track List across 12 tracks and 4 phases |
+| `docs/DECISIONS.md` | Decision record D-01…D-10: cadence ramp, falsification gate (`VAL-01`), 6x5 slate, tracker completeness, captions-before-metadata, Facebook eligibility gate, provider-agnostic LLM layer, contracts/fixtures, anti-demonetization strategy, views-per-video levers |
+| `docs/TRACKER.md` | Human-readable 59-item Master Track List across 12 tracks and 4 phases |
 | `docs/SPRINT_30_DAYS.md` | 30 Videos in 30 Days production schedule & 30 high-CPM episode specs |
 | `tracker/items.json` | Machine-readable task database (validated acyclic DAG) |
 

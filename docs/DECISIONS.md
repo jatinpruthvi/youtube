@@ -3,11 +3,12 @@
 > **Mission (unchanged):** $1,500–$2,000/day of profit from pure platform ad revenue, solo-operated, ~$100/month infrastructure budget.
 > **Status: decided and applied.** Every decision below is either already reflected in `tracker/items.json`, in an acceptance criterion, or in a sibling doc named on the row. Nothing here is pending owner input.
 
-The blueprint arrived with an unusually honest financial model — inputs labelled MEASURED vs ASSUMED, one pinned baseline, and doc invariants in `scripts/` that fail CI when a figure drifts. What it did **not** have was a set of operating decisions. Nine ambiguities each had more than one defensible answer, and each one silently changes what gets built first. They are decided here, once, with the arithmetic that decided them.
+The blueprint arrived with an unusually honest financial model — inputs labelled MEASURED vs ASSUMED, one pinned baseline, and doc invariants in `scripts/` that fail CI when a figure drifts. What it did **not** have was a set of operating decisions. Ten ambiguities each had more than one defensible answer, and each one silently changes what gets built first. They are decided
+here, once, with the arithmetic that decided them.
 
 ---
 
-## Summary of the nine decisions
+## Summary of the ten decisions
 
 | ID | Decision | Consequence in the repo | Evidence class |
 | :--- | :--- | :--- | :--- |
@@ -20,8 +21,10 @@ The blueprint arrived with an unusually honest financial model — inputs labell
 | **D-07** | The LLM layer is provider-agnostic; docs stop naming retired models | `SCR-02` builds against an adapter + `config/models.yaml` | named models age in weeks |
 | **D-08** | Contracts and fixtures land before templates: `RenderSpec`, `schema_version`, artifact layout, record/replay cassettes | `REN-01`, `SCR-01`, `ORC-01`, `DAT-09` acceptance criteria | 8 templates x 7 providers otherwise diverge |
 | **D-09** | Anti-demonetization is bought with topical concentration and visible provenance, not with more templates | `D-03` + `ANC-01` dataset page; TTS-vs-human voice decided on `VAL-01` data | the risk is a policy judgement, not a render quality problem |
+| **D-10** | Views per video is bought with **queries, concentration and refresh rates**, never with output volume | `TOP-04`, `PUB-04`, `ANA-05` added; 56 → 59 items; the video-30 gate re-scaled to trend | v is a ratio: adding 30 videos to 900 cuts it 3.3% unless demand grows |
 
-Total plan effort moves from 142.0h to **157.5h** (0/56 items). The 15.5h increase buys one falsification episode, one test harness and three levers that were priced but never scheduled.
+Total plan effort moves from 142.0h to **164.5h** (0/59 items). The 22.5h increase buys one falsification episode, one test harness,
+three levers that were priced but never scheduled, and the three views-per-video levers in D-10.
 
 ---
 
@@ -142,4 +145,40 @@ Total plan effort moves from 142.0h to **157.5h** (0/56 items). The 15.5h increa
 | `tracker/items.json` dependencies (`REN-02`, `ORC-02` → `VAL-01`) | D-02 |
 | Acceptance criteria on `TOP-01`, `REN-01`, `SCR-01`, `ORC-01`, `DAT-02`, `PUB-02`, `PUB-03` | D-03, D-05, D-06, D-08 |
 | `docs/SPRINT_30_DAYS.md` rhythm table and slate | D-01, D-03 |
+| `TOP-04`'s refusal rule in the editorial queue; the cohort-trend gate in `SPRINT_30_DAYS.md` | D-10 |
 | `python3 scripts/track.py validate` and `python3 scripts/check_docs.py` | D-04 and every figure in this file |
+
+---
+
+## D-10 — Views per video is bought with queries, concentration and refresh rates, not with volume
+
+**Decision.** Three additions and one rule. `TOP-04` (2h) makes a **demand verdict mandatory before production**: top-3 competitor
+results, their age, and their views/day, recorded per episode, with the queue *refusing* an episode that has no query volume or
+whose top results are recent. `PUB-04` (2.5h) builds **session bridging** — pillar playlists, an end screen naming one next episode
+instead of asking for a subscribe, a pinned comment with chapters and the dataset link. `ANA-05` (2.5h) runs the **first refresh
+wave**: the ten best episodes re-mastered and re-released when their datasets update. The rule: **after Day 90, 80% of output goes
+to the two best-performing pillars**, because browse and suggested recommend inside a cluster.
+
+**Why.** `v = views / videos` is a **ratio**, and the plan treated cadence as if it raised it. It does the opposite:
+
+```
+hold v=61 while adding 30 videos to a 900-video library
+    -> total views must rise by 1,830/day every month = +3.3%/month
+    -> at 30 videos, one month of publishing doubles the denominator
+```
+
+So publishing is not a v lever, it is a **v tax** unless demand grows with it. The mechanisms that do move v are ranked in
+`VIEW_OPTIMIZATION.md` §17: query selection first (at zero subscribers, search is the only surface a new channel ranks on), then
+topical concentration, then packaging, then satisfaction, then surfaces, then refresh waves. Three of those six were missing from
+the tracker, and the two cheapest are research work rather than code.
+
+**A second finding, fixed in the same change.** The video-30 gate applied the **library-scale** requirement (155 views/video/day
+for 720 videos, i.e. 111,600 views/day) to a **30-video launch cohort**, where a realistic outcome reads 0.6–17.9. That gate would
+have failed every honest launch and passed only a viral outlier. It now reads the **cohort trend** (latest five uploads' day-28
+views against the previous five) as the pass/fail, and the level only as an extrapolation.
+
+**Consequence.** 56 → 59 items, 157.5h → 164.5h. `TOP-04` costs ten minutes per episode and is the only mechanism in the plan that
+prevents a no-demand video from being produced at all — which raises the measured ratio by removing the denominator.
+
+**Rejected.** Publishing more to "give the algorithm more to work with". At this library size that lowers the metric the whole
+revenue model is built on, and it spends the scarcest resource — the operator's review time — on the lowest-yield work.

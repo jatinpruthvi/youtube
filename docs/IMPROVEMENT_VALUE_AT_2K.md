@@ -1,7 +1,7 @@
 # Reaching $1,500-$2,000/day: the decision memo
 
 > **What this file is.** The whole improvement-value analysis (308 lines, group bounds, $/hour tables, a 7-item corrections log)
-> was committed as **`fdd20d0`** and is deliberately not kept in the working tree: with 0/56 items built and nothing published, it
+> was committed as **`fdd20d0`** and is deliberately not kept in the working tree: with 0/59 items built and nothing published, it
 > prices a revenue base that does not exist. Restore it with `git show fdd20d0:docs/IMPROVEMENT_VALUE_AT_2K.md`.
 > **This memo keeps only what changes a decision.** Revisit at 100 published videos, when `ANA-01` can replace percentages with
 > measurements.

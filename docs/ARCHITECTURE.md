@@ -91,7 +91,7 @@ flowchart TB
 ### Module 1: Topic Intelligence & Packaging Engine
 High RPM and high CTR are engineered **before** a single line of script is written.
 
-* **Topic Scoring Formula (`0–100`)** — reweighted in `DECISIONS.md` D-03 so the score no longer pays for production convenience:
+* **Topic Scoring Formula (`0–100`)** — reweighted in `DECISIONS.md` D-03 and D-10 so the score no longer pays for production convenience:
   $$\text{Score} = 0.50(\text{Proven Search Demand}) + 0.25(\text{Estimated Niche CPM}) + 0.25(\text{Angle Novelty})$$
   * **Data verifiability is a hard filter, not a weight.** "Can I make this easily?" is a production question; a topic that cannot be fully grounded in frozen warehouse rows is rejected before scoring, and the removed 25% moved to demand — measured from competitor views/day (`TOP-02`), not guessed.
   * **6 pillars x 5 episodes** is the launch shape (`SPRINT_30_DAYS.md`): one dataset, many questions, never one template across many countries.

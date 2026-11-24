@@ -300,3 +300,40 @@ All at V = 1,827 videos, v = 61 views/video/day, RPM = $10.50 → $1,170/day of 
 5. Language audio on the ten best-performing videos, high-RPM markets first (§7).
 6. Shorts: climax clip with the Related-video link, plus one probe per candidate topic (§8).
 7. Dataset and SVG publication page per episode (§10).
+
+---
+
+## 17. What actually moves views per video, ranked
+
+`v = views / videos` is a **ratio**, so it is improved only by adding views, removing videos, or raising views faster than the
+library grows. That single fact reframes most of this document:
+
+```
+hold v=61 while adding 30 videos to a 900-video library
+    -> total views must rise by 30 x 61 = 1,830/day per month = +3.3%/month
+    -> adding library is not a v lever, it is a v tax unless demand grows with it
+```
+
+At 30 videos the same arithmetic is brutal: adding 30 more doubles the denominator in one month, so **the library has to double its
+totals just to stand still**. This is why the video-30 gate (`SPRINT_30_DAYS.md`) reads the trend, not the level — a level reading
+at 30 videos is a launch-cohort number (0.6–17.9), not a library-scale one (103–155).
+
+| # | Mechanism | Why it moves v | Evidence class | Cost | Already an item? |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| 1 | **Query selection with a freshness gap** | At zero subscribers, search is the only surface a new channel ranks on, so impressions exist only where the query has volume. Decided before production, free to change | measured on the slate (21/30 were format labels, §1); effect size assumed | 10 min per episode | **No** — `TOP-04` added (`DECISIONS.md` D-10) |
+| 2 | **Topical concentration** | Browse and suggested are where volume lives above search, and they recommend within a cluster. Six pillars is a learning portfolio, not a distribution portfolio | mechanism documented by YouTube; effect assumed | a decision, not work | Partly — `D-03` sets 6 pillars, `D-10` concentrates after Day 90 |
+| 3 | **Packaging (title + thumbnail)** | Converts impressions that exist into views. Cannot create impressions, so it is second, not first | +20% relative CTR assumed, never measured here | 3h + 1.5h | Yes — `THM-01`, `THM-02` |
+| 4 | **Satisfaction / retention** | Decides *future* impressions, which is the only compounding term in the system. Bait packaging that spikes CTR and loses AVD is a net loss (§5.4) | mechanism documented; effect assumed | pacing linter 2h | Yes — `SCR-04`, plus the source overlay |
+| 5 | **Surfaces: languages, Shorts, Facebook** | Adds views from a different pool without adding library, so it raises v directly | Shorts 2%–5% conversion assumed; non-EN RPM is an index assumption | `SHR-01` 2.5h, `PUB-02` 3h | Partly — `SHR-01`, `PUB-02`, `ANA-04` |
+| 6 | **Refresh waves on published episodes** | Re-renders an episode whose dataset updated: new search wave, **same library**, so v rises with no dilution. The only lever that is purely a v lever | decay-to-refresh wave assumed; the annual data cycle is measured | `ANA-05` 2.5h | **No** — `ANA-05` added (`D-10`) |
+| — | **Session bridging (playlists, series slot, end-screen bridge)** | Session time is the channel-level signal that allocates the *next* upload's impressions | mechanism documented; effect assumed | 2.5h | **No** — `PUB-04` added (`D-10`) |
+
+**Three consequences.**
+
+1. **Most of the tracker cannot move v, by construction.** Rendering, QC, orchestration, audio mastering and the data warehouse
+   protect v (they stop a bad upload or a strike) but they do not raise it. `PPM_REVIEW.md` already says this: 44 of 59 items do not
+   move PPM at all.
+2. **The cheapest v levers are research and decisions, not code** — queries, concentration, refresh. That is why `TOP-04` is a
+   gate that costs 10 minutes per episode rather than another pipeline module.
+3. **Every effect size in the table above except the measured slate reading is an assumption.** The honest position stays: v is
+   unmeasured until `ANA-01` has 28 days of data, and no item in this repository has ever demonstrated a lift.

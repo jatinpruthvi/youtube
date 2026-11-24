@@ -24,17 +24,35 @@ views/video/day required  = ad revenue x 1000 / (videos x RPM)  (1.1)
 
 At the $2,000/day end of the goal the same two paths need 206 and 138 views/video/day at $10.50 RPM.
 
+**Read the gate at the right scale — 155 is a library-scale rate, not a 30-video one.** 155 views/video/day is what 720 videos
+need: it is **111,600 views/day** of channel traffic. Applied to 30 videos it would demand 4,650 views/day from a channel with zero
+subscribers, which is not a launch target, it is a lottery ticket. A realistic first cohort — 500 to 15,000 views across 28 days —
+reads **0.6 to 17.9 views/video/day**. So the threshold below is the *destination*, and the only usable early signal is the trend,
+not the level.
+
 **The measurement.** When 30 episodes are published, `ANA-01`'s YouTube Analytics ETL gives total views for the trailing 28 days:
 
 ```
 views/video/day = views(last 28 days) / published videos / 28
 ```
 
+| Reading at 30 videos | Formula | What it decides |
+| :--- | :--- | :--- |
+| **Level** (v) | `views(28d) / 30 / 28` | Sets the extrapolation only. Under 3 says the slate has no search demand; it does **not** say the plan is dead, because v is an authority metric that keeps rising with the library |
+| **Cohort trend** | latest 5 uploads' day-28 views vs the previous 5 | **The only pass/fail.** Flat or rising means the format compounds; falling means the topic shape is wrong and more episodes will not fix it |
+| **Dilution line** | adding 30 videos to a 900-video library cuts v by 3.3% | Below **+3.3% views per month** the library grows faster than demand, so v falls even when total views rise. Publishing is not a v lever; it is a v tax |
+
 | | Decision state |
 | :--- | :--- |
-| Threshold | **≥ 155** keeps the 24-month path; **103–155** means the 36-month path at 1 video/day; **below 103** means neither path closes at this cadence and RPM — raise RPM or cadence instead of adding episodes |
+| Threshold, at library scale | **≥ 155** keeps the 24-month path at 720 videos; **103–155** means the 36-month path at 1 video/day; **below 103** means neither path closes at this cadence and RPM — raise RPM or cadence instead of adding episodes. Read it at 720 videos, never at 30 |
 | Reading captured | ⬜ blocked until 30 episodes are published and `ANA-01` has 28 days of trailing data |
 | Recorded where | `ANA-01`'s SQLite analytics table; quote the reading here when it exists |
+
+**What actually moves v, since publishing does not.** Six mechanisms raise views per video per day, and only three of them are
+items on the tracker in Phase 0-1 (`VIEW_OPTIMIZATION.md` §15 ranks all six with their evidence class). The order matters: query
+selection is decided before production and dominates; CTR only converts impressions that exist; satisfaction decides *future*
+impressions, which is the compounding term; surfaces add inventory without dilution; and a refresh wave adds views to episodes
+that already exist, which is the one lever that raises v without adding library.
 
 **Why the gate is the rate and not the view count.** Holding the $1,500–$2,000/day of profit, the library required is exactly inverse
 to this number: 22.22 views/video/day needs 5,015 videos, 61 needs 1,827, 155 needs 720, 103 needs 1,080. A gate turns that

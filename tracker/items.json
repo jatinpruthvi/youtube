@@ -298,6 +298,19 @@
       "acceptance_criteria": "Ranks candidate topics 0-100 and auto-promotes top-scoring unused topics into the daily pipeline queue."
     },
     {
+      "id": "TOP-04",
+      "track": "T03",
+      "phase": "P0_MVP_DAYS_1_7",
+      "priority": "P0",
+      "status": "todo",
+      "effort_hours": 2,
+      "title": "Build the pre-production demand gate: stale-result test and query-volume rubric recorded per episode",
+      "dependencies": [
+        "TOP-01"
+      ],
+      "acceptance_criteria": "Every queued episode carries a recorded demand verdict before the ETL stage: the top-3 competitor results for the exact query, their age in years, and their views/day (the stale-result score, VIEW_OPTIMIZATION section 2.2). An episode with no query volume or with recent top results is refused by the queue instead of being produced. Ten minutes of research per episode; this is the only mechanism that removes no-demand videos before they dilute views/video/day (DECISIONS.md D-10)."
+    },
+    {
       "id": "SCR-01",
       "track": "T04",
       "phase": "P0_MVP_DAYS_1_7",
@@ -659,6 +672,19 @@
       "acceptance_criteria": "Every episode publishes a dataset page (CSV, chart SVGs, methodology note, source citation) on a static site plus an embeddable feed, and external-traffic watch-time share is logged in SQLite. Profit Multiplier 5 is the $330-$440/day ancillary line at the goal, so this lane is instrumented from the first episode instead of assumed."
     },
     {
+      "id": "PUB-04",
+      "track": "T09",
+      "phase": "P1_SPRINT_DAYS_8_30",
+      "priority": "P1",
+      "status": "todo",
+      "effort_hours": 2.5,
+      "title": "Build session bridging: playlist/series slots, end-screen bridge to one named next video, pinned comment",
+      "dependencies": [
+        "PUB-01"
+      ],
+      "acceptance_criteria": "Every upload lands in a pillar playlist, its end screen points at one named next episode rather than a subscribe prompt, and the pinned comment carries the chapter list plus the dataset link. Session-time and views-per-viewer from Browse/Suggested are logged in SQLite so the effect is measurable rather than assumed; session duration is the channel-level signal that decides the next upload's impressions (VIEW_OPTIMIZATION sections 5 and 6)."
+    },
+    {
       "id": "ORC-01",
       "track": "T10",
       "phase": "P0_MVP_DAYS_1_7",
@@ -810,6 +836,19 @@
         "CMP-03"
       ],
       "acceptance_criteria": "Single GPU pipeline serves 3+ niche channels via channel_id configs and optional de/fr/ja audio tracks, priced at the PPM_REVIEW.md sec.0 revenue-set blend."
+    },
+    {
+      "id": "ANA-05",
+      "track": "T12",
+      "phase": "P2_OPT_MONTHS_2_6",
+      "priority": "P1",
+      "status": "todo",
+      "effort_hours": 2.5,
+      "title": "Run the first refresh wave: re-master and re-release the top 10 episodes when their datasets update",
+      "dependencies": [
+        "ANA-01"
+      ],
+      "acceptance_criteria": "The ten best-performing episodes are re-rendered with refreshed source rows and re-released (same video where YouTube permits an update, new episode where the dataset changed materially), with a recorded views delta at day 28 per episode. A refresh adds views without adding library, so it is the only lever that raises views/video/day with no dilution (DECISIONS.md D-10); ANA-03 automates this trigger later, ANA-05 proves it once by hand."
     }
   ]
 }

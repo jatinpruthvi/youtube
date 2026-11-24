@@ -1,7 +1,8 @@
-# Per-item PPM review - all 56 tracker items
+# Per-item PPM review - all 59 tracker items
 
 > **Revision note.** The original review covered the 51 items that existed when it was written. `DECISIONS.md` D-04 added five
-> (`VAL-01`, `DAT-09`, `SHR-01`, `ANC-01`, `CMP-05`), and they are reviewed in their own rows below and in **section 6**. The
+> (`VAL-01`, `DAT-09`, `SHR-01`, `ANC-01`, `CMP-05`), reviewed in their own rows and in **section 9**; `DECISIONS.md` D-10 later added
+> three more (`TOP-04`, `PUB-04`, `ANA-05`), reviewed in section 10. The
 > group arithmetic in sections 2-5 is left exactly as derived for the twelve-item package, because none of the five changes a
 > group total: three are $0 levers and two open a new group (G8) that was never additive to the twelve.
 
@@ -12,7 +13,7 @@ Answer for every item in `tracker/items.json`, in tracker order, with the arithm
 
 ## 0. Which inputs are measured, and which are assumed
 
-**This repository contains no measured performance data.** `src/` does not exist, so no pipeline has run; all 56 tracker items
+**This repository contains no measured performance data.** `src/` does not exist, so no pipeline has run; all 59 tracker items
 are `todo`, so no episode has been produced, nothing has been uploaded, and no revenue or analytics row exists anywhere in the
 repo. There is no YouTube Studio export, no CTR log, no RPM history and no invoice in this repository.
 
@@ -20,7 +21,7 @@ So the honest position is: **the revenue side is entirely assumed; the only hard
 
 | Input | Value used | Status | Where it comes from | Plausible range |
 |---|---|---|---|---|
-| Published episodes | 0 | **MEASURED** | tracker: 56/56 items `todo` | 0 |
+| Published episodes | 0 | **MEASURED** | tracker: 59/59 items `todo` | 0 |
 | Revenue earned to date | $0 | **MEASURED** | no channel exists (`CMP-01` todo) | $0 |
 | Library size | 900 videos | ASSUMED | `01-ai-data-documentary-branches.md`, Month 13-16 projection row | 360 - 1,500 |
 | Views per video per day | **40 / 61 / 94** (low / likely / high) | ASSUMED | branches projection rows: 61 at Month 13-16 (55,000 / 900), 94 at Month 25-28 (170,000 / 1,800); 40 is this review's floor | 40 - 94 |
@@ -394,11 +395,11 @@ enough to change the order.
 A low rank is not a reason to skip an item: `REN-02` and `PUB-02` are prerequisites for items above them, and `PUB-02` is the floor
 of G5. `SHR-01` and `ANC-01` are ranked in section 9 instead, because they move variables this table's twelve never touched.
 
-## 5. The 42 items that do not move PPM
+## 5. The 44 items that do not move PPM
 
-Fourteen items move PPM - the twelve in section 4 plus `SHR-01` and `ANC-01`, which open group G8 in section 9. The other 42 do
-not, and adding them to a forecast is how the plan's earlier numbers got inflated: 4 with negligible cost savings, 4 unpriceable,
-and 34 at exactly $0.
+Fifteen items move PPM - the twelve in section 4, `SHR-01` and `ANC-01` in group G8 (section 9), and `ANA-05` inside G6. The other
+44 do not, and adding them to a forecast is how the plan's earlier numbers got inflated: 4 with negligible cost savings, 6
+unpriceable, and 34 at exactly $0.
 
 * **Gates - not deltas:** `CMP-01`, `CMP-03`, `PUB-01`, `VAL-01`. The base already assumes they passed, so they cannot be counted twice.
 * **Risk spine - large if a failure happens, $0 until it does:** `DAT-02`, `DAT-03`, `DAT-06`, `DAT-07`, `SCR-03`, `CMP-02`,
@@ -409,9 +410,9 @@ and 34 at exactly $0.
 * **Mechanism, not margin:** `REN-01`, `REN-03` to `REN-09`, `SCR-01`, `TOP-01`, `DAT-01`, `AUD-03`, `AUD-05`.
   `AUD-05` in particular: YouTube re-normalises loudness itself, so -14 LUFS does not change RPM.
 
-## 6. Not quantifiable from current data (four items)
+## 6. Not quantifiable from current data (six items)
 
-These have a real mechanism but no defensible size. Each gets the single measurement that would price it, and **all four are
+These have a real mechanism but no defensible size. Each gets the single measurement that would price it, and **all six are
 counted at $0 in section 3** - not at an invented number.
 
 | Item | Why it cannot be priced | The one measurement that fixes it |
@@ -420,6 +421,8 @@ counted at $0 in section 3** - not at an invented number.
 | `DAT-05` DBnomics/UN/IMF/OWID | same, four providers deep | the same gate metric, per provider |
 | `AUD-02` pronunciation lexicon | pronunciation plausibly affects retention, by an unknown amount | AVD on 5 episodes with vs without the lexicon |
 | `REN-07` template variety | novelty effect unknown | CTR and AVD of the two new templates vs the bar-chart baseline over 10 videos |
+| `TOP-04` demand gate | it removes no-demand episodes, which raises the measured ratio without adding views - the size depends on how many episodes it would have refused | share of queued episodes refused, and the trailing-28-day views of the accepted cohorts before vs after (VIEW_OPTIMIZATION 17) |
+| `PUB-04` session bridging | session duration plausibly raises the next upload's impressions, by an unknown amount | views-per-viewer and Browse/Suggested share before vs after on 10 matched episodes |
 
 ## 7. What this does not claim - and the plan's own fudge factors
 
@@ -570,3 +573,20 @@ G8 is therefore priced and deliberately excluded from every total in this docume
 **What the two new movers do to the arithmetic above: nothing.** `SHR-01`'s claim is $4.20-$10.50 per episode against a
 fixed-dollar `REN-02` claim of $252-$592 per month of PPM arithmetic at the likely base, so it cannot reorder section 4. `ANC-01` is priced off
 revenue the base already assumes, so crediting it inside section 3 would count the same dollars twice.
+
+---
+
+## 10. The three items added by DECISIONS.md D-10 (views per video)
+
+`v = views / videos` is a ratio, so the only levers that raise it are more views on existing episodes, fewer bad episodes, or
+revenue-side surfaces. These three were missing from a tracker that had no line item for the metric the whole model rests on.
+
+| ID | Item | Kind | Group | Verdict | Claim | Worth the hours? |
+|---|---|---|---|---|---|---|
+| `TOP-04` | Pre-production demand gate: stale-result test and query-volume rubric per episode | g | - | **Filter** | $0 directly and unpriceable in size (section 6). It raises views/video/day by removing the denominator - the only mechanism in the plan that prevents a no-demand video from existing | Yes - 2h to build, 10 min per episode |
+| `PUB-04` | Session bridging: pillar playlist, named-next end screen, pinned comment | a | G9 | Moves PPM (new, unpriceable) | Session duration is the channel-level signal that allocates the next upload's impressions; no defensible size here (section 6) | Yes - 2.5h, and it costs nothing per episode after that |
+| `ANA-05` | First refresh wave: re-master the top 10 episodes when datasets update | a | G6 | Moves PPM, **capped by G6's leader** | A refresh adds views with **no new library**, so it is the one lever that raises views/video/day without dilution. G6's claim (100 refreshed videos at +60%) belongs to `ANA-03`; this is the single hand-run proof of it | Yes - 2.5h buys the first measurement of the refresh effect |
+
+**G9 is deliberately unpriceable and excluded from sections 2-4.** Session bridging has a documented mechanism and no measured size
+in this repository, exactly like the four items in section 6 - so it is counted at $0 there rather than given an invented percentage.
+`ANA-05` joins G6 because a refresh is a refresh whether a cron or the owner runs it, and counting both would double G6.
