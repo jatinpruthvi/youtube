@@ -269,7 +269,7 @@
       "dependencies": [
         "DAT-01"
       ],
-      "acceptance_criteria": "30 topics stored with status, target indicator codes, query-shaped title candidates and thumbnail concepts, seeded as 6 pillars x 5 episodes from the DECISIONS.md D-03 slate: no format-label titles, no two episodes sharing a thesis, and every title a query a person would type."
+      "acceptance_criteria": "30 topics stored with status, target indicator codes, query-shaped title candidates and thumbnail concepts, seeded as ONE cluster 30 deep (20 salary/take-home + 10 adjacent cost-of-living, DECISIONS.md D-11): no format-label titles, no two episodes sharing a thesis, and every title a query a person would type."
     },
     {
       "id": "TOP-02",

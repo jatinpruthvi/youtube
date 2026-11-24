@@ -15,6 +15,12 @@ Runs the documentation and tracker checks in order and fails if any of them fail
                    profit per day, and every per-month figure shows what it is
                    (a x30 of a day figure, a cost, a plan source, a stated
                    worth, or the rejected monthly record)
+  check_decisions.py
+                   docs/DECISIONS.md - every numeric claim re-derived from first
+                   principles and from tracker/items.json: the gate rates, the
+                   arrival month under the decided ramp, the effort chain, the
+                   dilution arithmetic, the five-video interval, the pixel
+                   ratio. Also fails if a corrected inflated claim returns
   selftest_goal.py
                    plants monthly-target violations in a temp copy of the docs
                    and requires check_goal.py to fail on each one, so its
@@ -25,7 +31,7 @@ Runs the documentation and tracker checks in order and fails if any of them fail
                    requires track.py validate to fail on each, so the graph
                    check cannot go quiet without this test noticing
 
-All six scripts are stdlib-only and resolve the repo root from their own path,
+All seven scripts are stdlib-only and resolve the repo root from their own path,
 so this works from any working directory. Shared helpers live in doccheck.py.
 """
 import os
@@ -33,7 +39,8 @@ import subprocess
 import sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-CHECKS = ("check_memo.py", "check_render.py", "check_goal.py", "selftest_goal.py", "selftest_track.py")
+CHECKS = ("check_memo.py", "check_render.py", "check_goal.py", "check_decisions.py",
+          "selftest_goal.py", "selftest_track.py")
 
 failed = []
 for name in CHECKS:

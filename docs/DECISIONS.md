@@ -23,7 +23,7 @@ here, once, with the arithmetic that decided them.
 | **D-09** | Anti-demonetization is bought with topical concentration and visible provenance, not with more templates | `D-03` + `ANC-01` dataset page; TTS-vs-human voice decided on `VAL-01` data | the risk is a policy judgement, not a render quality problem |
 | **D-10** | Views per video is bought with **queries, concentration and refresh rates**, never with output volume | `TOP-04`, `PUB-04`, `ANA-05` added; the video-30 gate re-scaled to trend | v is a ratio: adding 30 videos to 900 cuts it 3.3% unless demand grows |
 | **D-11** | **One cluster, 30 deep** — not six pillars of five | `SPRINT_30_DAYS.md` slate rebuilt (20 salary + 10 cost-of-living); concentration from Day 1, not Day 90 | a 5-video pillar reads 32–118 at 90% confidence: unmeasurable |
-| **D-12** | **1440p60 is the launch preset; 4K60 is a post-YPP upgrade.** No Facebook, no dubbing, no 4K engine before Day 45 | `REN-02` rescoped, `REN-10` added, sprint rhythm re-cut | 4K60 is 2.2x the pixels and a cost centre; zero evidence it lifts CTR for static charts on mobile |
+| **D-12** | **1440p60 is the launch preset; 4K60 is a post-YPP upgrade.** No Facebook, no dubbing, no 4K engine before Day 45 | `REN-02` rescoped, `REN-10` added (2h deferred), sprint rhythm re-cut | 4K60 is 2.25x the pixels for ~6–10 GPU-hours a month; zero evidence it lifts CTR for static charts on mobile |
 
 Total plan effort moves from 142.0h to **166.5h** (0/60 items). The 22.5h increase buys one falsification episode, one test harness,
 three levers that were priced but never scheduled, and the three views-per-video levers in D-10.
@@ -36,7 +36,13 @@ three levers that were priced but never scheduled, and the three views-per-video
 
 **Why.** `SPRINT_30_DAYS.md` already derives the gate honestly: holding $1,500/day of profit at 1/day you must sustain **155** views/video/day for a 24-month path or **103** for a 36-month path, against the plan's own assumption of **61**. Believing you will beat the plan's per-video view rate by 1.7–2.5x is not a plan; it is a hope. Cadence is the variable the operator controls, and the memo already prices it: 1,827 videos is 61 months at 30/month and 24 months at 75/month.
 
-**Consequence.** $1,500/day of profit lands in month 26–32 rather than month 21–24, and only if the ramp holds. The first hire is the **approval and QA** role, not a renderer, because the human review gate — 4–6 hours of judgement per episode — is the throughput bottleneck once rendering is automated.
+**Consequence.** Simulating the ramp (`30/mo` months 1–3, `45` 4–6, `60` 7–9, `75` thereafter) against the plan's own
+`revenue = library x v x RPM / 1000` at a 78% ad share, $10.50 RPM and $2.64/day of cost, $1,500/day of profit arrives at **month 28
+when v = 61**, month 25 at v = 70, month 23 at v = 80 — and **not until month 34 at v = 50 and month 41 at v = 40**. So the honest
+band is **month 23–41, centre 28**, not a point estimate; every 10 views/video/day is worth about six months of calendar. That is
+also why the sprint's first job is measuring v rather than assuming it. The first hire is the **approval and QA** role, not a
+renderer, because the human review gate — 4–6 hours of judgement per episode — is the throughput bottleneck once rendering is
+automated, at roughly $700 of labour cost per month (an assumption, not a quote).
 
 **Rejected.** Staying at 30/month and assuming the view rate doubles. That converts an engineering risk into a market risk and moves the arrival past five years.
 
@@ -46,7 +52,7 @@ three levers that were priced but never scheduled, and the three views-per-video
 
 **Decision.** `VAL-01` (6h, no dependencies) assembles one 10–14 minute episode **by hand**: a hand-authored `DataBrief` from one indicator across ~40 countries, a single static-slide template at 1080p30, TTS narration mastered to -14 LUFS, QC, three thumbnails, published public on the flagship channel. Fourteen days later the read is recorded as views per video per day. **≥20 keeps the format and unblocks `REN-02`; below 10 kills the topic shape** before a single line of 4K60 render code exists.
 
-**Why.** There are zero episodes, zero uploads and zero revenue rows in this repository. The single largest track (`T06`, 31.5h) is justified entirely by assumption, and the render engine is the most expensive irreversible bet in the plan. A 1080p30 static-slide slice costs 6 hours instead of 31.5 and every asset it produces — warehouse rows, `DataBrief`, script, narration, QC, thumbnails — is reused unchanged by the real pipeline. This is the cheapest falsification available.
+**Why.** There are zero episodes, zero uploads and zero revenue rows in this repository. The single largest track (`T06`, 31.5h when this was decided, 36.0h now) is justified entirely by assumption, and the render engine is the most expensive irreversible bet in the plan. A 1080p30 static-slide slice costs 6 hours instead of 31.5 and every asset it produces — warehouse rows, `DataBrief`, script, narration, QC, thumbnails — is reused unchanged by the real pipeline. This is the cheapest falsification available.
 
 **Consequence.** `REN-02` (core render engine) and `ORC-02` (daily cron) now carry `VAL-01` as a dependency, so neither can start on faith. The sprint keeps building the data, script and audio layers in parallel during the 14-day observation window; only the expensive render and the automation wait.
 
@@ -58,7 +64,7 @@ three levers that were priced but never scheduled, and the three views-per-video
 
 **Decision.** Every title is rewritten as a query a person would type, ≤60 characters, with no format label, and the topic scorer stops paying for production convenience. *(The 6-pillars-x-5 spread this decision originally carried is superseded by D-11 — the title rules below are what survived.)* The topic scorer becomes **50% proven demand + 25% auction value + 25% angle novelty**, with data verifiability demoted from a 25% weight to a **hard filter**.
 
-**Why.** `VIEW_OPTIMIZATION.md` §1 already measured the failure: **21 of 30 titles** were the same "Every Country Ranked by …" template, spread across **24 distinct pillars**, containing **4 near-duplicate thesis pairs**. A format label is not a query, and 24 pillars for 30 videos gives the recommender ~1.25 videos of evidence per topic, which makes every 28-day reading unreadable as a measurement. Paying 25% of the score for "can I make this easily?" is the same error in the ranking layer.
+**Why.** `VIEW_OPTIMIZATION.md` §1 already measured the failure: **21 of 30 titles carried the "Every Country Ranked by …" label** (20 began with it; `EP18` used it mid-title), spread across **24 distinct pillars**, containing **4 near-duplicate thesis pairs**. A format label is not a query, and 24 pillars for 30 videos gives the recommender ~1.25 videos of evidence per topic, which makes every 28-day reading unreadable as a measurement. Paying 25% of the score for "can I make this easily?" is the same error in the ranking layer.
 
 **Consequence.** `TOP-01` seeds the slate; `ARCHITECTURE.md` Module 1 carries the new weights; `SPRINT_30_DAYS.md` carries the rewritten titles. Nothing in the pipeline code changes — this is a text and scoring decision.
 
@@ -120,7 +126,7 @@ three levers that were priced but never scheduled, and the three views-per-video
 
 ## D-09 — Anti-demonetization is concentration and provenance, not more templates
 
-**Decision.** The mitigation for "inauthentic / mass-produced content" is (a) topical concentration from D-03, (b) a per-episode public dataset and methodology page from `ANC-01`, and (c) an explicit human-voice decision after `VAL-01`: if the 14-day read shows the synthetic narrator costs retention or satisfaction, `AUD-01` gains a hired-voice path at roughly $15–$40 of cost per episode.
+**Decision.** The mitigation for "inauthentic / mass-produced content" is (a) topical concentration from D-03, (b) a per-episode public dataset and methodology page from `ANC-01`, and (c) an explicit human-voice decision after `VAL-01`: if the 14-day read shows the synthetic narrator costs retention or satisfaction, `AUD-01` gains a hired-voice path. Cost it from the script length rather than by feel: 10–18 minutes at ~155 words per minute is **1,550–2,790 words**, so **$31–$140 of cost per episode** at $0.02–$0.05 per word — the low end is the affordable-hire case, not the expected one.
 
 **Why.** The genuine threat to this business is a policy judgement about whether the channel is a person making things or a machine extruding them — not render speed. Visible provenance (dataset, sources, methodology, a real page per episode) is the cheapest credible signal of intentionality, and it doubles as the external-traffic surface from `VIEW_OPTIMIZATION.md` §6.
 
@@ -196,7 +202,7 @@ considered after the Day-45 read, and then as a *second channel*, not as a wider
 **Why.** Two numbers decide it.
 
 ```
-a 5-video pillar, log-normal view spread (sigma 0.9), true value 61 v/day
+a 5-video pillar, log-normal view spread (sigma 0.9 - a modelling assumption, not measured), true 61 v/day
     -> 90% interval = 32 .. 118       (a 3.7x span)
     -> the plan's whole 61 -> 94 argument fits inside one pillar's error bar
 ```
@@ -221,16 +227,22 @@ preset becomes `REN-10`, scheduled **after** YouTube Partner Program approval (`
 same Day-45 gate: **no Facebook build** (`PUB-03` eligibility first, D-06), **no multi-language audio dubbing** (`ANA-04` stays in
 Phase 3), and **no 4K render engine work** before the cohort trend exists.
 
-**Why.** 4K60 is **8.29M pixels/frame against 3.69M at 1440p — 2.2x the render time, 2.2x the NVENC bitrate budget and 2.2x the
+**Why.** 4K60 is **8.29M pixels/frame against 3.69M at 1440p — 2.25x the render time, 2.25x the NVENC bitrate budget and 2.25x the
 upload**, for a difference the majority of the audience cannot see: mobile viewers are the majority of watch time, and phone
 displays are below 1080p. For *static and semi-animated data charts* the visible gain of 4K over 1440p is close to nil, while the
 cost — 31.5h of T06 plus GPU hours — is the largest single block in the plan. There is no evidence in this repository that
 resolution affects CTR or retention; the claim that "4K clarity" earns views is an assumption, and it is an expensive one.
 
-**Consequence.** `REN-02` is rescoped to a 1440p60-first engine (the pipeline, the templates and the NVENC pipe are identical;
-only the preset changes), `REN-10` (2h) holds the 4K60 preset behind YPP, and the sprint rhythm gains a **Days 34–45 gate** in
-which nothing new is built. Roughly 30h of the original T06 spend moves behind evidence, and the episodes ship three weeks
-earlier than they otherwise would.
+**Consequence, stated precisely.** `REN-02` is rescoped to a 1440p60-first engine — the pipeline, the templates and the NVENC
+pipe are identical, only the preset changes — so the **engineering actually deferred is 2h** (`REN-10`), not the whole of T06: 34
+of T06's 36.0h are needed at 1440p as well. The saving is a **running** one, and it is small but real: 4K60 rendering takes 20–35
+min per episode, the same engine at 1440p 9–16 min, so **5.6–9.7 fewer GPU-hours per month** at 30 episodes — $1.8–$5.6 of cost
+per month at the plan's own GPU rate — plus ~2.5x fewer upload bytes per episode.
+
+The larger point is not hours or dollars: 4K60 work does not start before the cohort trend exists, and the sprint gains a
+**Days 34–45 gate** in which nothing new is built. An earlier draft of this decision claimed "~30h of T06 spend" and "episodes
+ship three weeks earlier"; **both were wrong**, and they are recorded here because an inflated saving is how a decision record
+stops being trustworthy.
 
 **Rejected.** Rendering 4K60 from episode one because the mission line says so. The mission's own economics are views x RPM; a
 resolution the viewer cannot resolve is a cost, not a feature. The standard is not abandoned — it is scheduled.

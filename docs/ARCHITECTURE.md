@@ -94,7 +94,7 @@ High RPM and high CTR are engineered **before** a single line of script is writt
 * **Topic Scoring Formula (`0–100`)** — reweighted in `DECISIONS.md` D-03 and D-10 so the score no longer pays for production convenience:
   $$\text{Score} = 0.50(\text{Proven Search Demand}) + 0.25(\text{Estimated Niche CPM}) + 0.25(\text{Angle Novelty})$$
   * **Data verifiability is a hard filter, not a weight.** "Can I make this easily?" is a production question; a topic that cannot be fully grounded in frozen warehouse rows is rejected before scoring, and the removed 25% moved to demand — measured from competitor views/day (`TOP-02`), not guessed.
-  * **6 pillars x 5 episodes** is the launch shape (`SPRINT_30_DAYS.md`): one dataset, many questions, never one template across many countries.
+  * **One cluster, 30 deep** is the launch shape (`SPRINT_30_DAYS.md`, `DECISIONS.md` D-11): 20 salary/take-home episodes plus 10 adjacent cost-of-living ones. One dataset, many questions, never one template across many countries — and never six pillars of five, because a five-video cell cannot be read.
 * **High-CPM Evergreen Pillars (Tier-1 Finance/Econ CPM: $12–$28 gross / $8–$16 RPM):**
   1. *Salaries & Take-Home* (e.g., "Average Salary by Country (2026): Take-Home Pay")
   2. *Cost of Living & Housing* (e.g., "What $1,000 Buys in 50 Countries")

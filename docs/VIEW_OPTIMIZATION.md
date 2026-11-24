@@ -38,7 +38,7 @@ retention fix.
 
 | Reading | Value | Where it comes from |
 | :--- | :---: | :--- |
-| Titles beginning "Every Country Ranked by …" | **21 of 30** | `SPRINT_30_DAYS.md` title column |
+| Titles carrying the "Every Country Ranked by …" label | **21 of 30** (20 begin with it, `EP18` uses it mid-title) | `SPRINT_30_DAYS.md` title column |
 | Distinct pillar labels across 30 episodes | **24** | pillar column |
 | Videos in the largest single pillar | **3** (10%) | pillar column |
 | Videos in the top three pillars | **8 of 30** (27%) | pillar column |
@@ -335,5 +335,8 @@ at 30 videos is a launch-cohort number (0.6–17.9), not a library-scale one (10
    move PPM at all.
 2. **The cheapest v levers are research and decisions, not code** — queries, concentration, refresh. That is why `TOP-04` is a
    gate that costs 10 minutes per episode rather than another pipeline module.
-3. **Every effect size in the table above except the measured slate reading is an assumption.** The honest position stays: v is
+3. **What the goal implies about impressions.** 111,600 views/day at a 4–6% CTR is **1.9–2.8M impressions/day**. Search alone does
+   not supply that inside one niche; browse and suggested do, and they reward cluster authority — which is the strongest argument
+   for `D-11`'s single cluster and the weakest part of the original six-pillar slate.
+4. **Every effect size in the table above except the measured slate reading is an assumption.** The honest position stays: v is
    unmeasured until `ANA-01` has 28 days of data, and no item in this repository has ever demonstrated a lift.

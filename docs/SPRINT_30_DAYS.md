@@ -93,8 +93,8 @@ episode rather than one.
 episodes in salary and take-home pay, 10 in the adjacent cost-of-living band. Every title is the query a person types, ≤60
 characters, promise in the first ~40, and no "Every Country Ranked by …" format label anywhere.
 
-**Why not six pillars of five.** A five-video pillar cannot be read: at a log-normal view spread (σ ≈ 0.9) the 90% interval around
-61 views/video/day is **32–118**, a 3.7x span — wider than the entire 61 → 94 gap this plan argues about. Six pillars of five would
+**Why not six pillars of five.** A five-video pillar cannot be read: at a log-normal view spread (σ ≈ 0.9, a modelling assumption
+rather than a measured one) the 90% interval around 61 views/video/day is **32–118**, a 3.7x span — wider than the entire 61 → 94 gap this plan argues about. Six pillars of five would
 produce six unreadable numbers *and* divide the one asset that compounds: cluster authority for browse and suggested traffic.
 
 | Pillar | Episodes | Advertiser band | Why this cluster |
