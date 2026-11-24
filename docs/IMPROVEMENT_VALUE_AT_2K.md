@@ -1,7 +1,7 @@
 # Reaching $1,500-$2,000/day: the decision memo
 
 > **What this file is.** The whole improvement-value analysis (308 lines, group bounds, $/hour tables, a 7-item corrections log)
-> was committed as **`fdd20d0`** and is deliberately not kept in the working tree: with 0/51 items built and nothing published, it
+> was committed as **`fdd20d0`** and is deliberately not kept in the working tree: with 0/56 items built and nothing published, it
 > prices a revenue base that does not exist. Restore it with `git show fdd20d0:docs/IMPROVEMENT_VALUE_AT_2K.md`.
 > **This memo keeps only what changes a decision.** Revisit at 100 published videos, when `ANA-01` can replace percentages with
 > measurements.
@@ -33,8 +33,8 @@ revenue/day = V x v x RPM / 1000  +  ancillary
 
 **Ancillary** is the plan's repurposing + passive + refresh lines. Its own Month 25-28 row is
 $220 + $140 + $150 = **$510 of $2,295 = 22.2% of the total**, i.e. 28.6% of AdSense. The tables below use **78% ad / 22%
-ancillary**. If ancillary never materialises, every ad figure rises by `1 / 0.78 = 1.28x`. **Ancillary has zero tracker items** -
-all 51 are ad-side.
+ancillary**. If ancillary never materialises, every ad figure rises by `1 / 0.78 = 1.28x`. **Ancillary had zero tracker items** until
+`DECISIONS.md` D-04 added `ANC-01` (3.5h, priced in `PPM_REVIEW.md` section 9); every other item is ad-side.
 
 **This formula is gross revenue, per day.** Profit is 1.4: subtract $2.14-$2.64/day solo or $70.56-$105.14/day with the 2-3 FTE hires
 (4.7-7.0% of a $1,500-$2,000 day); `x 30` if the owner wants the month, but `profit/month` is derived, never targeted (1.5 records
@@ -219,7 +219,7 @@ the goal. The rejected monthly reading (1.5) mistook that milestone for the targ
 ## 3. The binding constraint is throughput, and the sprint is 2.5x under it
 
 The plan reaches 1,800 videos at Month 25 from 450 at Month 9 - that is **50/month ramping to 84/month**. `SPRINT_30_DAYS.md`
-commits to **30 videos in 30 days, 1/day**. Section 1.3 prices that difference:
+committed to **30 videos in 30 days, 1/day** - now **30 episodes in 33 days**, because the first three days are the `VAL-01` slice (`DECISIONS.md` D-01, D-02); the rate is unchanged at 1/day. Section 1.3 prices that difference:
 
 ```
 1,827 videos at 30/month = 61 months
@@ -245,7 +245,7 @@ nothing in this repository acknowledges it.
 
 ## 4. The four contradictions that decide which cell you land in
 
-**(a) The repo contains two different publishing rates.** `SPRINT_30_DAYS.md` says 30 videos in 30 days. The plan's library column
+**(a) The repo contains two different publishing rates.** `SPRINT_30_DAYS.md` says 30 episodes in 33 days (1/day). The plan's library column
 says 450 by month 9 - 50-64/month - and `REN-02`'s own claim in `PPM_REVIEW.md` is "3 vs 2 episodes/day", i.e. 60-90/month. The
 sprint is the conservative one, and at 30/month the $1,500/day target cannot arrive before month 61.
 
@@ -273,9 +273,11 @@ rounding error; at the goal, where RPM is a third of the equation, a 1.15 x 0.53
 **Do not build `ANA-04` before measuring `PUB-02`'s actual RPM effect**, and treat sec.0's index as an assumption until `ANA-01`
 reports per-market RPM. It is the weakest of the twelve priced items and the cheapest to leave unbuilt.
 
-**(d) Ancillary is 22% of the plan's revenue and 0% of the tracker.** $510/day at Month 25, which is **$330-$440/day at the $1,500-$2,000 goals** (22% of revenue),
-produced by nothing that is scheduled, estimated, or owned. Either it becomes an item (needs the owner to add one) or the ad-side
-library requirements in 1.2 rise by 1.28x.
+**(d) Ancillary is 22% of the plan's revenue and, on the original tracker, 0% of it.** $510/day at Month 25, which is **$330-$440/day at the $1,500-$2,000 goals** (22% of revenue),
+was produced by nothing that was scheduled, estimated, or owned. **Decided (`DECISIONS.md` D-04): it becomes an item.** `ANC-01`
+(3.5h) ships the per-episode dataset page, SVG exports and embeddable feed, and it is priced at those same dollars in `PPM_REVIEW.md`
+section 9 - so the ad-side library requirements in 1.2 no longer have to carry the 1.28x correction, they only have to be measured
+against it.
 
 ## 5. What that changes in the decisions
 

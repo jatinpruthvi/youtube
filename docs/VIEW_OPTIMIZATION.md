@@ -6,8 +6,10 @@
 > same way (`V x v x RPM / 1000`, V = 1,827, v = 61, RPM = $10.50). The section 14 table mirrors the rows of
 > [`PROFIT_MULTIPLIERS.md`](PROFIT_MULTIPLIERS.md), which `scripts/check_memo.py` pins to that baseline.
 
-**Status: specification, nothing built.** No item below has been implemented, `tracker/items.json` is untouched, and every
-input marked *(assumption)* has no measurement anywhere in this repository.
+**Status: adopted as decisions, nothing built.** `DECISIONS.md` D-03 and D-05 turn this document's two structural
+recommendations into tracker acceptance criteria (the 6-pillars-x-5 query-shaped slate, and captions before localized metadata);
+the rest remains specification. No item below has been implemented, and every input marked *(assumption)* still has no measurement
+anywhere in this repository.
 
 ---
 
@@ -53,8 +55,9 @@ makes every 28-day reading unreadable as a measurement).
 
 ### 2.1 The scorer is weighting production convenience as demand
 
-`ARCHITECTURE.md` §3 Module 1 scores topics as `0.30(search demand) + 0.25(CPM) + 0.25(API data richness) + 0.20(curiosity gap)`.
-"API data richness" answers *can I make this easily?* — a filter, not a demand signal. Recommended:
+`ARCHITECTURE.md` §3 Module 1 used to score topics as `0.30(search demand) + 0.25(CPM) + 0.25(API data richness) + 0.20(curiosity gap)`.
+"API data richness" answers *can I make this easily?* — a filter, not a demand signal. **Adopted** (`DECISIONS.md` D-03), and
+`ARCHITECTURE.md` now carries the reweighted formula:
 
 | Component | Weight | Input | Source |
 | :--- | :---: | :--- | :--- |

@@ -11,9 +11,10 @@
 | **[`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md)** | Full technical architecture blueprint: end-to-end DAG, 4K60 GPU rendering solution, zero-hallucination data grounding, ~$100/mo unit economics, anti-demonetization guardrails, and 36-month scaling model. |
 | **[`docs/PROFIT_MULTIPLIERS.md`](docs/PROFIT_MULTIPLIERS.md)** | Deep implementation guide for the 7 profit multipliers: mid-roll ad pacing, commercial CPM keyword seeding, thumbnail contrast detection, 60s hook Shorts funnel, ancillary revenue, 2-3 videos/day throughput, and W-8BEN tax optimization. |
 | **[`docs/VIEW_OPTIMIZATION.md`](docs/VIEW_OPTIMIZATION.md)** | View-optimization specification: topic selection and the stale-result test, query-shaped packaging, per-surface playbooks, localized audio, Shorts as both funnel and topic probe, back-catalogue repackaging, measurement and its noise, and every lever priced in $/day against the plan's own baseline. |
-| **[`docs/TRACKER.md`](docs/TRACKER.md)** | Complete **51-item Master Track List** organized across **12 architectural tracks** and **4 execution phases** with dependencies, effort estimates, and acceptance criteria. |
+| **[`docs/DECISIONS.md`](docs/DECISIONS.md)** | **Decision record (D-01…D-09)** — the nine operating calls made before any pipeline code: cadence ramp, falsification gate, slate shape, tracker completeness, captions-before-metadata, Facebook eligibility gate, provider-agnostic LLM layer, contracts and fixtures, anti-demonetization strategy. |
+| **[`docs/TRACKER.md`](docs/TRACKER.md)** | Complete **56-item Master Track List** organized across **12 architectural tracks** and **4 execution phases** with dependencies, effort estimates, and acceptance criteria. |
 | **[`docs/SPRINT_30_DAYS.md`](docs/SPRINT_30_DAYS.md)** | **30 Videos in 30 Days** execution schedule + 30 high-CPM, API-verifiable documentary episode specs with stage checklists. |
-| **[`tracker/items.json`](tracker/items.json)** | Machine-readable single source of truth for all 51 architecture tracker items. |
+| **[`tracker/items.json`](tracker/items.json)** | Machine-readable single source of truth for all 56 architecture tracker items. |
 | **[`scripts/track.py`](scripts/track.py)** | Zero-dependency Python CLI to track progress, list unblocked tasks, update statuses, and auto-sync `docs/TRACKER.md`. |
 
 ---
@@ -27,7 +28,7 @@ Free Economic APIs (World Bank / FRED / OECD / IMF / OWID)
 SQLite Warehouse + FastMCP Grounding + Deterministic Stats Analyzer ──► Verified DataBrief JSON (Fact IDs)
         │
         ▼
-Claude API (Prompt Cached) ──► SceneGraph JSON ──► Automated Fact-Audit Gate (0 Hallucinations)
+Front-tier LLM API (Prompt Cached) ──► SceneGraph JSON ──► Automated Fact-Audit Gate (0 Hallucinations)
         │
         ▼
 Local GPU TTS (MeloTTS/Kokoro, Azure fallback) + WhisperX Word Timestamps ──► FFmpeg -14 LUFS Master + Ducking/SFX
@@ -71,8 +72,8 @@ python3 scripts/track.py set INF-01 done
 
 * **Target Output Spec:** 10–18 min · 4K (`3840×2160`) · `60 FPS` · `-14 LUFS` · `100% API-verified facts`
 * **Target Render Time:** ~20–35 min per 15-min episode via scene-level parallelism + direct NVENC piping
-* **Monthly Operating Budget:** ~$72–$105/month (GPU compute + prompt-cached Claude API + Cloudflare R2 + free public APIs + local GPU TTS)
-* **Immediate Launch Goal:** **30 videos in 30 days. One flagship channel.**
+* **Monthly Operating Budget:** ~$72–$105/month of cost (GPU compute + prompt-cached front-tier LLM API + Cloudflare R2 + free public APIs + local GPU TTS)
+* **Immediate Launch Goal:** **one falsification episode first (`VAL-01`), then 30 episodes in 33 days** on one flagship channel — evidence before factory (`docs/DECISIONS.md` D-01, D-02).
 
 ---
 

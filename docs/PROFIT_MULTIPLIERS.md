@@ -25,15 +25,15 @@ This guide provides the complete engineering specifications, prompt architecture
 
 ## Summary of the 7 Revenue Multipliers
 
-| # | Revenue Multiplier | Primary Target Variable | Expected Impact | Implementation File |
-| :--- | :--- | :--- | :--- | :--- |
-| **1** | [Programmed Mid-Roll Transitions](#1-programmed-mid-roll-transitions-in-scenegraph) | Ad Impressions / View | 2.2×–2.8× ad impressions; at the plan's \$10.50 blended RPM that is \$14–\$16, i.e. **+\$390–\$613/day** (the \$6–\$7 starting RPM is the plan's Month 1–6 rate, not the target baseline) | `src/script/schema.py`, `src/render/engine.py` |
-| **2** | [Commercial High-CPM Keyword Seeding](#2-commercial-high-cpm-keyword-seeding) | Auction Bid CPM / RPM | +20% to +35% advertiser bid lift | `src/script/generator.py`, `config/cpm_keywords.json` |
-| **3** | [Competitor Outlier Contrast Detection](#3-competitor-outlier-contrast-detection-for-thumbnails) | Click-Through Rate ($v$) | +20% relative CTR = **+\$234–\$312/day** (20% of \$1,170–\$1,560/day of ad revenue), and the required library falls 1,827 -> 1,522 | `src/thumbnail/generator.py`, `src/topics/miner.py` |
-| **4** | [Automated 60s Hook Shorts Extractor](#4-automated-60-second-hook-shorts-extractor) | Long-Form Traffic Funnel | 400–1,000 free long-form views per episode = **+\$4.20–\$10.50** at \$10.50 RPM, earned over the Short's lifetime rather than per day | `src/render/shorts.py`, `src/publish/youtube.py` |
-| **5** | [Closing the 22% Ancillary Revenue Blind Spot](#5-closing-the-22-ancillary-revenue-blind-spot) | Ancillary Revenue Line | Captures **\$330–\$440/day** at the \$1,500–\$2,000 goals (22% of revenue); the plan's own \$510 belongs to its \$2,295/day row | `src/analytics/refresh.py`, `src/publish/syndicate.py` |
-| **6** | [Frictionless 2–3 Videos/Day Throughput](#6-frictionless-23-videosday-throughput-for-solo-operator) | Library Growth Rate ($V$) | Reaches target in 20–24 mo instead of 61 mo | `src/orchestrator/runner.py`, `src/qa/approval_bot.py` |
-| **7** | [Day-1 US Tax Withholding & Setup](#7-day-1-us-tax-withholding--dtaa-setup-w-8ben) | Net Cash Retained | Eliminates 15% withholding: **+\$70/day** on the \$1,170/day AdSense line (the 40% US-origin share is an assumption) | `docs/compliance/W8BEN_CHECKLIST.md` |
+| # | Revenue Multiplier | Primary Target Variable | Expected Impact | Implementation File | Tracker Item |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **1** | [Programmed Mid-Roll Transitions](#1-programmed-mid-roll-transitions-in-scenegraph) | Ad Impressions / View | 2.2×–2.8× ad impressions; at the plan's \$10.50 blended RPM that is \$14–\$16, i.e. **+\$390–\$613/day** (the \$6–\$7 starting RPM is the plan's Month 1–6 rate, not the target baseline) | `src/script/schema.py`, `src/render/engine.py` | SCR-01` + `REN-02` |
+| **2** | [Commercial High-CPM Keyword Seeding](#2-commercial-high-cpm-keyword-seeding) | Auction Bid CPM / RPM | +20% to +35% advertiser bid lift | `src/script/generator.py`, `config/cpm_keywords.json` | SCR-02` |
+| **3** | [Competitor Outlier Contrast Detection](#3-competitor-outlier-contrast-detection-for-thumbnails) | Click-Through Rate ($v$) | +20% relative CTR = **+\$234–\$312/day** (20% of \$1,170–\$1,560/day of ad revenue), and the required library falls 1,827 -> 1,522 | `src/thumbnail/generator.py`, `src/topics/miner.py` | THM-01` + `TOP-02` |
+| **4** | [Automated 60s Hook Shorts Extractor](#4-automated-60-second-hook-shorts-extractor) | Long-Form Traffic Funnel | 400–1,000 free long-form views per episode = **+\$4.20–\$10.50** at \$10.50 RPM, earned over the Short's lifetime rather than per day | `src/render/shorts.py`, `src/publish/youtube.py` | SHR-01` |
+| **5** | [Closing the 22% Ancillary Revenue Blind Spot](#5-closing-the-22-ancillary-revenue-blind-spot) | Ancillary Revenue Line | Captures **\$330–\$440/day** at the \$1,500–\$2,000 goals (22% of revenue); the plan's own \$510 belongs to its \$2,295/day row | `src/analytics/refresh.py`, `src/publish/syndicate.py` | ANC-01` |
+| **6** | [Frictionless 2–3 Videos/Day Throughput](#6-frictionless-23-videosday-throughput-for-solo-operator) | Library Growth Rate ($V$) | Reaches target in 20–24 mo instead of 61 mo | `src/orchestrator/runner.py`, `src/qa/approval_bot.py` | REN-02` + `ORC-01` + `ORC-02` |
+| **7** | [Day-1 US Tax Withholding & Setup](#7-day-1-us-tax-withholding--dtaa-setup-w-8ben) | Net Cash Retained | Eliminates 15% withholding: **+\$70/day** on the \$1,170/day AdSense line (the 40% US-origin share is an assumption) | `docs/compliance/W8BEN_CHECKLIST.md` | CMP-05` + `CMP-04` |
 
 **Basis for every $/day figure in this table.** `revenue/day = V x v x RPM / 1000` at the plan's own baseline: V = 1,827 videos,
 v = 61 views/video/day, RPM = $10.50, so ad revenue is $1,170-$1,560/day at the $1,500-$2,000 profit goals

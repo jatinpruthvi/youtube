@@ -9,9 +9,9 @@ Universal, model-agnostic operating instructions for **all AI coding models and 
 ## 1. Mission & Non-Negotiable Constraints
 
 * **Mission:** Build an AI-powered, automated data documentary factory generating **$1,500–$2,000/day ($45k–$60k/month) of profit** from pure platform ad revenue (YouTube AdSense + Facebook In-Stream) within 24–36 months.
-* **Budget Cap:** **~$100/month** — Hetzner CPX41 control plane always on plus an on-demand RTX 4090 worker for ~2 h/day (single-GPU VPS as fallback) — zero unnecessary paid SaaS, prompt-cached Claude 3.5 Sonnet script generation with GPT-4o fallback, free public economic APIs, self-hosted MeloTTS/Kokoro.
+* **Budget Cap:** **~$100/month** — Hetzner CPX41 control plane always on plus an on-demand RTX 4090 worker for ~2 h/day (single-GPU VPS as fallback) — zero unnecessary paid SaaS, prompt-cached front-tier LLM script generation through a provider-agnostic adapter with a registry fallback (`docs/DECISIONS.md` D-07), free public economic APIs, self-hosted MeloTTS/Kokoro.
 * **Fact Grounding:** **0% hallucination tolerance.** Every number spoken or rendered must trace back to a frozen snapshot row in the SQLite warehouse, fetched from World Bank, FRED, OECD, IMF, OWID, DBnomics or UN Data through the FastMCP server, and carried by a verified `DataBrief` Fact ID (`F001..Fxxx`).
-* **Output Standard:** 10–18 min · **4K (`3840×2160`) 60FPS** · `-14 LUFS` · English-first + automated **de/fr/ja** metadata & SRTs (the revenue set, priced per market in `PPM_REVIEW.md` sec.0) + **es-419/pt-BR/hi** captions only (reach, no RPM claim) + Facebook In-Stream cut.
+* **Output Standard:** 10–18 min · **4K (`3840×2160`) 60FPS** (`1080p30` only on the `VAL-01` slice and the first 14 sprint episodes, `DECISIONS.md` D-02, until `REN-02` clears its gate) · `-14 LUFS` · English-first + automated **de/fr/ja** metadata & SRTs (the revenue set, priced per market in `PPM_REVIEW.md` sec.0) + **es-419/pt-BR/hi** captions only (reach, no RPM claim) + Facebook In-Stream cut.
 
 ---
 
@@ -22,7 +22,8 @@ Always consult these before planning or writing code:
 | File | Role |
 | :--- | :--- |
 | `docs/ARCHITECTURE.md` | Full system architecture, 10 module specs, 4K60 NVENC strategy, ~$100/mo unit economics (CPX41 + on-demand 4090) |
-| `docs/TRACKER.md` | Human-readable 51-item Master Track List across 12 tracks and 4 phases |
+| `docs/DECISIONS.md` | Decision record D-01…D-09: cadence ramp, falsification gate (`VAL-01`), 6x5 slate, tracker completeness, captions-before-metadata, Facebook eligibility gate, provider-agnostic LLM layer, contracts/fixtures, anti-demonetization strategy |
+| `docs/TRACKER.md` | Human-readable 56-item Master Track List across 12 tracks and 4 phases |
 | `docs/SPRINT_30_DAYS.md` | 30 Videos in 30 Days production schedule & 30 high-CPM episode specs |
 | `tracker/items.json` | Machine-readable task database (validated acyclic DAG) |
 

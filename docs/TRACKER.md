@@ -2,7 +2,7 @@
 
 > **Project:** Automated Data Documentary Network  
 > **Mission:** $1,500-$2,000/day ($45k-$60k/month) of profit from pure platform ad revenue in 24-36 months  
-> **Progress:** **0/51 items (0%)** · **142.0h remaining** of **142.0h total**
+> **Progress:** **0/56 items (0%)** · **157.5h remaining** of **157.5h total**
 
 <!-- Generated from tracker/items.json via `python3 scripts/track.py sync-md` -->
 
@@ -20,25 +20,25 @@ python3 scripts/track.py set INF-01 done  # Mark item done & auto-sync this Mark
 ### By Phase
 | Phase | Items Done | Total Effort |
 | :--- | :---: | :---: |
-| **Phase 0: Pipeline MVP (Days 1–7)** | 0 / 33 | 93.0h |
-| **Phase 1: 30-in-30 Launch Sprint (Days 8–30)** | 0 / 13 | 32.0h |
-| **Phase 2: Monetization & Retention Optimization (Months 2–6)** | 0 / 3 | 8.0h |
+| **Phase 0: Pipeline MVP (Days 1–10)** | 0 / 35 | 101.0h |
+| **Phase 1: Launch Sprint, 30 episodes (Days 11–33)** | 0 / 15 | 36.0h |
+| **Phase 2: Monetization & Retention Optimization (Months 2–6)** | 0 / 4 | 11.5h |
 | **Phase 3: Multi-Channel Network Scale (Months 7–36)** | 0 / 2 | 9.0h |
 
 ### By Architecture Track
 | Track | Component | Items Done | Effort |
 | :--- | :--- | :---: | :---: |
 | **T01** | [Infrastructure, Compute & Cost Guardrails](#t01-infrastructure-compute--cost-guardrails) | 0 / 5 | 8.0h |
-| **T02** | [Fact-Grounded Economic Data Layer (SQLite + FastMCP)](#t02-fact-grounded-economic-data-layer-sqlite--fastmcp) | 0 / 8 | 23.0h |
+| **T02** | [Fact-Grounded Economic Data Layer (SQLite + FastMCP)](#t02-fact-grounded-economic-data-layer-sqlite--fastmcp) | 0 / 9 | 25.0h |
 | **T03** | [Topic Intelligence & Editorial Queue](#t03-topic-intelligence--editorial-queue) | 0 / 3 | 7.0h |
 | **T04** | [Claude Narrative Script & Fact-Audit Engine](#t04-claude-narrative-script--fact-audit-engine) | 0 / 4 | 12.0h |
 | **T05** | [Voiceover, Forced Alignment & Audio Mastering](#t05-voiceover-forced-alignment--audio-mastering) | 0 / 5 | 12.0h |
-| **T06** | [4K 60FPS GPU Rendering & Visual Template Library](#t06-4k-60fps-gpu-rendering--visual-template-library) | 0 / 9 | 31.5h |
+| **T06** | [4K 60FPS GPU Rendering & Visual Template Library](#t06-4k-60fps-gpu-rendering--visual-template-library) | 0 / 10 | 34.0h |
 | **T07** | [Thumbnail Factory & A/B Packaging](#t07-thumbnail-factory--ab-packaging) | 0 / 2 | 4.5h |
 | **T08** | [Automated QA Gate & Mobile Approval Bot](#t08-automated-qa-gate--mobile-approval-bot) | 0 / 2 | 5.5h |
-| **T09** | [Localization & Multi-Platform Publishing](#t09-localization--multi-platform-publishing) | 0 / 3 | 9.5h |
-| **T10** | [Pipeline Orchestrator & Crash-Resumable DAG](#t10-pipeline-orchestrator--crash-resumable-dag) | 0 / 2 | 5.5h |
-| **T11** | [Compliance, Monetization & India Payout Setup](#t11-compliance-monetization--india-payout-setup) | 0 / 4 | 8.5h |
+| **T09** | [Localization & Multi-Platform Publishing](#t09-localization--multi-platform-publishing) | 0 / 4 | 13.0h |
+| **T10** | [Pipeline Orchestrator & Crash-Resumable DAG](#t10-pipeline-orchestrator--crash-resumable-dag) | 0 / 3 | 11.5h |
+| **T11** | [Compliance, Monetization & India Payout Setup](#t11-compliance-monetization--india-payout-setup) | 0 / 5 | 10.0h |
 | **T12** | [Analytics Feedback Loop & Multi-Channel Scale](#t12-analytics-feedback-loop--multi-channel-scale) | 0 / 4 | 15.0h |
 
 ---
@@ -66,21 +66,22 @@ python3 scripts/track.py set INF-01 done  # Mark item done & auto-sync this Mark
 </details>
 
 ## T02: Fact-Grounded Economic Data Layer (SQLite + FastMCP)
-*Free public API connectors (World Bank, FRED, OECD, IMF, OWID, DBnomics, UN Data), SQLite warehouse with the production schema, FastMCP grounding server, and deterministic DataBrief generator.* (**0/8 complete**)
+*Free public API connectors (World Bank, FRED, OECD, IMF, OWID, DBnomics, UN Data), SQLite warehouse with the production schema, FastMCP grounding server, and deterministic DataBrief generator.* (**0/9 complete**)
 
 | Status | ID | Priority | Phase | Est. | Dependencies | Item & Acceptance Criteria |
 | :---: | :--- | :---: | :--- | :---: | :--- | :--- |
 | ⬜ Todo | `DAT-01` | `P0` | `P0` | 2.5h | `INF-03` | **Design SQLite warehouse schema (data/schema.sql: dim_countries, fact_observations, episode_snapshots, rss_items, videos, ats_snapshots, hijack_attempts, hijack_results)**<br/><sub>✓ `sqlite3 data/production.db < data/schema.sql` initializes idempotently in WAL mode with 217 ISO-3 countries, regions, currencies, flag paths and GeoJSON IDs.</sub> |
-| ⬜ Todo | `DAT-02` | `P0` | `P0` | 3h | `DAT-01` | **Build World Bank API v2 connector with pagination, retry backoff, and indicator caching**<br/><sub>✓ Fetches full multi-decade history for NY.GDP.PCAP.PP.KD and writes clean rows to fact_observations in <10s.</sub> |
+| ⬜ Todo | `DAT-02` | `P0` | `P0` | 3h | `DAT-01` | **Build World Bank API v2 connector with pagination, retry backoff, and indicator caching**<br/><sub>✓ Fetches full multi-decade history for NY.GDP.PCAP.PP.KD and writes clean rows to fact_observations in <10s. Connector tests replay recorded fixtures (DAT-09) rather than calling api.worldbank.org.</sub> |
 | ⬜ Todo | `DAT-03` | `P0` | `P0` | 2.5h | `DAT-01` | **Build FRED API connector for US/global macro, CPI, wages, housing, and interest rates**<br/><sub>✓ Fetches FRED series with metadata units and frequency normalization into SQLite.</sub> |
 | ⬜ Todo | `DAT-04` | `P0` | `P0` | 3h | `DAT-01` | **Build OECD SDMX API connector for Tier-1 average wages, tax wedge, and hours worked**<br/><sub>✓ Successfully parses OECD SDMX JSON/CSV payloads and maps all OECD members to ISO-3 codes.</sub> |
 | ⬜ Todo | `DAT-05` | `P1` | `P1` | 2.5h | `DAT-01` | **Build DBnomics, UN Data, IMF and Our World in Data (OWID) secondary connectors**<br/><sub>✓ Ingests IMF debt-to-GDP / inflation forecasts and OWID long-run historical CSVs into unified schema.</sub> |
 | ⬜ Todo | `DAT-06` | `P0` | `P0` | 3h | `DAT-02`, `DAT-03`, `DAT-04` | **Build Data Normalizer (ISO-3 reconciliation, PPP vs Nominal tagging, missing-year handling)**<br/><sub>✓ Zero orphan country names; explicitly flags latest available year per country and rejects unaligned units.</sub> |
 | ⬜ Todo | `DAT-07` | `P0` | `P0` | 3.5h | `DAT-06` | **Build Deterministic Statistical Analyzer & DataBrief JSON + Fact-ID Ledger generator**<br/><sub>✓ Generates a frozen episode snapshot (JSON row-set keyed by episode_id) + DataBrief JSON with Top/Bottom N, medians, CAGRs, outliers, and F001..Fxxx IDs.</sub> |
 | ⬜ Todo | `DAT-08` | `P0` | `P0` | 3h | `DAT-06` | **Build FastMCP data-grounding server (get_indicator, rank_countries, get_series, search_datasets)**<br/><sub>✓ Claude can call the MCP tools over stdio, receives only warehouse-backed rows with Fact IDs, and never receives a number that is absent from fact_observations.</sub> |
+| ⬜ Todo | `DAT-09` | `P0` | `P0` | 2h | `DAT-01` | **Build the record/replay HTTP fixture harness so every connector test runs offline**<br/><sub>✓ A cassette layer records each provider response once into tests/fixtures/<provider>/ and replays it afterwards; the whole connector suite passes with outbound network disabled, which is what AGENTS.md section 5 requires and what 7 live providers otherwise make impossible.</sub> |
 
 <details>
-<summary>Checklist View — T02 (0/8)</summary>
+<summary>Checklist View — T02 (0/9)</summary>
 
 - [ ] **`DAT-01`** (P0, 2.5h) — Design SQLite warehouse schema (data/schema.sql: dim_countries, fact_observations, episode_snapshots, rss_items, videos, ats_snapshots, hijack_attempts, hijack_results)
 - [ ] **`DAT-02`** (P0, 3h) — Build World Bank API v2 connector with pagination, retry backoff, and indicator caching
@@ -90,6 +91,7 @@ python3 scripts/track.py set INF-01 done  # Mark item done & auto-sync this Mark
 - [ ] **`DAT-06`** (P0, 3h) — Build Data Normalizer (ISO-3 reconciliation, PPP vs Nominal tagging, missing-year handling)
 - [ ] **`DAT-07`** (P0, 3.5h) — Build Deterministic Statistical Analyzer & DataBrief JSON + Fact-ID Ledger generator
 - [ ] **`DAT-08`** (P0, 3h) — Build FastMCP data-grounding server (get_indicator, rank_countries, get_series, search_datasets)
+- [ ] **`DAT-09`** (P0, 2h) — Build the record/replay HTTP fixture harness so every connector test runs offline
 
 </details>
 
@@ -98,7 +100,7 @@ python3 scripts/track.py set INF-01 done  # Mark item done & auto-sync this Mark
 
 | Status | ID | Priority | Phase | Est. | Dependencies | Item & Acceptance Criteria |
 | :---: | :--- | :---: | :--- | :---: | :--- | :--- |
-| ⬜ Todo | `TOP-01` | `P0` | `P0` | 2h | `DAT-01` | **Create Editorial Queue DB & seed initial 30-Video Launch Slate mapped to real API indicators**<br/><sub>✓ 30 high-CPM topics stored with status, target indicator codes, title candidates, and thumbnail concepts.</sub> |
+| ⬜ Todo | `TOP-01` | `P0` | `P0` | 2h | `DAT-01` | **Create Editorial Queue DB & seed initial 30-Video Launch Slate mapped to real API indicators**<br/><sub>✓ 30 topics stored with status, target indicator codes, query-shaped title candidates and thumbnail concepts, seeded as 6 pillars x 5 episodes from the DECISIONS.md D-03 slate: no format-label titles, no two episodes sharing a thesis, and every title a query a person would type.</sub> |
 | ⬜ Todo | `TOP-02` | `P1` | `P1` | 3h | `TOP-01` | **Build YouTube Autocomplete & Outlier Competitor Video Miner**<br/><sub>✓ Discovers high views-to-subscriber outlier videos in economics/rankings niche and extracts title patterns.</sub> |
 | ⬜ Todo | `TOP-03` | `P1` | `P1` | 2h | `TOP-02` | **Implement automated Topic Scorer (Tier-1 demand, CPM weight, data completeness, curiosity gap)**<br/><sub>✓ Ranks candidate topics 0-100 and auto-promotes top-scoring unused topics into the daily pipeline queue.</sub> |
 
@@ -116,8 +118,8 @@ python3 scripts/track.py set INF-01 done  # Mark item done & auto-sync this Mark
 
 | Status | ID | Priority | Phase | Est. | Dependencies | Item & Acceptance Criteria |
 | :---: | :--- | :---: | :--- | :---: | :--- | :--- |
-| ⬜ Todo | `SCR-01` | `P0` | `P0` | 3h | `DAT-07` | **Define Pydantic SceneGraph JSON Schema (acts, scenes, visual templates, data bindings, SFX cues)**<br/><sub>✓ Schema validates 10-18 min episodes, enforces visual-template entropy (no consecutive duplicates), and links every scene to fact IDs.</sub> |
-| ⬜ Todo | `SCR-02` | `P0` | `P0` | 4h | `SCR-01` | **Engineer versioned Claude 3.5 Sonnet prompts with prompt caching and a GPT-4o fallback**<br/><sub>✓ Generates 1,700-2,600 word causal documentary scripts + SceneGraph JSON at <=$0.05/script with cache hit rate >70%, falling back to GPT-4o on repeated fact-audit failure.</sub> |
+| ⬜ Todo | `SCR-01` | `P0` | `P0` | 3h | `DAT-07` | **Define Pydantic SceneGraph JSON Schema (acts, scenes, visual templates, data bindings, SFX cues)**<br/><sub>✓ Schema validates 10-18 min episodes, enforces visual-template entropy (no consecutive duplicates), and links every scene to fact IDs. The schema carries an explicit schema_version and the prompt_version that produced it, so a later model or prompt change can be re-audited against the episodes it already made.</sub> |
+| ⬜ Todo | `SCR-02` | `P0` | `P0` | 4h | `SCR-01` | **Engineer versioned front-tier-model prompts with prompt caching and a registry fallback**<br/><sub>✓ Generates 1,700-2,600 word causal documentary scripts + SceneGraph JSON at a cost of <=$0.30/script with cache hit rate >70%, resolving the model through config/models.yaml and falling back to the registry's alternate provider on repeated fact-audit failure (DECISIONS.md D-07: a retired model is a config edit, not a release).</sub> |
 | ⬜ Todo | `SCR-03` | `P0` | `P0` | 3h | `SCR-02` | **Build Zero-Hallucination Automated Fact-Audit Gate & targeted auto-repair loop**<br/><sub>✓ Extracts every number/rank/percentage in narration, cross-checks against DataBrief (+-0.5% tolerance), and auto-repairs mismatches.</sub> |
 | ⬜ Todo | `SCR-04` | `P1` | `P1` | 2h | `SCR-03` | **Add Retention Pacing Linter (0-35s hook, open loops, pattern interrupts every <=55s, end-screen bridge)**<br/><sub>✓ Scores script retention structure and rejects scripts lacking a hook contrast, mid-video inversion, or bridge.</sub> |
 
@@ -125,7 +127,7 @@ python3 scripts/track.py set INF-01 done  # Mark item done & auto-sync this Mark
 <summary>Checklist View — T04 (0/4)</summary>
 
 - [ ] **`SCR-01`** (P0, 3h) — Define Pydantic SceneGraph JSON Schema (acts, scenes, visual templates, data bindings, SFX cues)
-- [ ] **`SCR-02`** (P0, 4h) — Engineer versioned Claude 3.5 Sonnet prompts with prompt caching and a GPT-4o fallback
+- [ ] **`SCR-02`** (P0, 4h) — Engineer versioned front-tier-model prompts with prompt caching and a registry fallback
 - [ ] **`SCR-03`** (P0, 3h) — Build Zero-Hallucination Automated Fact-Audit Gate & targeted auto-repair loop
 - [ ] **`SCR-04`** (P1, 2h) — Add Retention Pacing Linter (0-35s hook, open loops, pattern interrupts every <=55s, end-screen bridge)
 
@@ -154,12 +156,12 @@ python3 scripts/track.py set INF-01 done  # Mark item done & auto-sync this Mark
 </details>
 
 ## T06: 4K 60FPS GPU Rendering & Visual Template Library
-*Design system, 8 core animated chart templates, atomic scene parallelism, static caching, and direct NVENC encoding.* (**0/9 complete**)
+*Design system, 8 core animated chart templates, atomic scene parallelism, static caching, and direct NVENC encoding.* (**0/10 complete**)
 
 | Status | ID | Priority | Phase | Est. | Dependencies | Item & Acceptance Criteria |
 | :---: | :--- | :---: | :--- | :---: | :--- | :--- |
-| ⬜ Todo | `REN-01` | `P0` | `P0` | 3h | `INF-03` | **Establish 4K 60FPS Documentary Visual Design System (palette, typography, safe margins, source footer)**<br/><sub>✓ style_guide.yaml + font/flag/Natural Earth GeoJSON asset pack verified legible at both 4K TV and 360px mobile sizes.</sub> |
-| ⬜ Todo | `REN-02` | `P0` | `P0` | 4h | `INF-02`, `REN-01` | **Build Core 4K60 Render Engine (atomic scene worker pool + static texture cache + direct NVENC pipe)**<br/><sub>✓ Streams raw 3840x2160 60fps RGB frames directly to hevc_nvenc/h264_nvenc with zero intermediate PNG bloat; benchmark >=25fps.</sub> |
+| ⬜ Todo | `REN-01` | `P0` | `P0` | 3h | `INF-03` | **Establish 4K 60FPS Documentary Visual Design System (palette, typography, safe margins, source footer)**<br/><sub>✓ style_guide.yaml + font/flag/Natural Earth GeoJSON asset pack verified legible at both 4K TV and 360px mobile sizes. It also publishes the single `RenderSpec` Pydantic contract (scene_id, template, data bindings, camera move, safe zones, SFX cues, duration) plus one golden fixture, so all 8 templates bind data the same way instead of embedding their own binding logic.</sub> |
+| ⬜ Todo | `REN-02` | `P0` | `P0` | 4h | `INF-02`, `REN-01`, `VAL-01` | **Build Core 4K60 Render Engine (atomic scene worker pool + static texture cache + direct NVENC pipe)**<br/><sub>✓ Streams raw 3840x2160 60fps RGB frames directly to hevc_nvenc/h264_nvenc with zero intermediate PNG bloat; benchmark >=25fps. The engine is benchmarked on the VAL-01 thin slice's scene set first, because that slice already proved the format is worth rendering at 4K60.</sub> |
 | ⬜ Todo | `REN-03` | `P0` | `P0` | 4h | `REN-02` | **Implement Template 1: BarChartRace (interpolated rankings, flags, rolling year counter, spotlight glow)**<br/><sub>✓ Renders buttery-smooth 4K60 Top-15 bar race synchronized to WhisperX word highlights.</sub> |
 | ⬜ Todo | `REN-04` | `P0` | `P0` | 4.5h | `REN-02` | **Implement Template 2: WorldChoroplethMap (Natural Earth vectors, camera zoom/pan, animated color scale)**<br/><sub>✓ Renders crisp vector world map with smooth zoom onto target regions and animated country callout pins.</sub> |
 | ⬜ Todo | `REN-05` | `P0` | `P0` | 3h | `REN-02` | **Implement Template 3: SpotlightCountryCard & Template 4: ChapterTitleCard**<br/><sub>✓ High-contrast KPI card with animated rolling counters, sparkline, rank badge, plus 3-second kinetic chapter transition.</sub> |
@@ -167,9 +169,10 @@ python3 scripts/track.py set INF-01 done  # Mark item done & auto-sync this Mark
 | ⬜ Todo | `REN-07` | `P1` | `P1` | 4h | `REN-02` | **Implement Template 6: HistoricalLineRace & Template 7: AnimatedBubbleScatter**<br/><sub>✓ Multi-line time series with historical event pins + multi-axis animated bubble scatter with trails.</sub> |
 | ⬜ Todo | `REN-08` | `P1` | `P1` | 3h | `REN-02` | **Implement Template 8: DistributionHistogram + Pre-Baked 4K60 Ambient Motion Backgrounds**<br/><sub>✓ Bell-curve percentile visualizer + 3 reusable 4K60 subtle dark-mode animated backdrop loops.</sub> |
 | ⬜ Todo | `REN-09` | `P0` | `P0` | 2.5h | `AUD-05`, `REN-03`, `REN-04`, `REN-05`, `REN-06` | **Build Scene Concatenator, Master Audio-Video Muxer & YouTube 4K60 Export Preset**<br/><sub>✓ Assembles full 10-18 min 4K60 MP4 with faststart atom, 0ms AV drift, and verified playback in VLC/YouTube.</sub> |
+| ⬜ Todo | `SHR-01` | `P1` | `P1` | 2.5h | `REN-09` | **Build the 60s Shorts hook extractor (climax clip, burned captions, long-form link)**<br/><sub>✓ Renders a 9:16 60s cut from the episode's strongest DataBrief contrast with burned captions and uploads it as a Short carrying the long-form link in the description; long-form click-through per Short is logged in SQLite. Profit Multiplier 4 is worth $4.20-$10.50 per episode at $10.50 RPM, earned over the Short's lifetime rather than per day.</sub> |
 
 <details>
-<summary>Checklist View — T06 (0/9)</summary>
+<summary>Checklist View — T06 (0/10)</summary>
 
 - [ ] **`REN-01`** (P0, 3h) — Establish 4K 60FPS Documentary Visual Design System (palette, typography, safe margins, source footer)
 - [ ] **`REN-02`** (P0, 4h) — Build Core 4K60 Render Engine (atomic scene worker pool + static texture cache + direct NVENC pipe)
@@ -180,6 +183,7 @@ python3 scripts/track.py set INF-01 done  # Mark item done & auto-sync this Mark
 - [ ] **`REN-07`** (P1, 4h) — Implement Template 6: HistoricalLineRace & Template 7: AnimatedBubbleScatter
 - [ ] **`REN-08`** (P1, 3h) — Implement Template 8: DistributionHistogram + Pre-Baked 4K60 Ambient Motion Backgrounds
 - [ ] **`REN-09`** (P0, 2.5h) — Build Scene Concatenator, Master Audio-Video Muxer & YouTube 4K60 Export Preset
+- [ ] **`SHR-01`** (P1, 2.5h) — Build the 60s Shorts hook extractor (climax clip, burned captions, long-form link)
 
 </details>
 
@@ -216,56 +220,62 @@ python3 scripts/track.py set INF-01 done  # Mark item done & auto-sync this Mark
 </details>
 
 ## T09: Localization & Multi-Platform Publishing
-*YouTube Data API v3 upload, de/fr/ja localized metadata & SRT captions (es-419/pt-BR/hi captions only), and Facebook In-Stream burned-caption cut.* (**0/3 complete**)
+*YouTube Data API v3 upload, de/fr/ja localized metadata & SRT captions (es-419/pt-BR/hi captions only), and Facebook In-Stream burned-caption cut.* (**0/4 complete**)
 
 | Status | ID | Priority | Phase | Est. | Dependencies | Item & Acceptance Criteria |
 | :---: | :--- | :---: | :--- | :---: | :--- | :--- |
 | ⬜ Todo | `PUB-01` | `P0` | `P0` | 3h | `QAG-02` | **Configure Google Cloud OAuth & YouTube Data API v3 Resumable Uploader (chapters + scheduling)**<br/><sub>✓ Uploads 4K60 master as scheduled video at optimal Tier-1 UTC slot with chapter timestamps and custom thumbnail.</sub> |
-| ⬜ Todo | `PUB-02` | `P0` | `P1` | 3h | `PUB-01`, `AUD-03` | **Build Automated Metadata & SRT Subtitle Localizer (German, French, Japanese revenue set)**<br/><sub>✓ Translates title and description into de, fr and ja and uploads accurate time-coded SRTs for those three via YouTube localizations & captions APIs; ships es-419/pt-BR/hi captions only (reach, no revenue claim) and no ar. The language list is config (config/languages.json), not code.</sub> |
-| ⬜ Todo | `PUB-03` | `P1` | `P1` | 3.5h | `REN-09`, `AUD-03` | **Build Facebook In-Stream Cut Generator (3s visual hook + burned captions) & Graph API Uploader**<br/><sub>✓ Renders FB-ready MP4 with high-contrast burned captions and uploads scheduled video to Facebook Page.</sub> |
+| ⬜ Todo | `PUB-02` | `P0` | `P1` | 3h | `PUB-01`, `AUD-03` | **Build Automated Metadata & SRT Subtitle Localizer (German, French, Japanese revenue set)**<br/><sub>✓ Translates title and description into de, fr and ja and uploads accurate time-coded SRTs for those three via YouTube localizations and captions APIs; ships es-419/pt-BR/hi captions only (reach, no revenue claim) and no ar. A market only receives localized metadata once captions in that language ship in the same commit - a German title over English audio is a negative-EV bounce (DECISIONS.md D-05). The language list is config (config/languages.json), not code.</sub> |
+| ⬜ Todo | `PUB-03` | `P1` | `P1` | 3.5h | `REN-09`, `AUD-03` | **Build Facebook In-Stream Cut Generator (3s visual hook + burned captions) & Graph API Uploader**<br/><sub>✓ Eligibility is confirmed on the actual Page before any render code is written (DECISIONS.md D-06); once eligible, renders an FB-ready MP4 with high-contrast burned captions and uploads it on a schedule. If the program is not open to the Page, the item is closed as not-applicable and the Facebook revenue line is dropped from the model rather than assumed.</sub> |
+| ⬜ Todo | `ANC-01` | `P1` | `P2` | 3.5h | `PUB-01` | **Build the ancillary revenue lane: per-episode dataset page, SVG chart exports and an embeddable feed**<br/><sub>✓ Every episode publishes a dataset page (CSV, chart SVGs, methodology note, source citation) on a static site plus an embeddable feed, and external-traffic watch-time share is logged in SQLite. Profit Multiplier 5 is the $330-$440/day ancillary line at the goal, so this lane is instrumented from the first episode instead of assumed.</sub> |
 
 <details>
-<summary>Checklist View — T09 (0/3)</summary>
+<summary>Checklist View — T09 (0/4)</summary>
 
 - [ ] **`PUB-01`** (P0, 3h) — Configure Google Cloud OAuth & YouTube Data API v3 Resumable Uploader (chapters + scheduling)
 - [ ] **`PUB-02`** (P0, 3h) — Build Automated Metadata & SRT Subtitle Localizer (German, French, Japanese revenue set)
 - [ ] **`PUB-03`** (P1, 3.5h) — Build Facebook In-Stream Cut Generator (3s visual hook + burned captions) & Graph API Uploader
+- [ ] **`ANC-01`** (P1, 3.5h) — Build the ancillary revenue lane: per-episode dataset page, SVG chart exports and an embeddable feed
 
 </details>
 
 ## T10: Pipeline Orchestrator & Crash-Resumable DAG
-*Idempotent scene-level state machine, job retries, disk cleanup, and daily batch runner.* (**0/2 complete**)
+*Idempotent scene-level state machine, job retries, disk cleanup, and daily batch runner.* (**0/3 complete**)
 
 | Status | ID | Priority | Phase | Est. | Dependencies | Item & Acceptance Criteria |
 | :---: | :--- | :---: | :--- | :---: | :--- | :--- |
-| ⬜ Todo | `ORC-01` | `P0` | `P0` | 3.5h | `DAT-07`, `SCR-03`, `AUD-05`, `REN-09`, `PUB-01` | **Build Resumable Episode DAG Orchestrator (SQLite state machine with scene-level checkpointing)**<br/><sub>✓ Single CLI command `python -m src.orchestrator run <episode_id>` runs end-to-end and resumes cleanly from any crash.</sub> |
-| ⬜ Todo | `ORC-02` | `P1` | `P1` | 2h | `ORC-01`, `QAG-02` | **Configure Daily Autonomous Cron / Systemd Timer for 30-in-30 Production Cadence**<br/><sub>✓ Automatically builds next queued episode overnight IST so approval bundle arrives every morning at 08:00 IST.</sub> |
+| ⬜ Todo | `VAL-01` | `P0` | `P0` | 6h | — | **Ship the Falsification Episode (hand-built 1080p30 thin slice) and publish it before any 4K60 render work**<br/><sub>✓ One 10-14 min episode assembled by hand from a hand-authored DataBrief (one indicator, ~40 countries), a single static-slide template at 1080p30, TTS narration with a -14 LUFS master, QC pass and 3 thumbnails, published public on the flagship channel. A 14-day read is recorded as views/video/day in SQLite. Go/no-go: >=20 views/video/day keeps the format and unblocks REN-02; below 10 kills the topic shape before any 4K60 work is spent on it.</sub> |
+| ⬜ Todo | `ORC-01` | `P0` | `P0` | 3.5h | `DAT-07`, `SCR-03`, `AUD-05`, `REN-09`, `PUB-01` | **Build Resumable Episode DAG Orchestrator (SQLite state machine with scene-level checkpointing)**<br/><sub>✓ Single CLI command `python -m src.orchestrator run <episode_id>` runs end-to-end and resumes cleanly from any crash. Artifacts use one layout, data/episodes/<episode_id>/<stage>/<content_hash>.<ext>, which is what makes resume and retry-after-edit cheap: a stage is skipped when its key file already exists.</sub> |
+| ⬜ Todo | `ORC-02` | `P1` | `P1` | 2h | `ORC-01`, `QAG-02`, `VAL-01` | **Configure Daily Autonomous Cron / Systemd Timer for the 1/day production cadence**<br/><sub>✓ Automatically builds next queued episode overnight IST so approval bundle arrives every morning at 08:00 IST. The cron is enabled only after the VAL-01 14-day read, so automation never multiplies an unvalidated format.</sub> |
 
 <details>
-<summary>Checklist View — T10 (0/2)</summary>
+<summary>Checklist View — T10 (0/3)</summary>
 
+- [ ] **`VAL-01`** (P0, 6h) — Ship the Falsification Episode (hand-built 1080p30 thin slice) and publish it before any 4K60 render work
 - [ ] **`ORC-01`** (P0, 3.5h) — Build Resumable Episode DAG Orchestrator (SQLite state machine with scene-level checkpointing)
-- [ ] **`ORC-02`** (P1, 2h) — Configure Daily Autonomous Cron / Systemd Timer for 30-in-30 Production Cadence
+- [ ] **`ORC-02`** (P1, 2h) — Configure Daily Autonomous Cron / Systemd Timer for the 1/day production cadence
 
 </details>
 
 ## T11: Compliance, Monetization & India Payout Setup
-*Anti-demonetization guardrails, Content ID license ledger, YPP/FB monetization, and India USD tax/export setup.* (**0/4 complete**)
+*Anti-demonetization guardrails, Content ID license ledger, YPP/FB monetization, and India USD tax/export setup.* (**0/5 complete**)
 
 | Status | ID | Priority | Phase | Est. | Dependencies | Item & Acceptance Criteria |
 | :---: | :--- | :---: | :--- | :---: | :--- | :--- |
 | ⬜ Todo | `CMP-01` | `P0` | `P0` | 2h | — | **Create Flagship YouTube Channel & Facebook Page (branding, banner, about, Tier-1 English positioning)**<br/><sub>✓ Channel branded as authoritative global data documentary network; verification enabled for custom thumbnails & >15 min uploads.</sub> |
 | ⬜ Todo | `CMP-02` | `P0` | `P0` | 1.5h | `AUD-04`, `SCR-03` | **Implement Anti-Demonetization Policy Checklist & Citation/License Audit Manifest**<br/><sub>✓ Every episode ships with persistent source overlays, >=5 unique visual templates, analytical commentary, and verified asset licenses.</sub> |
 | ⬜ Todo | `CMP-03` | `P1` | `P2` | 3h | `CMP-01`, `CMP-02` | **Apply for YouTube Partner Program (1k subs + 4k watch hrs) & Facebook In-Stream Monetization**<br/><sub>✓ Both YouTube AdSense and Facebook In-Stream approved with clean policy standing and mid-roll ads enabled.</sub> |
-| ⬜ Todo | `CMP-04` | `P1` | `P2` | 2h | `CMP-03` | **Complete India USD Payout & Tax Optimization (AdSense SWIFT, US Form W-8BEN 15% DTAA, GST LUT prep)**<br/><sub>✓ W-8BEN approved (15% US withholding vs 24%/30%), Indian bank SWIFT USD settlement tested, e-FIRA workflow documented.</sub> |
+| ⬜ Todo | `CMP-04` | `P1` | `P2` | 2h | `CMP-03`, `CMP-05` | **Complete India USD Payout & Tax Optimization (AdSense SWIFT, US Form W-8BEN 15% DTAA, GST LUT prep)**<br/><sub>✓ W-8BEN approved (15% US withholding vs 24%/30%), Indian bank SWIFT USD settlement tested, e-FIRA workflow documented.</sub> |
+| ⬜ Todo | `CMP-05` | `P1` | `P1` | 1.5h | `CMP-01` | **Write the docs/compliance/W8BEN_CHECKLIST.md filing artifact that CMP-04 executes**<br/><sub>✓ docs/compliance/W8BEN_CHECKLIST.md exists with the step-by-step AdSense tax-info filing for India (W-8BEN, 15% DTAA rate vs 24%/30%), GST registration plus LUT, and the e-FIRA archival workflow. Profit Multiplier 7 is $70/day of AdSense retained at the goal, so the artifact ships before the first payout cycle rather than after it.</sub> |
 
 <details>
-<summary>Checklist View — T11 (0/4)</summary>
+<summary>Checklist View — T11 (0/5)</summary>
 
 - [ ] **`CMP-01`** (P0, 2h) — Create Flagship YouTube Channel & Facebook Page (branding, banner, about, Tier-1 English positioning)
 - [ ] **`CMP-02`** (P0, 1.5h) — Implement Anti-Demonetization Policy Checklist & Citation/License Audit Manifest
 - [ ] **`CMP-03`** (P1, 3h) — Apply for YouTube Partner Program (1k subs + 4k watch hrs) & Facebook In-Stream Monetization
 - [ ] **`CMP-04`** (P1, 2h) — Complete India USD Payout & Tax Optimization (AdSense SWIFT, US Form W-8BEN 15% DTAA, GST LUT prep)
+- [ ] **`CMP-05`** (P1, 1.5h) — Write the docs/compliance/W8BEN_CHECKLIST.md filing artifact that CMP-04 executes
 
 </details>
 

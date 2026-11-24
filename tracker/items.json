@@ -66,6 +66,17 @@
   ],
   "items": [
     {
+      "id": "VAL-01",
+      "track": "T10",
+      "phase": "P0_MVP_DAYS_1_7",
+      "priority": "P0",
+      "status": "todo",
+      "effort_hours": 6,
+      "title": "Ship the Falsification Episode (hand-built 1080p30 thin slice) and publish it before any 4K60 render work",
+      "dependencies": [],
+      "acceptance_criteria": "One 10-14 min episode assembled by hand from a hand-authored DataBrief (one indicator, ~40 countries), a single static-slide template at 1080p30, TTS narration with a -14 LUFS master, QC pass and 3 thumbnails, published public on the flagship channel. A 14-day read is recorded as views/video/day in SQLite. Go/no-go: >=20 views/video/day keeps the format and unblocks REN-02; below 10 kills the topic shape before any 4K60 work is spent on it."
+    },
+    {
       "id": "INF-01",
       "track": "T01",
       "phase": "P0_MVP_DAYS_1_7",
@@ -152,7 +163,7 @@
       "dependencies": [
         "DAT-01"
       ],
-      "acceptance_criteria": "Fetches full multi-decade history for NY.GDP.PCAP.PP.KD and writes clean rows to fact_observations in <10s."
+      "acceptance_criteria": "Fetches full multi-decade history for NY.GDP.PCAP.PP.KD and writes clean rows to fact_observations in <10s. Connector tests replay recorded fixtures (DAT-09) rather than calling api.worldbank.org."
     },
     {
       "id": "DAT-03",
@@ -235,6 +246,19 @@
       "acceptance_criteria": "Claude can call the MCP tools over stdio, receives only warehouse-backed rows with Fact IDs, and never receives a number that is absent from fact_observations."
     },
     {
+      "id": "DAT-09",
+      "track": "T02",
+      "phase": "P0_MVP_DAYS_1_7",
+      "priority": "P0",
+      "status": "todo",
+      "effort_hours": 2,
+      "title": "Build the record/replay HTTP fixture harness so every connector test runs offline",
+      "dependencies": [
+        "DAT-01"
+      ],
+      "acceptance_criteria": "A cassette layer records each provider response once into tests/fixtures/<provider>/ and replays it afterwards; the whole connector suite passes with outbound network disabled, which is what AGENTS.md section 5 requires and what 7 live providers otherwise make impossible."
+    },
+    {
       "id": "TOP-01",
       "track": "T03",
       "phase": "P0_MVP_DAYS_1_7",
@@ -245,7 +269,7 @@
       "dependencies": [
         "DAT-01"
       ],
-      "acceptance_criteria": "30 high-CPM topics stored with status, target indicator codes, title candidates, and thumbnail concepts."
+      "acceptance_criteria": "30 topics stored with status, target indicator codes, query-shaped title candidates and thumbnail concepts, seeded as 6 pillars x 5 episodes from the DECISIONS.md D-03 slate: no format-label titles, no two episodes sharing a thesis, and every title a query a person would type."
     },
     {
       "id": "TOP-02",
@@ -284,7 +308,7 @@
       "dependencies": [
         "DAT-07"
       ],
-      "acceptance_criteria": "Schema validates 10-18 min episodes, enforces visual-template entropy (no consecutive duplicates), and links every scene to fact IDs."
+      "acceptance_criteria": "Schema validates 10-18 min episodes, enforces visual-template entropy (no consecutive duplicates), and links every scene to fact IDs. The schema carries an explicit schema_version and the prompt_version that produced it, so a later model or prompt change can be re-audited against the episodes it already made."
     },
     {
       "id": "SCR-02",
@@ -293,11 +317,11 @@
       "priority": "P0",
       "status": "todo",
       "effort_hours": 4,
-      "title": "Engineer versioned Claude 3.5 Sonnet prompts with prompt caching and a GPT-4o fallback",
+      "title": "Engineer versioned front-tier-model prompts with prompt caching and a registry fallback",
       "dependencies": [
         "SCR-01"
       ],
-      "acceptance_criteria": "Generates 1,700-2,600 word causal documentary scripts + SceneGraph JSON at <=$0.05/script with cache hit rate >70%, falling back to GPT-4o on repeated fact-audit failure."
+      "acceptance_criteria": "Generates 1,700-2,600 word causal documentary scripts + SceneGraph JSON at a cost of <=$0.30/script with cache hit rate >70%, resolving the model through config/models.yaml and falling back to the registry's alternate provider on repeated fact-audit failure (DECISIONS.md D-07: a retired model is a config edit, not a release)."
     },
     {
       "id": "SCR-03",
@@ -402,7 +426,7 @@
       "dependencies": [
         "INF-03"
       ],
-      "acceptance_criteria": "style_guide.yaml + font/flag/Natural Earth GeoJSON asset pack verified legible at both 4K TV and 360px mobile sizes."
+      "acceptance_criteria": "style_guide.yaml + font/flag/Natural Earth GeoJSON asset pack verified legible at both 4K TV and 360px mobile sizes. It also publishes the single `RenderSpec` Pydantic contract (scene_id, template, data bindings, camera move, safe zones, SFX cues, duration) plus one golden fixture, so all 8 templates bind data the same way instead of embedding their own binding logic."
     },
     {
       "id": "REN-02",
@@ -414,9 +438,10 @@
       "title": "Build Core 4K60 Render Engine (atomic scene worker pool + static texture cache + direct NVENC pipe)",
       "dependencies": [
         "INF-02",
-        "REN-01"
+        "REN-01",
+        "VAL-01"
       ],
-      "acceptance_criteria": "Streams raw 3840x2160 60fps RGB frames directly to hevc_nvenc/h264_nvenc with zero intermediate PNG bloat; benchmark >=25fps."
+      "acceptance_criteria": "Streams raw 3840x2160 60fps RGB frames directly to hevc_nvenc/h264_nvenc with zero intermediate PNG bloat; benchmark >=25fps. The engine is benchmarked on the VAL-01 thin slice's scene set first, because that slice already proved the format is worth rendering at 4K60."
     },
     {
       "id": "REN-03",
@@ -514,6 +539,19 @@
       "acceptance_criteria": "Assembles full 10-18 min 4K60 MP4 with faststart atom, 0ms AV drift, and verified playback in VLC/YouTube."
     },
     {
+      "id": "SHR-01",
+      "track": "T06",
+      "phase": "P1_SPRINT_DAYS_8_30",
+      "priority": "P1",
+      "status": "todo",
+      "effort_hours": 2.5,
+      "title": "Build the 60s Shorts hook extractor (climax clip, burned captions, long-form link)",
+      "dependencies": [
+        "REN-09"
+      ],
+      "acceptance_criteria": "Renders a 9:16 60s cut from the episode's strongest DataBrief contrast with burned captions and uploads it as a Short carrying the long-form link in the description; long-form click-through per Short is logged in SQLite. Profit Multiplier 4 is worth $4.20-$10.50 per episode at $10.50 RPM, earned over the Short's lifetime rather than per day."
+    },
+    {
       "id": "THM-01",
       "track": "T07",
       "phase": "P0_MVP_DAYS_1_7",
@@ -591,7 +629,7 @@
         "PUB-01",
         "AUD-03"
       ],
-      "acceptance_criteria": "Translates title and description into de, fr and ja and uploads accurate time-coded SRTs for those three via YouTube localizations & captions APIs; ships es-419/pt-BR/hi captions only (reach, no revenue claim) and no ar. The language list is config (config/languages.json), not code."
+      "acceptance_criteria": "Translates title and description into de, fr and ja and uploads accurate time-coded SRTs for those three via YouTube localizations and captions APIs; ships es-419/pt-BR/hi captions only (reach, no revenue claim) and no ar. A market only receives localized metadata once captions in that language ship in the same commit - a German title over English audio is a negative-EV bounce (DECISIONS.md D-05). The language list is config (config/languages.json), not code."
     },
     {
       "id": "PUB-03",
@@ -605,7 +643,20 @@
         "REN-09",
         "AUD-03"
       ],
-      "acceptance_criteria": "Renders FB-ready MP4 with high-contrast burned captions and uploads scheduled video to Facebook Page."
+      "acceptance_criteria": "Eligibility is confirmed on the actual Page before any render code is written (DECISIONS.md D-06); once eligible, renders an FB-ready MP4 with high-contrast burned captions and uploads it on a schedule. If the program is not open to the Page, the item is closed as not-applicable and the Facebook revenue line is dropped from the model rather than assumed."
+    },
+    {
+      "id": "ANC-01",
+      "track": "T09",
+      "phase": "P2_OPT_MONTHS_2_6",
+      "priority": "P1",
+      "status": "todo",
+      "effort_hours": 3.5,
+      "title": "Build the ancillary revenue lane: per-episode dataset page, SVG chart exports and an embeddable feed",
+      "dependencies": [
+        "PUB-01"
+      ],
+      "acceptance_criteria": "Every episode publishes a dataset page (CSV, chart SVGs, methodology note, source citation) on a static site plus an embeddable feed, and external-traffic watch-time share is logged in SQLite. Profit Multiplier 5 is the $330-$440/day ancillary line at the goal, so this lane is instrumented from the first episode instead of assumed."
     },
     {
       "id": "ORC-01",
@@ -622,7 +673,7 @@
         "REN-09",
         "PUB-01"
       ],
-      "acceptance_criteria": "Single CLI command `python -m src.orchestrator run <episode_id>` runs end-to-end and resumes cleanly from any crash."
+      "acceptance_criteria": "Single CLI command `python -m src.orchestrator run <episode_id>` runs end-to-end and resumes cleanly from any crash. Artifacts use one layout, data/episodes/<episode_id>/<stage>/<content_hash>.<ext>, which is what makes resume and retry-after-edit cheap: a stage is skipped when its key file already exists."
     },
     {
       "id": "ORC-02",
@@ -631,12 +682,13 @@
       "priority": "P1",
       "status": "todo",
       "effort_hours": 2,
-      "title": "Configure Daily Autonomous Cron / Systemd Timer for 30-in-30 Production Cadence",
+      "title": "Configure Daily Autonomous Cron / Systemd Timer for the 1/day production cadence",
       "dependencies": [
         "ORC-01",
-        "QAG-02"
+        "QAG-02",
+        "VAL-01"
       ],
-      "acceptance_criteria": "Automatically builds next queued episode overnight IST so approval bundle arrives every morning at 08:00 IST."
+      "acceptance_criteria": "Automatically builds next queued episode overnight IST so approval bundle arrives every morning at 08:00 IST. The cron is enabled only after the VAL-01 14-day read, so automation never multiplies an unvalidated format."
     },
     {
       "id": "CMP-01",
@@ -686,9 +738,23 @@
       "effort_hours": 2,
       "title": "Complete India USD Payout & Tax Optimization (AdSense SWIFT, US Form W-8BEN 15% DTAA, GST LUT prep)",
       "dependencies": [
-        "CMP-03"
+        "CMP-03",
+        "CMP-05"
       ],
       "acceptance_criteria": "W-8BEN approved (15% US withholding vs 24%/30%), Indian bank SWIFT USD settlement tested, e-FIRA workflow documented."
+    },
+    {
+      "id": "CMP-05",
+      "track": "T11",
+      "phase": "P1_SPRINT_DAYS_8_30",
+      "priority": "P1",
+      "status": "todo",
+      "effort_hours": 1.5,
+      "title": "Write the docs/compliance/W8BEN_CHECKLIST.md filing artifact that CMP-04 executes",
+      "dependencies": [
+        "CMP-01"
+      ],
+      "acceptance_criteria": "docs/compliance/W8BEN_CHECKLIST.md exists with the step-by-step AdSense tax-info filing for India (W-8BEN, 15% DTAA rate vs 24%/30%), GST registration plus LUT, and the e-FIRA archival workflow. Profit Multiplier 7 is $70/day of AdSense retained at the goal, so the artifact ships before the first payout cycle rather than after it."
     },
     {
       "id": "ANA-01",
