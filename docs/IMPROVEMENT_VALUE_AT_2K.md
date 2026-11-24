@@ -264,12 +264,14 @@ rise 22.2 -> 94.4 (4.25x) while the library rises 4x. **Hold the rate at 22.22 a
 (a 5.5x overstatement); the Year-3 row is $611/day, not $3,080/day.** At a daily target this is good news as well as bad: the goal
 does not *require* the compounding, only the inventory (1.1.2).
 
-**(c) Localization trades views up against blended RPM down.** `PUB-02` and `ANA-04` dub into ES/PT/HI/AR. `PPM_REVIEW.md` prices
-non-English views at **$3.00 / $2.33** against $7 English. The same 5,400 extra views/day that `ANA-04` claims are worth **$12.58 at
-$2.33** and would have been worth **$37.80 at $7** - so localization pays only on audience that would *never* watch the English
-version, which is exactly what nobody has measured. At the base this is a rounding error; at the goal, where RPM is a third of
-the equation, a -40% blend against +15% views can be net negative. **Do not build `ANA-04` before measuring `PUB-02`'s
-actual RPM effect.** It is the weakest of the twelve priced items and the cheapest to leave unbuilt.
+**(c) Localization trades views up against blended RPM down.** `PUB-02` and `ANA-04` ship **de/fr/ja** metadata, SRTs and audio -
+the revenue set - and captions only in `es-419`/`pt-BR`/`hi`. `PPM_REVIEW.md` sec.0 prices each market as an index of the English
+RPM, and the three-market blend is **0.53, i.e. $3.73** against $7 English. The same 5,400 extra views/day that `ANA-04` claims
+are worth **$20.14 at $3.73** and would have been worth **$37.80 at $7** - a -47% blend against +15% views, so localization pays
+only on audience that would *never* watch the English version, which is exactly what nobody has measured. At the base this is a
+rounding error; at the goal, where RPM is a third of the equation, a 1.15 x 0.53 = 0.61 revenue ratio is net negative on its own.
+**Do not build `ANA-04` before measuring `PUB-02`'s actual RPM effect**, and treat sec.0's index as an assumption until `ANA-01`
+reports per-market RPM. It is the weakest of the twelve priced items and the cheapest to leave unbuilt.
 
 **(d) Ancillary is 22% of the plan's revenue and 0% of the tracker.** $510/day at Month 25, which is **$330-$440/day at the $1,500-$2,000 goals** (22% of revenue),
 produced by nothing that is scheduled, estimated, or owned. Either it becomes an item (needs the owner to add one) or the ad-side
@@ -310,9 +312,10 @@ it, but it cannot be the answer to how the goal is reached.**
 
 `ANA-01` (3h) is what makes those readings exist. It is worth $0/month in PPM terms and is the most valuable item in the tracker.
 
-**The video-30 gate is an open decision, not a recommendation.** `SPRINT_30_DAYS.md` carries it as
-`OPEN DECISION - Video-30 views/video/day gate`, with three thresholds (>=90 / 45-90 / <45) and their consequences. **No threshold
-is chosen in this repository, and this memo does not choose one.** The choice belongs to the owner, on the evidence, at video 30.
+**The video-30 gate is derived from this section, not a judgement call.** At the sprint's 1 video/day and the plan's $10.50 blended
+RPM, each path implies exactly one rate: 720 videos at month 24 need **155 views/video/day**, and 1,080 videos at month 36 need
+**103** - 1.1 read backwards. `SPRINT_30_DAYS.md` carries those thresholds with the derivation shown, and the reading is still taken
+at video 30 on trailing-28-day data, because the rate is what decides whether the 24-month or the 36-month path is live.
 
 ## 7. Sequencing: the five value-bearing items on the 125-hour spine
 

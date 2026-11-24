@@ -23,11 +23,43 @@ So the honest position is: **the revenue side is entirely assumed; the only hard
 | Monthly cost | $85 | ASSUMED (list prices, not an invoice) | ARCHITECTURE sec.5 Topology A table | $64 - $100 |
 | US share of revenue | 40% | ASSUMED | not stated anywhere in the repo | 25% - 55% |
 | FB In-Stream lift | +15% | ASSUMED | ARCHITECTURE sec.6: "+15% to +30%" | +15% - +30% |
-| Non-EN RPM | $3.00 / $2.33 | ASSUMED | not stated anywhere in the repo | $2 - $4 |
+| Non-EN RPM | **per-market index** of English RPM (sec.0.1) | ASSUMED | external country-RPM estimates; the repo measures none | `de` 0.65 down to `hi` 0.12 |
 
 **The base now carries the range the plan itself states** instead of a single figure below it. 61 views per video per day is the
 plan's own Month 13-16 projection rate; 94 is its Month 25-28 rate; 40 is kept as the floor. Nothing above multiplies two guesses
 together, and each input carries its own range.
+
+### 0.1 Non-English RPM is a per-market index, not a scalar
+
+A single "non-English RPM" hides the only thing that decides localization order: a German view and a Hindi view are not the same
+inventory. Each market is priced as an **index of the English RPM** this review already uses ($7), taken from published
+country-RPM estimates rather than measured here - the index is an assumption in the same sense as every other row in sec.0, and
+the `At $7 RPM` column is the one the arithmetic below actually uses.
+
+| Market | Role | Index vs English RPM | At $7 RPM | At the $10.50 baseline |
+|---|---|---|---|---|
+| `de` | revenue set | 0.65 | $4.55 | $6.83 |
+| `fr` | revenue set | 0.50 | $3.50 | $5.25 |
+| `ja` | revenue set | 0.45 | $3.15 | $4.73 |
+| `es-419` | captions only (reach) | 0.30 | $2.10 | $3.15 |
+| `pt-BR` | captions only (reach) | 0.20 | $1.40 | $2.10 |
+| `hi` | captions only (reach) | 0.12 | $0.84 | $1.26 |
+| `ar` | dropped | ~0.20 | ~$1.40 | ~$2.10 |
+
+**The decision `PUB-02` and `ANA-04` are priced against:** metadata and SRTs ship for **`de`, `fr`, `ja`** - the revenue set;
+**`es-419`, `pt-BR` and `hi` get captions only**, are labelled reach, and carry no revenue claim; **`ar` is dropped**, because an
+index level with `pt-BR` does not pay for right-to-left captions in a Modern Standard Arabic register, and no traffic estimate in
+this repository justifies that cost. The list is configuration (`config/languages.json`), not code: adding a market is a data edit
+plus a margin test, not a release.
+
+**Revenue-set blend:** equal weight across the three markets, (0.65 + 0.50 + 0.45) / 3 = **0.53**, i.e. **$3.73 per 1,000** at
+the $7 English RPM of this review, or $5.60 at the repo's $10.50 baseline. The equal weighting is itself an assumption - nothing
+here measures how localized views split between the three, and the blend only moves between $3.15 (all `ja`) and $4.55 (all `de`).
+
+**What the index changes, and what it does not.** It is not a claim that de/fr/ja views are worth $3.73; it says which market to
+buy first. The break-even is the useful part: a `de` view is worth 1.4x an `es-419` view (4.55 / 2.10) and 2.4x a `hi` view
+(4.55 / 0.84), so a reach market has to out-deliver the revenue set by that multiple before it is worth a dub minute. Captions
+cost almost nothing to ship, which is why the reach markets keep them.
 
 ### Cost line, derived from the plan's own table
 
@@ -156,7 +188,7 @@ the same group move the same variable and **cannot be added to each other**.
 | ID | Item | Kind | Group | Verdict | $/month delta (arithmetic) | Worth the hours? |
 |---|---|---|---|---|---|---|
 | `PUB-01` | Configure Google Cloud OAuth & YouTube Data API v3 Resumable Uploader (... <sub>3h - P0</sub> | c | - | No impact | $0 - upload gate; without it revenue is exactly $0 | No - $0/mo |
-| `PUB-02` | Build Automated Metadata & SRT Subtitle Localizer (Spanish, Portuguese,... <sub>3h - P0</sub> | a | G5 | Moves PPM | +5% views at non-EN $3 RPM: 1,800 / 2,745 / 4,230 v/day x 30 / 1000 x $3 = **+$162 / $247 / $381** - G5 low bound | Yes - $82/h |
+| `PUB-02` | Build Automated Metadata & SRT Subtitle Localizer (German, French, Jap... <sub>3h - P0</sub> | a | G5 | Moves PPM | +5% views in the revenue set at the $3.73 blend (sec.0.1): 1,800 / 2,745 / 4,230 v/day x 30 / 1000 x $3.73 = **+$202 / $307 / $474** - G5 low bound | Yes - $102/h |
 | `PUB-03` | Build Facebook In-Stream Cut Generator (3s visual hook + burned caption... <sub>3.5h - P1</sub> | a | G4 | Moves PPM | plan's FB floor +15% on rendered revenue = 15% x ($7,560 / $11,529 / $17,766) = **+$1,134 / $1,729 / $2,665** | Yes - $494/h |
 
 ### T10 - Pipeline Orchestrator & Crash-Resumable DAG
@@ -182,7 +214,7 @@ the same group move the same variable and **cannot be added to each other**.
 | `ANA-01` | Build YouTube Analytics & Revenue daily ETL into SQLite (CTR, AVD, RPM,... <sub>3h - P1</sub> | c | - | No impact | $0 alone - the meter that makes ANA-02, TOP-02/03 and SCR-04 measurable | No - $0/mo |
 | `ANA-02` | Build Retention Drop-Off Diagnostic & RPM-per-Topic Feedback Loop <sub>3h - P1</sub> | a | G3 | Moves PPM | +4% views from the retention/RPM loop = **+$302 / $461 / $711** - inside G3, so it repeats SCR-04's claim | Yes - $154/h |
 | `ANA-03` | Build Automated Annual Dataset Refresh Trigger ('2027/2028 Edition' re-... <sub>4h - P2</sub> | a | G6 | Moves PPM | refresh 100 of 900 at +60%: 2,400 / 3,660 / 5,640 extra v/day x 30 / 1000 x $7 = **+$504 / $769 / $1,184** | Yes - $192/h |
-| `ANA-04` | Add Multi-Channel Config Isolation & Multi-Language Audio Dubbing (YouT... <sub>5h - P2</sub> | a | G5 | Moves PPM | +15% views at one-third RPM: 5,400 / 8,235 / 12,690 v/day x 30 / 1000 x $2.33 = **+$378 / $576 / $888** - G5 leader | Yes - $115/h |
+| `ANA-04` | Add Multi-Channel Config Isolation & Multi-Language Audio Dubbing (YouT... <sub>5h - P2</sub> | a | G5 | Moves PPM | +15% views at the same $3.73 revenue-set blend: 5,400 / 8,235 / 12,690 v/day x 30 / 1000 x $3.73 = **+$605 / $922 / $1,421** - G5 leader | Yes - $184/h |
 
 ## 2. Why these deltas cannot simply be added
 
@@ -202,7 +234,7 @@ that lever's own upper case: 30% for FB (G4), 150 refreshed videos at +60% for G
 | **G2** Topic selection | TOP-02 +5%, TOP-03 +5% | $378 | $378 | $756 |
 | **G3** Retention / AVD | SCR-04 +4%, ANA-02 +4% | $302 | $302 | $604 |
 | **G4** Separate platform inventory | PUB-03 +15% | $1,134 | $1,134 | $2,268 |
-| **G5** Non-English audience | PUB-02 +5% at $3, ANA-04 +15% at one-third RPM | $162 | $378 | $540 |
+| **G5** Non-English audience | PUB-02 +5% at $3.73, ANA-04 +15% at the same blend | $202 | $605 | $807 |
 | **G6** Library refresh | ANA-03, 100 videos at +60% | $147 | $504 | $756 |
 | **G7** Production throughput | REN-02 +30 videos/mo | $0 | $252 | $252 |
 | **T** Withholding | CMP-04 | $284 | $454 | $624 |
@@ -216,7 +248,7 @@ that lever's own upper case: 30% for FB (G4), 150 refreshed videos at +60% for G
 | **G2** Topic selection | TOP-02 +5%, TOP-03 +5% | $576 | $576 | $1,152 |
 | **G3** Retention / AVD | SCR-04 +4%, ANA-02 +4% | $461 | $461 | $922 |
 | **G4** Separate platform inventory | PUB-03 +15% | $1,729 | $1,729 | $3,459 |
-| **G5** Non-English audience | PUB-02 +5% at $3, ANA-04 +15% at one-third RPM | $247 | $576 | $823 |
+| **G5** Non-English audience | PUB-02 +5% at $3.73, ANA-04 +15% at the same blend | $307 | $922 | $1,229 |
 | **G6** Library refresh | ANA-03, 100 videos at +60% | $224 | $769 | $1,153 |
 | **G7** Production throughput | REN-02 +30 videos/mo | $0 | $384 | $384 |
 | **T** Withholding | CMP-04 | $432 | $692 | $951 |
@@ -230,7 +262,7 @@ that lever's own upper case: 30% for FB (G4), 150 refreshed videos at +60% for G
 | **G2** Topic selection | TOP-02 +5%, TOP-03 +5% | $888 | $888 | $1,776 |
 | **G3** Retention / AVD | SCR-04 +4%, ANA-02 +4% | $711 | $711 | $1,422 |
 | **G4** Separate platform inventory | PUB-03 +15% | $2,665 | $2,665 | $5,330 |
-| **G5** Non-English audience | PUB-02 +5% at $3, ANA-04 +15% at one-third RPM | $381 | $888 | $1,269 |
+| **G5** Non-English audience | PUB-02 +5% at $3.73, ANA-04 +15% at the same blend | $474 | $1,421 | $1,895 |
 | **G6** Library refresh | ANA-03, 100 videos at +60% | $345 | $1,184 | $1,777 |
 | **G7** Production throughput | REN-02 +30 videos/mo | $0 | $592 | $592 |
 | **T** Withholding | CMP-04 | $666 | $1,066 | $1,466 |
@@ -253,15 +285,15 @@ Two things follow, and both matter more than the totals:
 | G2 Topic selection | $378 | $378 | $756 |
 | G3 Retention | $302 | $302 | $604 |
 | G4 Separate platform inventory | $1,134 | $1,134 | $2,268 |
-| G5 Non-English audience | $162 | $378 | $540 |
+| G5 Non-English audience | $202 | $605 | $807 |
 | G6 Library refresh | $147 | $504 | $756 |
 | G7 Production throughput | $0 | $252 | $252 |
 | T Withholding | $284 | $454 | $624 |
 | C Cost lines | $21 | $21 | $21 |
-| **Sum of group gains** | **$2,579** | **$4,935** | **$7,484** |
+| **Sum of group gains** | **$2,619** | **$5,162** | **$7,750** |
 | Base PPM | $7,475 | $7,475 | $7,475 |
-| **Resulting PPM** | **$10,054** | **$12,410** | **$14,959** |
-| Resulting $/day | $335 | $414 | $499 |
+| **Resulting PPM** | **$10,094** | **$12,637** | **$15,225** |
+| Resulting $/day | $336 | $421 | $508 |
 
 ### At 61 views/video/day (base $11,444/month)
 
@@ -271,15 +303,15 @@ Two things follow, and both matter more than the totals:
 | G2 Topic selection | $576 | $576 | $1,152 |
 | G3 Retention | $461 | $461 | $922 |
 | G4 Separate platform inventory | $1,729 | $1,729 | $3,459 |
-| G5 Non-English audience | $247 | $576 | $823 |
+| G5 Non-English audience | $307 | $922 | $1,229 |
 | G6 Library refresh | $224 | $769 | $1,153 |
 | G7 Production throughput | $0 | $384 | $384 |
 | T Withholding | $432 | $692 | $951 |
 | C Cost lines | $21 | $21 | $21 |
-| **Sum of group gains** | **$3,921** | **$7,514** | **$11,402** |
+| **Sum of group gains** | **$3,981** | **$7,860** | **$11,809** |
 | Base PPM | $11,444 | $11,444 | $11,444 |
-| **Resulting PPM** | **$15,365** | **$18,958** | **$22,846** |
-| Resulting $/day | $512 | $632 | $762 |
+| **Resulting PPM** | **$15,425** | **$19,304** | **$23,253** |
+| Resulting $/day | $514 | $643 | $775 |
 
 ### At 94 views/video/day (base $17,681/month)
 
@@ -289,37 +321,37 @@ Two things follow, and both matter more than the totals:
 | G2 Topic selection | $888 | $888 | $1,776 |
 | G3 Retention | $711 | $711 | $1,422 |
 | G4 Separate platform inventory | $2,665 | $2,665 | $5,330 |
-| G5 Non-English audience | $381 | $888 | $1,269 |
+| G5 Non-English audience | $474 | $1,421 | $1,895 |
 | G6 Library refresh | $345 | $1,184 | $1,777 |
 | G7 Production throughput | $0 | $592 | $592 |
 | T Withholding | $666 | $1,066 | $1,466 |
 | C Cost lines | $21 | $21 | $21 |
-| **Sum of group gains** | **$6,032** | **$11,568** | **$17,561** |
+| **Sum of group gains** | **$6,125** | **$12,101** | **$18,187** |
 | Base PPM | $17,681 | $17,681 | $17,681 |
-| **Resulting PPM** | **$23,713** | **$29,249** | **$35,242** |
-| Resulting $/day | $790 | $975 | $1,175 |
+| **Resulting PPM** | **$23,806** | **$29,782** | **$35,868** |
+| Resulting $/day | $794 | $993 | $1,196 |
 
 ### The nine outcomes, side by side
 
 | Base | Item case | Group gains | Resulting PPM | $/day | % of $1,500/day | % of $2,000/day |
 |---|---|---|---|---|---|---|
-| 40 views/video/day | low | $2,579 | **$10,054** | $335 | 22% | 17% |
-| 40 views/video/day | likely | $4,935 | **$12,410** | $414 | 28% | 21% |
-| 40 views/video/day | high | $7,484 | **$14,959** | $499 | 33% | 25% |
-| 61 views/video/day | low | $3,921 | **$15,365** | $512 | 34% | 26% |
-| 61 views/video/day | likely | $7,514 | **$18,958** | $632 | 42% | 32% |
-| 61 views/video/day | high | $11,402 | **$22,846** | $762 | 51% | 38% |
-| 94 views/video/day | low | $6,032 | **$23,713** | $790 | 53% | 40% |
-| 94 views/video/day | likely | $11,568 | **$29,249** | $975 | 65% | 49% |
-| 94 views/video/day | high | $17,561 | **$35,242** | $1,175 | 78% | 59% |
+| 40 views/video/day | low | $2,619 | **$10,094** | $336 | 22% | 17% |
+| 40 views/video/day | likely | $5,162 | **$12,637** | $421 | 28% | 21% |
+| 40 views/video/day | high | $7,750 | **$15,225** | $508 | 34% | 25% |
+| 61 views/video/day | low | $3,981 | **$15,425** | $514 | 34% | 26% |
+| 61 views/video/day | likely | $7,860 | **$19,304** | $643 | 43% | 32% |
+| 61 views/video/day | high | $11,809 | **$23,253** | $775 | 52% | 39% |
+| 94 views/video/day | low | $6,125 | **$23,806** | $794 | 53% | 40% |
+| 94 views/video/day | likely | $12,101 | **$29,782** | $993 | 66% | 50% |
+| 94 views/video/day | high | $18,187 | **$35,868** | $1,196 | 80% | 60% |
 
 Percentages divide PPM's `$/day` by the **profit** goal itself ($1,500 / $2,000); the revenue needed for that profit is
 $1,502.83 / $2,002.83 per day (sec.8), so they overstate progress by 0.2%.
 
-**The single defensible headline is the likely-likely cell: $18,958/month, $632/day.** Everything else in
-the grid is a bound. The span between the lowest corner ($10,054/month, $335/day) and the highest
-($35,242/month, $1,175/day) is 3.5x, and almost all of it is the per-video rate, not the
-items: at a fixed item case, moving the base from 40 to 94 multiplies PPM by 2.36x, while at a fixed base, moving the item case from low to high multiplies it by 1.49x.
+**The single defensible headline is the likely-likely cell: $19,304/month, $643/day.** Everything else in
+the grid is a bound. The span between the lowest corner ($10,094/month, $336/day) and the highest
+($35,868/month, $1,196/day) is 3.6x, and almost all of it is the per-video rate, not the
+items: at a fixed item case, moving the base from 40 to 94 multiplies PPM by 2.36x, while at a fixed base, moving the item case from low to high multiplies it by 1.51x.
 
 **Weakest remaining assumption:** the +20% views claim behind G1 (`THM-01`, CTR 3.0% to 3.6%). It is the largest single lever in
 the review, worth $2,306/month at the likely base, so each 10 percentage points of that claim is +/-$1,153/month. The per-video rate is no longer a hidden assumption - it is the axis of the grid above.
@@ -338,14 +370,14 @@ what the item actually contributes to the likely case: within each group only th
 | 5 | `SCR-04` | Add Retention Pacing Linter (0-35s hook, open loops, pattern interrupts... | G3 | $461 | 2h | **$230/h** | $461 |
 | 6 | `ANA-03` | Build Automated Annual Dataset Refresh Trigger ('2027/2028 Edition' re-... | G6 | $769 | 4h | **$192/h** | $769 |
 | 7 | `TOP-02` | Build YouTube Autocomplete & Outlier Competitor Video Miner | G2 | $576 | 3h | **$192/h** | capped by group leader |
-| 8 | `THM-02` | Add Mobile-Scale Legibility Preview (168x94px grid) & Contrast Ratio Ch... | G1 | $231 | 1.5h | **$154/h** | capped by group leader |
-| 9 | `ANA-02` | Build Retention Drop-Off Diagnostic & RPM-per-Topic Feedback Loop | G3 | $461 | 3h | **$154/h** | capped by group leader |
-| 10 | `ANA-04` | Add Multi-Channel Config Isolation & Multi-Language Audio Dubbing (YouT... | G5 | $576 | 5h | **$115/h** | $576 |
-| 11 | `REN-02` | Build Core 4K60 Render Engine (atomic scene worker pool + static textur... | G7 | $384 | 4h | **$96/h** | $384 |
-| 12 | `PUB-02` | Build Automated Metadata & SRT Subtitle Localizer (Spanish, Portuguese,... | G5 | $247 | 3h | **$82/h** | capped by group leader |
+| 8 | `ANA-04` | Add Multi-Channel Config Isolation & Multi-Language Audio Dubbing (YouT... | G5 | $922 | 5h | **$184/h** | $922 |
+| 9 | `THM-02` | Add Mobile-Scale Legibility Preview (168x94px grid) & Contrast Ratio Ch... | G1 | $231 | 1.5h | **$154/h** | capped by group leader |
+| 10 | `ANA-02` | Build Retention Drop-Off Diagnostic & RPM-per-Topic Feedback Loop | G3 | $461 | 3h | **$154/h** | capped by group leader |
+| 11 | `PUB-02` | Build Automated Metadata & SRT Subtitle Localizer (German, French, Jap... | G5 | $307 | 3h | **$102/h** | capped by group leader |
+| 12 | `REN-02` | Build Core 4K60 Render Engine (atomic scene worker pool + static textur... | G7 | $384 | 4h | **$96/h** | $384 |
 
-Credited total: **$7,493** from these twelve, plus $21 of cost savings from the four negligible items, equals
-the $7,514 likely-case sum in section 3. The order of this table is identical at the 40 and 94 bases for every revenue-side
+Credited total: **$7,839** from these twelve, plus $21 of cost savings from the four negligible items, equals
+the $7,860 likely-case sum in section 3. The order of this table is identical at the 40 and 94 bases for every revenue-side
 item, because they all scale with revenue together; only the fixed-dollar items (`ANA-03`, `REN-02`, the cost lines) shift, and not
 enough to change the order.
 
@@ -424,25 +456,25 @@ Views/day = revenue x 1000 / (30 x RPM). At the $1,500 floor and $10 RPM: 45,085
 | Base | Item case | PPM/month | $/day | % of $1,500/day | % of $2,000/day |
 |---|---|---|---|---|---|
 | measured today | - | $0 | $0 | 0% | 0% |
-| 40 views/video/day | low | $10,054 | $335 | 22% | 17% |
-| 40 views/video/day | likely | $12,410 | $414 | 28% | 21% |
-| 40 views/video/day | high | $14,959 | $499 | 33% | 25% |
-| 61 views/video/day | low | $15,365 | $512 | 34% | 26% |
-| 61 views/video/day | likely | **$18,958** | **$632** | 42% | 32% |
-| 61 views/video/day | high | $22,846 | $762 | 51% | 38% |
-| 94 views/video/day | low | $23,713 | $790 | 53% | 40% |
-| 94 views/video/day | likely | $29,249 | $975 | 65% | 49% |
-| 94 views/video/day | high | $35,242 | $1,175 | 78% | 59% |
+| 40 views/video/day | low | $10,094 | $336 | 22% | 17% |
+| 40 views/video/day | likely | $12,637 | $421 | 28% | 21% |
+| 40 views/video/day | high | $15,225 | $508 | 34% | 25% |
+| 61 views/video/day | low | $15,425 | $514 | 34% | 26% |
+| 61 views/video/day | likely | **$19,304** | **$643** | 43% | 32% |
+| 61 views/video/day | high | $23,253 | $775 | 52% | 39% |
+| 94 views/video/day | low | $23,806 | $794 | 53% | 40% |
+| 94 views/video/day | likely | $29,782 | $993 | 66% | 50% |
+| 94 views/video/day | high | $35,868 | $1,196 | 80% | 60% |
 | **goal, solo** | $1,500/day of profit | $45,085 | $1,503 | 100% | 75% |
 | **goal, solo** | $2,000/day of profit | $60,085 | $2,003 | 134% | 100% |
 
 The percentages divide `$/day` by the profit goal itself; the revenue that profit needs is $1,502.83/$2,002.83 per day, so they
 overstate progress by 0.2%.
 
-So the answer to the goal is a band, not a number: **$632/day if the plan's own Month 13-16 rate and the likely
-item case both hold, rising to $975/day at the Month 25-28 rate, and falling to $335/day if neither does.**
-At 61 views/video/day the items deliver 42% of the $1,500/day floor; at 94 they deliver
-65% of it and 49% of the $2,000/day top.
+So the answer to the goal is a band, not a number: **$643/day if the plan's own Month 13-16 rate and the likely
+item case both hold, rising to $993/day at the Month 25-28 rate, and falling to $336/day if neither does.**
+At 61 views/video/day the items deliver 43% of the $1,500/day floor; at 94 they deliver
+66% of it and 50% of the $2,000/day top.
 
 **The goal turns on one number, and it is the one the base now varies over.** At 94 views/video/day the twelve items reach
 65% of the floor on their own; at 40 they reach 28% of it. No tracker item can move that number - only publishing can.
@@ -454,9 +486,9 @@ supply in the likely case:
 
 | Base | Revenue/month | Growth needed to $1,500/day | Items supply | Still missing |
 |---|---|---|---|---|
-| 40 views/video/day | $7,560 | 5.96x | 1.66x | 3.59x |
-| 61 views/video/day | $11,529 | 3.91x | 1.66x | 2.36x |
-| 94 views/video/day | $17,766 | 2.54x | 1.65x | 1.54x |
+| 40 views/video/day | $7,560 | 5.96x | 1.69x | 3.57x |
+| 61 views/video/day | $11,529 | 3.91x | 1.69x | 2.34x |
+| 94 views/video/day | $17,766 | 2.54x | 1.68x | 1.51x |
 
 Videos needed = revenue x 1000 / (RPM x 30 x views per video per day). Months assume 30 videos/month from a 900-video library.
 
@@ -490,12 +522,12 @@ is the defensible part of the plan's evidence. **No repository file measures it,
 
 The best single item, `THM-01`, is worth $2,306/month ($77/day) at the likely base and
 $9,017/month ($301/day) once the channel earns $1,500/day of profit - the same percentage, 3.9 times the money.
-All twelve together reach $18,958/month ($632/day).
+All twelve together reach $19,304/month ($643/day).
 
 * At **61 views/video/day** - the plan's own Month 13-16 rate - the floor needs 3.91x the revenue, of which the items
-  supply 1.66x. That is $632/day, 42% of the floor.
-* At **94** - the plan's Month 25-28 rate - the items nearly close it: $975/day, 65% of the floor.
-* At **40** - this review's floor - the same items reach $414/day, 28% of it.
+  supply 1.69x. That is $643/day, 43% of the floor.
+* At **94** - the plan's Month 25-28 rate - the items nearly close it: $993/day, 66% of the floor.
+* At **40** - this review's floor - the same items reach $421/day, 28% of it.
 
 Two things are therefore true at once. The goal is a views-and-RPM problem that the tracker only multiplies - no item, alone, moves
 it. And the multiplier is worth having at any base: `THM-01` is $50/day at 40 views/video/day, $77/day at 61, and $118/day at 94,

@@ -54,7 +54,7 @@ flowchart TB
     subgraph S6["6. Packaging, QA & Multi-Platform Distribution"]
         Q1[Automated QC: Black Frames, Drift, Clipping, Overlap] --> Q2[3-Variant Thumbnail Factory]
         Q2 --> Q3[Telegram Bot: 3-Min Human Approval Gate]
-        Q3 -->|Approved| P1[YouTube Data API v3 + ES/PT/HI/AR Localizations & SRT]
+        Q3 -->|Approved| P1[YouTube Data API v3 + de/fr/ja Localizations & SRT]
         Q3 -->|Approved| P2[Facebook In-Stream Cut + Burned Captions -> Graph API]
     end
 
@@ -222,8 +222,8 @@ Zero broken videos ever reach YouTube.
 ### Module 8: Localization & Multi-Platform Distribution
 * **YouTube Data API v3 (`src/publish/youtube.py`):**
   * Resumable chunked upload (`private` or `scheduled` at peak Tier-1 US/EU time: **14:00–16:00 UTC / 19:30–21:30 IST**).
-  * Automated **Localized Metadata (`localizations` object)** translated by Claude for **Spanish (`es`)**, **Portuguese (`pt-BR`)**, **Hindi (`hi`)**, and **Arabic (`ar`)** — localized Title + Description + Search Tags.
-  * Automated **Multi-Language Subtitles (`.srt`)** uploaded for `en`, `es`, `pt`, `hi`, `ar` (boosts global search indexing & watch time).
+  * Automated **Localized Metadata (`localizations` object)** translated by Claude for the **revenue set — German (`de`), French (`fr`), Japanese (`ja`)** — localized Title + Description + Search Tags. The set is ordered by per-market RPM, not by population; the index and its derivation are in `PPM_REVIEW.md` sec.0.
+  * Automated **Multi-Language Subtitles (`.srt`)** uploaded for `en`, `de`, `fr`, `ja`, plus **captions-only reach markets `es-419`, `pt-BR`, `hi`** (boosts global search indexing & watch time; no RPM is claimed for these). **Arabic (`ar`) is dropped** under the same decision: its RPM index is below every reach market's. The language list is configuration, not code.
   * Automated YouTube Chapter timestamps injected into description from `SceneGraph`.
 * **Facebook In-Stream Automation (`src/publish/facebook.py`):**
   * Generates a secondary **Facebook-tuned cut** via FFmpeg:
@@ -270,7 +270,7 @@ Two proven deployment topologies that respect the **~$100/month** constraint:
 | :--- | :--- | :---: |
 | **Control Plane VPS** | Hetzner CPX41 (8 vCPU, 16 GB RAM, 240 GB NVMe) — cron, SQLite, FastMCP data server, Python scripts, RSS parser, uploader | $27 |
 | **On-Demand GPU Worker** | RunPod / Vast.ai RTX 4090 (24 GB) provisioned by API for ~2 h/day (≈60 h/mo) — TTS, alignment, 4K60 render | $20–35 |
-| **Script LLM (Claude 3.5 Sonnet + caching)** | ~30 scripts + scene graphs + ES/PT/HI/AR localized metadata (~$0.05–0.30/video) | $10 |
+| **Script LLM (Claude 3.5 Sonnet + caching)** | ~30 scripts + scene graphs + de/fr/ja localized metadata (~$0.05–0.30/video) | $10 |
 | **Voiceover** | Self-hosted MeloTTS / Kokoro on the GPU worker, Azure Neural fallback | $5 |
 | **Economic Data APIs** | World Bank, FRED, OECD, IMF, OWID, DBnomics, UN Data | $0 |
 | **Storage** | Hetzner Volume / Backblaze B2 / Cloudflare R2 — 500 GB masters + backups | $5 |

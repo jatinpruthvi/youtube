@@ -1,6 +1,6 @@
 # 30 Videos in 30 Days — Production & Launch Tracker
 
-> **Rule:** 30 videos in 30 days. One flagship English channel. 10–18 min 4K 60FPS fact-grounded documentaries. Automated ES/PT/HI/AR localized metadata + Facebook In-Stream companion cuts.
+> **Rule:** 30 videos in 30 days. One flagship English channel. 10–18 min 4K 60FPS fact-grounded documentaries. Automated de/fr/ja localized metadata & SRTs (the revenue set) + es-419/pt-BR/hi captions (reach) + Facebook In-Stream companion cuts.
 
 ---
 
@@ -48,13 +48,13 @@ relationship into a decision; a dashboard metric turns it into an observation ta
 | :--- | :--- | :--- |
 | **Days 1–5 (Factory Build)** | Complete `P0` MVP items (`INF-01` → `REN-09`, `THM-01`, `PUB-01`). Build first 4 templates (`BarChartRace`, `WorldChoroplethMap`, `SpotlightCountryCard`, `DualSplitComparison`). | End-to-end automated pipeline verified |
 | **Days 6–7 (Batch Buffer)** | Run Episodes `EP01`–`EP05` overnight; tune voice pacing, audio LUFS, and thumbnail CTR legibility. Publish `EP01`–`EP02` to prime YouTube's topic graph. | 5 videos rendered, 2 published |
-| **Days 8–20 (Daily Automated Cadence)** | Autonomous overnight cron renders 1–2 episodes/night; morning 08:00 IST Telegram 3-min review & `/approve`. Add Templates 6–8 (`HistoricalLineRace`, `AnimatedBubbleScatter`, `DistributionHistogram`) & ES/PT/HI/AR localization (`PUB-02`). | 18 videos live (cumulative) |
+| **Days 8–20 (Daily Automated Cadence)** | Autonomous overnight cron renders 1–2 episodes/night; morning 08:00 IST Telegram 3-min review & `/approve`. Add Templates 6–8 (`HistoricalLineRace`, `AnimatedBubbleScatter`, `DistributionHistogram`) & de/fr/ja localization (`PUB-02`). | 18 videos live (cumulative) |
 | **Days 21–30 (Optimization & FB Rollout)** | Activate Facebook In-Stream cut publisher (`PUB-03`) & YouTube Analytics ETL (`ANA-01`). Double down on top-CTR/AVD angles for final 12 episodes. | **30 videos published in 30 days** |
 
 ### Daily Solo-Developer Operating Schedule (India Standard Time — IST)
 * **02:00 – 06:30 IST (Automated):** GPU VPS executes ETL → Claude Script + Fact Audit → GPU TTS + WhisperX → Parallel 4K60 NVENC Render → QC + 3 Thumbnails.
 * **08:00 – 08:15 IST (15 min human):** Review Telegram approval bundle on phone (30s hook clip + mobile-size thumbnail test + fact ledger) → reply `/approve`.
-* **08:15 – 08:30 IST (Automated):** Resumable upload to YouTube (scheduled for **19:30 IST / 14:00 UTC** Tier-1 US East morning / EU afternoon peak) + localized ES/PT/HI/AR metadata/SRTs + Facebook cut.
+* **08:15 – 08:30 IST (Automated):** Resumable upload to YouTube (scheduled for **19:30 IST / 14:00 UTC** Tier-1 US East morning / EU afternoon peak) + localized de/fr/ja metadata/SRTs (plus es-419/pt-BR/hi captions) + Facebook cut.
 * **Rest of Day:** Engineering improvements, new visual templates, and retention analysis.
 
 ---
@@ -96,7 +96,7 @@ All 30 episodes are selected for **high Tier-1 advertiser CPM (Finance / Economi
 | **EP29** | ⬜ | Every Country Ranked by Economic Growth Since 2000 | Macro Growth | World Bank + IMF | BarRace + LineRace | 15m | `[ ] [ ] [ ] [ ] [ ] [ ] [ ]` |
 | **EP30** | ⬜ | Where Will the Richest Countries Be in 2050? | Future Macro | IMF + OECD Long-Term | LineRace + Choropleth | 17m | `[ ] [ ] [ ] [ ] [ ] [ ] [ ]` |
 
-*Legend for Stage Check:* `D` = DataBrief frozen, `S` = Script & Fact Audit passed, `A` = Audio & Alignment mastered, `V` = 4K60 Video QC passed, `T` = 3 Thumbnails ready, `YT` = YouTube + ES/PT/HI/AR published, `FB` = Facebook In-Stream cut published.
+*Legend for Stage Check:* `D` = DataBrief frozen, `S` = Script & Fact Audit passed, `A` = Audio & Alignment mastered, `V` = 4K60 Video QC passed, `T` = 3 Thumbnails ready, `YT` = YouTube + de/fr/ja published, `FB` = Facebook In-Stream cut published.
 
 ---
 

@@ -175,10 +175,13 @@ Optimising "YouTube" as one thing usually means optimising one of these six and 
    an Audio Tracks API exists in a restricted pilot with no open application. Treat dubbing as a Studio step inside the human
    approval gate until that changes. YouTube's automatic dubbing may cover some channels at no pipeline cost — check eligibility
    in Studio before building anything.
-3. **Order by RPM, not population.** `PPM_REVIEW.md` prices non-English views at $3.00 / $2.33 per 1,000 against $7 English, so
-   4x the views at a quarter of the RPM is a wash. Dub into high-RPM markets first (de, ja, ko, fr, nl) and treat hi/ar/es-419 as
-   reach, not revenue. Cost is small: Azure Neural TTS is already the non-English fallback in `ARCHITECTURE.md` §3 Module 4 at
-   roughly $0.20 per 12-minute video *(assumption, list price)*.
+3. **Order by RPM, not population.** `PPM_REVIEW.md` sec.0 prices each market as an index of the English RPM: `de` 0.65, `fr` 0.50,
+   `ja` 0.45 against `es-419` 0.30, `pt-BR` 0.20 and `hi` 0.12. A `de` view is worth 1.4x an `es-419` view and 2.4x a `hi` view, so
+   a reach market has to out-deliver that multiple before it is worth a dub minute. **The revenue set is de/fr/ja** - metadata and
+   SRTs, blended at $3.73 per 1,000 against $7 English; **es-419, pt-BR and hi get captions only** and carry no revenue claim;
+   **`ar` is dropped.** `ko` and `nl` sit close to `fr`/`ja` on the same estimates and are the next candidates, added on a measured
+   margin test rather than on population. Cost is small: Azure Neural TTS is already the non-English fallback in `ARCHITECTURE.md`
+   §3 Module 4 at roughly $0.20 per 12-minute video *(assumption, list price)*.
 4. **Tier-1 KPI tension.** `SPRINT_30_DAYS.md` asks for ≥55% Tier-1 audience; adding low-RPM geos works against that number.
    Decide which one is the goal before measuring either.
 

@@ -216,19 +216,19 @@ python3 scripts/track.py set INF-01 done  # Mark item done & auto-sync this Mark
 </details>
 
 ## T09: Localization & Multi-Platform Publishing
-*YouTube Data API v3 upload, ES/PT/HI/AR localized metadata & SRT captions, and Facebook In-Stream burned-caption cut.* (**0/3 complete**)
+*YouTube Data API v3 upload, de/fr/ja localized metadata & SRT captions (es-419/pt-BR/hi captions only), and Facebook In-Stream burned-caption cut.* (**0/3 complete**)
 
 | Status | ID | Priority | Phase | Est. | Dependencies | Item & Acceptance Criteria |
 | :---: | :--- | :---: | :--- | :---: | :--- | :--- |
 | ⬜ Todo | `PUB-01` | `P0` | `P0` | 3h | `QAG-02` | **Configure Google Cloud OAuth & YouTube Data API v3 Resumable Uploader (chapters + scheduling)**<br/><sub>✓ Uploads 4K60 master as scheduled video at optimal Tier-1 UTC slot with chapter timestamps and custom thumbnail.</sub> |
-| ⬜ Todo | `PUB-02` | `P0` | `P1` | 3h | `PUB-01`, `AUD-03` | **Build Automated Metadata & SRT Subtitle Localizer (Spanish, Portuguese, Hindi, Arabic)**<br/><sub>✓ Translates title, description, and accurate time-coded SRTs into es, pt-BR, hi, ar and uploads via YouTube localizations & captions APIs.</sub> |
+| ⬜ Todo | `PUB-02` | `P0` | `P1` | 3h | `PUB-01`, `AUD-03` | **Build Automated Metadata & SRT Subtitle Localizer (German, French, Japanese revenue set)**<br/><sub>✓ Translates title and description into de, fr and ja and uploads accurate time-coded SRTs for those three via YouTube localizations & captions APIs; ships es-419/pt-BR/hi captions only (reach, no revenue claim) and no ar. The language list is config (config/languages.json), not code.</sub> |
 | ⬜ Todo | `PUB-03` | `P1` | `P1` | 3.5h | `REN-09`, `AUD-03` | **Build Facebook In-Stream Cut Generator (3s visual hook + burned captions) & Graph API Uploader**<br/><sub>✓ Renders FB-ready MP4 with high-contrast burned captions and uploads scheduled video to Facebook Page.</sub> |
 
 <details>
 <summary>Checklist View — T09 (0/3)</summary>
 
 - [ ] **`PUB-01`** (P0, 3h) — Configure Google Cloud OAuth & YouTube Data API v3 Resumable Uploader (chapters + scheduling)
-- [ ] **`PUB-02`** (P0, 3h) — Build Automated Metadata & SRT Subtitle Localizer (Spanish, Portuguese, Hindi, Arabic)
+- [ ] **`PUB-02`** (P0, 3h) — Build Automated Metadata & SRT Subtitle Localizer (German, French, Japanese revenue set)
 - [ ] **`PUB-03`** (P1, 3.5h) — Build Facebook In-Stream Cut Generator (3s visual hook + burned captions) & Graph API Uploader
 
 </details>
@@ -277,7 +277,7 @@ python3 scripts/track.py set INF-01 done  # Mark item done & auto-sync this Mark
 | ⬜ Todo | `ANA-01` | `P1` | `P1` | 3h | `PUB-01` | **Build YouTube Analytics & Revenue daily ETL into SQLite (CTR, AVD, RPM, retention curves, geo)**<br/><sub>✓ Daily cron ingests video-level performance and geo RPM splits (US/UK/CA/AU share) into SQLite.</sub> |
 | ⬜ Todo | `ANA-02` | `P1` | `P2` | 3h | `ANA-01`, `TOP-03` | **Build Retention Drop-Off Diagnostic & RPM-per-Topic Feedback Loop**<br/><sub>✓ Weekly Telegram report correlates >3% retention drops to exact scene templates and updates topic scorer weights.</sub> |
 | ⬜ Todo | `ANA-03` | `P2` | `P3` | 4h | `ANA-01`, `ORC-01` | **Build Automated Annual Dataset Refresh Trigger ('2027/2028 Edition' re-render pipeline)**<br/><sub>✓ Detects new World Bank / OECD annual releases and queues refreshed sequel episodes for top-earning evergreen videos.</sub> |
-| ⬜ Todo | `ANA-04` | `P2` | `P3` | 5h | `ANA-02`, `CMP-03` | **Add Multi-Channel Config Isolation & Multi-Language Audio Dubbing (YouTube MLA for ES/PT)**<br/><sub>✓ Single GPU pipeline serves 3+ niche channels via channel_id configs and optional secondary Spanish/Portuguese audio tracks.</sub> |
+| ⬜ Todo | `ANA-04` | `P2` | `P3` | 5h | `ANA-02`, `CMP-03` | **Add Multi-Channel Config Isolation & Multi-Language Audio Dubbing (YouTube MLA for de/fr/ja)**<br/><sub>✓ Single GPU pipeline serves 3+ niche channels via channel_id configs and optional de/fr/ja audio tracks, priced at the PPM_REVIEW.md sec.0 revenue-set blend.</sub> |
 
 <details>
 <summary>Checklist View — T12 (0/4)</summary>
@@ -285,6 +285,6 @@ python3 scripts/track.py set INF-01 done  # Mark item done & auto-sync this Mark
 - [ ] **`ANA-01`** (P1, 3h) — Build YouTube Analytics & Revenue daily ETL into SQLite (CTR, AVD, RPM, retention curves, geo)
 - [ ] **`ANA-02`** (P1, 3h) — Build Retention Drop-Off Diagnostic & RPM-per-Topic Feedback Loop
 - [ ] **`ANA-03`** (P2, 4h) — Build Automated Annual Dataset Refresh Trigger ('2027/2028 Edition' re-render pipeline)
-- [ ] **`ANA-04`** (P2, 5h) — Add Multi-Channel Config Isolation & Multi-Language Audio Dubbing (YouTube MLA for ES/PT)
+- [ ] **`ANA-04`** (P2, 5h) — Add Multi-Channel Config Isolation & Multi-Language Audio Dubbing (YouTube MLA for de/fr/ja)
 
 </details>

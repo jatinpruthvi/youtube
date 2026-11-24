@@ -11,7 +11,7 @@ Universal, model-agnostic operating instructions for **all AI coding models and 
 * **Mission:** Build an AI-powered, automated data documentary factory generating **$1,500–$2,000/day ($45k–$60k/month) of profit** from pure platform ad revenue (YouTube AdSense + Facebook In-Stream) within 24–36 months.
 * **Budget Cap:** **~$100/month** — Hetzner CPX41 control plane always on plus an on-demand RTX 4090 worker for ~2 h/day (single-GPU VPS as fallback) — zero unnecessary paid SaaS, prompt-cached Claude 3.5 Sonnet script generation with GPT-4o fallback, free public economic APIs, self-hosted MeloTTS/Kokoro.
 * **Fact Grounding:** **0% hallucination tolerance.** Every number spoken or rendered must trace back to a frozen snapshot row in the SQLite warehouse, fetched from World Bank, FRED, OECD, IMF, OWID, DBnomics or UN Data through the FastMCP server, and carried by a verified `DataBrief` Fact ID (`F001..Fxxx`).
-* **Output Standard:** 10–18 min · **4K (`3840×2160`) 60FPS** · `-14 LUFS` · English-first + automated ES/PT/HI/AR metadata & SRTs + Facebook In-Stream cut.
+* **Output Standard:** 10–18 min · **4K (`3840×2160`) 60FPS** · `-14 LUFS` · English-first + automated **de/fr/ja** metadata & SRTs (the revenue set, priced per market in `PPM_REVIEW.md` sec.0) + **es-419/pt-BR/hi** captions only (reach, no RPM claim) + Facebook In-Stream cut.
 
 ---
 
@@ -31,15 +31,16 @@ Always consult these before planning or writing code:
 python3 scripts/track.py summary          # Overall progress by track & phase
 python3 scripts/track.py next             # Top unblocked items whose dependencies are done
 python3 scripts/track.py set <ID> done    # Update status and auto-sync docs/TRACKER.md
+python3 scripts/track.py validate         # Cycles, dangling deps, duplicate IDs, invalid enums
 ```
-CI also runs `summary` on every push, which fails if `tracker/items.json` will not load or is missing a field the CLI reads. It is not a graph check: `track.py` has no cycle, dangling-dependency, duplicate-ID or enum validation, so run `python3 scripts/track.py next` and read the result before trusting a dependency edit.
+CI runs `summary` and `validate` on every push: `summary` fails if `tracker/items.json` will not load or is missing a field the CLI reads, and `validate` fails on a dependency cycle, a dangling dependency, a duplicate ID, or a status/priority/phase/track value outside the allowed sets.
 
 ### Doc Invariant Check (run after editing any `.md`)
 ```bash
-python3 scripts/check_docs.py   # memo arithmetic + table render + per-day goal sweep
+python3 scripts/check_docs.py   # memo + render + goal sweep + both self-tests
 ```
 CI runs this same command on every push (`.github/workflows/doc-invariant.yml`, no install step — the checks are stdlib-only).
-Fails loudly if a figure or table drifts from the mission's **$1,500–$2,000 of profit per day**: `scripts/check_memo.py` re-derives the memo's arithmetic and pins the $/day rows in `docs/PROFIT_MULTIPLIERS.md` plus the video-30 gate in `docs/SPRINT_30_DAYS.md` to that same baseline, `scripts/check_render.py` checks every table's width, `scripts/check_goal.py` requires every per-month figure to show what it is (and requires a monthly figure under a target noun to carry its own day figure), and `scripts/selftest_goal.py` plants monthly-target violations in a temp copy of the docs and fails if the sweep stops catching them. Shared helpers live in `scripts/doccheck.py`.
+Fails loudly if a figure or table drifts from the mission's **$1,500–$2,000 of profit per day**: `scripts/check_memo.py` re-derives the memo's arithmetic and pins the $/day rows in `docs/PROFIT_MULTIPLIERS.md` plus the video-30 gate in `docs/SPRINT_30_DAYS.md` to that same baseline, `scripts/check_render.py` checks every table's width, `scripts/check_goal.py` requires every per-month figure to show what it is (and requires a monthly figure under a target noun to carry its own day figure), and `scripts/selftest_goal.py` plants monthly-target violations in a temp copy of the docs and fails if the sweep stops catching them; `scripts/selftest_track.py` does the same for `track.py validate`, planting a cycle, a dangling dependency, a duplicate ID and bad enum values in a temp copy of the tracker. Shared helpers live in `scripts/doccheck.py`.
 
 ---
 

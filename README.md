@@ -11,9 +11,9 @@
 | **[`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md)** | Full technical architecture blueprint: end-to-end DAG, 4K60 GPU rendering solution, zero-hallucination data grounding, ~$100/mo unit economics, anti-demonetization guardrails, and 36-month scaling model. |
 | **[`docs/PROFIT_MULTIPLIERS.md`](docs/PROFIT_MULTIPLIERS.md)** | Deep implementation guide for the 7 profit multipliers: mid-roll ad pacing, commercial CPM keyword seeding, thumbnail contrast detection, 60s hook Shorts funnel, ancillary revenue, 2-3 videos/day throughput, and W-8BEN tax optimization. |
 | **[`docs/VIEW_OPTIMIZATION.md`](docs/VIEW_OPTIMIZATION.md)** | View-optimization specification: topic selection and the stale-result test, query-shaped packaging, per-surface playbooks, localized audio, Shorts as both funnel and topic probe, back-catalogue repackaging, measurement and its noise, and every lever priced in $/day against the plan's own baseline. |
-| **[`docs/TRACKER.md`](docs/TRACKER.md)** | Complete **50-item Master Track List** organized across **12 architectural tracks** and **4 execution phases** with dependencies, effort estimates, and acceptance criteria. |
+| **[`docs/TRACKER.md`](docs/TRACKER.md)** | Complete **51-item Master Track List** organized across **12 architectural tracks** and **4 execution phases** with dependencies, effort estimates, and acceptance criteria. |
 | **[`docs/SPRINT_30_DAYS.md`](docs/SPRINT_30_DAYS.md)** | **30 Videos in 30 Days** execution schedule + 30 high-CPM, API-verifiable documentary episode specs with stage checklists. |
-| **[`tracker/items.json`](tracker/items.json)** | Machine-readable single source of truth for all 50 architecture tracker items. |
+| **[`tracker/items.json`](tracker/items.json)** | Machine-readable single source of truth for all 51 architecture tracker items. |
 | **[`scripts/track.py`](scripts/track.py)** | Zero-dependency Python CLI to track progress, list unblocked tasks, update statuses, and auto-sync `docs/TRACKER.md`. |
 
 ---
@@ -38,7 +38,7 @@ Parallel 4K 60FPS GPU Renderer (25–45 Atomic Scenes + Direct NVENC Pipe) ─�
         ▼
 Automated QC + 3-Variant Playwright Thumbnails ──► Telegram 3-Min Mobile Approval Gate
         │
-        ├──► YouTube Data API v3 (English 4K60 + ES/PT/HI/AR Metadata & SRT Subtitles)
+        ├──► YouTube Data API v3 (English 4K60 + de/fr/ja Metadata & SRT + es-419/pt-BR/hi Captions)
         └──► Facebook Graph API (In-Stream Cut + Burned Captions)
                 │
                 ▼

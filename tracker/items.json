@@ -46,7 +46,7 @@
     {
       "id": "T09",
       "name": "Localization & Multi-Platform Publishing",
-      "description": "YouTube Data API v3 upload, ES/PT/HI/AR localized metadata & SRT captions, and Facebook In-Stream burned-caption cut."
+      "description": "YouTube Data API v3 upload, de/fr/ja localized metadata & SRT captions (es-419/pt-BR/hi captions only), and Facebook In-Stream burned-caption cut."
     },
     {
       "id": "T10",
@@ -586,12 +586,12 @@
       "priority": "P0",
       "status": "todo",
       "effort_hours": 3,
-      "title": "Build Automated Metadata & SRT Subtitle Localizer (Spanish, Portuguese, Hindi, Arabic)",
+      "title": "Build Automated Metadata & SRT Subtitle Localizer (German, French, Japanese revenue set)",
       "dependencies": [
         "PUB-01",
         "AUD-03"
       ],
-      "acceptance_criteria": "Translates title, description, and accurate time-coded SRTs into es, pt-BR, hi, ar and uploads via YouTube localizations & captions APIs."
+      "acceptance_criteria": "Translates title and description into de, fr and ja and uploads accurate time-coded SRTs for those three via YouTube localizations & captions APIs; ships es-419/pt-BR/hi captions only (reach, no revenue claim) and no ar. The language list is config (config/languages.json), not code."
     },
     {
       "id": "PUB-03",
@@ -738,12 +738,12 @@
       "priority": "P2",
       "status": "todo",
       "effort_hours": 5,
-      "title": "Add Multi-Channel Config Isolation & Multi-Language Audio Dubbing (YouTube MLA for ES/PT)",
+      "title": "Add Multi-Channel Config Isolation & Multi-Language Audio Dubbing (YouTube MLA for de/fr/ja)",
       "dependencies": [
         "ANA-02",
         "CMP-03"
       ],
-      "acceptance_criteria": "Single GPU pipeline serves 3+ niche channels via channel_id configs and optional secondary Spanish/Portuguese audio tracks."
+      "acceptance_criteria": "Single GPU pipeline serves 3+ niche channels via channel_id configs and optional de/fr/ja audio tracks, priced at the PPM_REVIEW.md sec.0 revenue-set blend."
     }
   ]
 }
