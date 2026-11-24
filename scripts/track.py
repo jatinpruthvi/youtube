@@ -9,6 +9,7 @@ Usage:
     python3 scripts/track.py list [--track T01] [--phase P0_MVP_DAYS_1_7] [--status todo]
     python3 scripts/track.py next [--limit 10]
     python3 scripts/track.py set INF-01 done
+    python3 scripts/track.py validate
     python3 scripts/track.py sync-md
 """
 
@@ -26,6 +27,7 @@ DATA_PATH = ROOT_DIR / "tracker" / "items.json"
 TRACKER_MD_PATH = ROOT_DIR / "docs" / "TRACKER.md"
 
 VALID_STATUSES = ("todo", "in_progress", "done", "blocked")
+VALID_PRIORITIES = ("P0", "P1", "P2")
 
 PHASE_LABELS = {
     "P0_MVP_DAYS_1_7": "Phase 0: Pipeline MVP (Days 1–7)",
@@ -265,6 +267,78 @@ def cmd_set(data: dict[str, Any], item_id: str, status: str) -> None:
     cmd_sync_md(data)
 
 
+def cmd_validate(data: dict[str, Any]) -> int:
+    """Check the tracker graph. Prints one line per problem and returns 1 if any.
+
+    Covers what the CLI silently tolerates elsewhere: duplicate IDs, dependency
+    IDs that reference nothing, dependency cycles, and enum values outside the
+    sets the CLI and the generated docs assume.
+    """
+    problems: list[str] = []
+    items = data.get("items", [])
+    tracks = {t["id"] for t in data.get("tracks", [])}
+
+    first_seen: dict[str, int] = {}
+    for pos, item in enumerate(items):
+        item_id = item.get("id", f"<no id at items[{pos}]>")
+        if item_id in first_seen:
+            problems.append(f"duplicate id {item_id}: items[{first_seen[item_id]}] and items[{pos}]")
+        else:
+            first_seen[item_id] = pos
+
+    for pos, item in enumerate(items):
+        item_id = item.get("id", f"items[{pos}]")
+        if item.get("status") not in VALID_STATUSES:
+            problems.append(f"{item_id}: invalid status {item.get('status')!r} (allowed: {', '.join(VALID_STATUSES)})")
+        if item.get("priority") not in VALID_PRIORITIES:
+            problems.append(f"{item_id}: invalid priority {item.get('priority')!r} (allowed: {', '.join(VALID_PRIORITIES)})")
+        if item.get("phase") not in PHASE_LABELS:
+            problems.append(f"{item_id}: invalid phase {item.get('phase')!r} (allowed: {', '.join(PHASE_LABELS)})")
+        if item.get("track") not in tracks:
+            problems.append(f"{item_id}: unknown track {item.get('track')!r} (known: {', '.join(sorted(tracks))})")
+        deps = item.get("dependencies", [])
+        if not isinstance(deps, list):
+            problems.append(f"{item_id}: dependencies must be a list, got {type(deps).__name__}")
+            continue
+        for dep in deps:
+            if dep not in first_seen:
+                problems.append(f"{item_id}: dangling dependency {dep!r} (no item has that id)")
+
+    graph = {
+        item.get("id"): [d for d in item.get("dependencies", []) if isinstance(d, str) and d in first_seen]
+        for item in items
+    }
+    WHITE, GREY, BLACK = 0, 1, 2
+    colour = dict.fromkeys(graph, WHITE)
+    path: list[str] = []
+
+    def walk(node: str) -> None:
+        colour[node] = GREY
+        path.append(node)
+        for nxt in graph[node]:
+            if colour.get(nxt) == GREY:
+                problems.append("dependency cycle: " + " -> ".join(path[path.index(nxt):] + [nxt]))
+            elif colour.get(nxt) == WHITE:
+                walk(nxt)
+        path.pop()
+        colour[node] = BLACK
+
+    for node in graph:
+        if colour[node] == WHITE:
+            walk(node)
+
+    if problems:
+        for problem in problems:
+            print(f"INVALID: {problem}", file=sys.stderr)
+        print(f"{len(problems)} problem(s) in tracker/items.json", file=sys.stderr)
+        return 1
+
+    edges = sum(len(i.get("dependencies", [])) for i in items)
+    print(f"tracker/items.json OK: {len(items)} items, {edges} dependency edges, "
+          f"{len(tracks)} tracks, no duplicates, no dangling ids, no cycles, enums valid")
+    return 0
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description="Master Architecture Tracker CLI")
     sub = parser.add_subparsers(dest="command", required=True)
@@ -283,6 +357,8 @@ def main() -> None:
     p_set.add_argument("id", help="Item ID (e.g. INF-01)")
     p_set.add_argument("status", choices=list(VALID_STATUSES), help="New status")
 
+    sub.add_parser("validate", help="Check items.json for cycles, dangling dependencies, duplicate IDs and invalid enums")
+
     sub.add_parser("sync-md", help="Regenerate docs/TRACKER.md from tracker/items.json")
 
     args = parser.parse_args()
@@ -296,6 +372,8 @@ def main() -> None:
         cmd_next(data, args.limit)
     elif args.command == "set":
         cmd_set(data, args.id, args.status)
+    elif args.command == "validate":
+        sys.exit(cmd_validate(data))
     elif args.command == "sync-md":
         cmd_sync_md(data)
 

@@ -3,7 +3,7 @@
 
     python3 scripts/check_docs.py
 
-Runs the three documentation checks in order and fails if any of them fails:
+Runs the documentation and tracker checks in order and fails if any of them fails:
 
   check_memo.py    docs/IMPROVEMENT_VALUE_AT_2K.md - table shape and the
                    arithmetic behind every figure (views, library size,
@@ -19,8 +19,13 @@ Runs the three documentation checks in order and fails if any of them fails:
                    plants monthly-target violations in a temp copy of the docs
                    and requires check_goal.py to fail on each one, so its
                    labels cannot loosen without this test noticing
+  selftest_track.py
+                   plants a dependency cycle, a dangling dependency, a duplicate
+                   ID and invalid enum values in a temp copy of the tracker and
+                   requires track.py validate to fail on each, so the graph
+                   check cannot go quiet without this test noticing
 
-All five scripts are stdlib-only and resolve the repo root from their own path,
+All six scripts are stdlib-only and resolve the repo root from their own path,
 so this works from any working directory. Shared helpers live in doccheck.py.
 """
 import os
@@ -28,7 +33,7 @@ import subprocess
 import sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-CHECKS = ("check_memo.py", "check_render.py", "check_goal.py", "selftest_goal.py")
+CHECKS = ("check_memo.py", "check_render.py", "check_goal.py", "selftest_goal.py", "selftest_track.py")
 
 failed = []
 for name in CHECKS:

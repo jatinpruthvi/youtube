@@ -30,9 +30,11 @@ jobs:
 
       # tracker/items.json is the source of truth the tracker CLI and
       # docs/TRACKER.md are generated from, so it is loaded on every push too.
-      # This catches a file that will not parse or is missing a field the CLI
-      # reads. It does NOT check the dependency graph: track.py has no cycle,
-      # dangling-dependency, duplicate-ID or enum check, so `summary` exits 0 on
-      # a cyclic DAG or an invalid status.
+      # `summary` catches a file that will not parse or is missing a field the
+      # CLI reads; `validate` catches cycles, dangling dependencies, duplicate
+      # IDs and invalid enum values.
       - name: Check the tracker loads
         run: python3 scripts/track.py summary
+
+      - name: Validate the tracker graph
+        run: python3 scripts/track.py validate
