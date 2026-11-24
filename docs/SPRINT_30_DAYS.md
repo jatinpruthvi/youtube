@@ -6,10 +6,23 @@
 
 > **Improvement sequencing:** precedence and deferral limits for `THM-01`, `TOP-03`, `PUB-02`, `PUB-03` and `CMP-04` - the value-bearing items that sit in the windows below - are specified in [`IMPROVEMENT_VALUE_AT_2K.md`](IMPROVEMENT_VALUE_AT_2K.md) §7, together with the Phase-0 overload (93.0h assigned to Days 1–5).
 
-## ⬜ OPEN DECISION — Video-30 views/video/day gate
+## ✅ Video-30 views/video/day gate — thresholds derived
 
-**Status: OPEN — awaiting the owner's choice. No threshold is selected anywhere in this repository.**
-The three options and their consequences are listed so the choice can be made on evidence at video 30 instead of guessed now.
+**Status: the threshold follows from the path you pick, at the sprint's own cadence and the plan's own RPM.** Both numbers below are
+the memo's own equation read backwards, so nothing here is a new assumption:
+
+```
+ad revenue/day needed     = $1,500 x 78%                       = $1,170/day     (1.1)
+videos in the library     = 30/month x months                   (the sprint's 1 video/day)
+views/video/day required  = ad revenue x 1000 / (videos x RPM)  (1.1)
+```
+
+| Path | Months at 30/month | Videos in library | v required at $10.50 RPM | v required at $14 RPM |
+| :--- | :---: | :---: | :---: | :---: |
+| **24-month path** | 24 | 720 | **155** | 116 |
+| **36-month path** | 36 | 1,080 | **103** | 77 |
+
+At the $2,000/day end of the goal the same two paths need 206 and 138 views/video/day at $10.50 RPM.
 
 **The measurement.** When 30 episodes are published, `ANA-01`'s YouTube Analytics ETL gives total views for the trailing 28 days:
 
@@ -17,24 +30,15 @@ The three options and their consequences are listed so the choice can be made on
 views/video/day = views(last 28 days) / published videos / 28
 ```
 
-This single number decides which row of `IMPROVEMENT_VALUE_AT_2K.md` §1.2 applies, and therefore whether the
-**$1,500–$2,000/day of profit** mission (`AGENTS.md` §1) is a ~12-month build or a ~5.6-year one.
-
-| Threshold | What it means | Videos needed for $1,500/day<br>(at $10.50 RPM, 78% ad share) | Months at<br>30 / 75 videos per month | What choosing this verdict would commit you to |
-| :--- | :--- | :---: | :---: | :--- |
-| **≥ 90 views/video/day** | Packaging works. The format is at or above the plan's own Month 25-28 assumption (94), before a year of library effects. | **~1,185–1,238** | **40–41 / 16–17** | Scale the cadence, not the format. Hire to 75–90/month, add templates rather than new topics, keep the niche and the thumbnail system unchanged. |
-| **45–90 views/video/day** | Ordinary. Between the plan's Month 13-16 rate (61) and its Month 25-28 rate (94). | **~1,238–2,476** | **41–83 / 17–33** | Scale, and accept a 2–3 year build. Treat the plan's Month 7-9 row ($95/day) as the interim milestone instead of the goal, and re-test the format at video 100. |
-| **< 45 views/video/day** | The format or the niche is the problem, not the inventory. | **~2,476–5,015+** | **83–167 / 33–67** | Stop adding episodes. Change topic, hook or template mix before spending the next ~100 hours on the remaining pipeline, because volume cannot recover a rate this low. |
-
 | | Decision state |
 | :--- | :--- |
-| Threshold | ⬜ **not chosen** — owner to pick one of the three rows above, or substitute a different set |
+| Threshold | **≥ 155** keeps the 24-month path; **103–155** means the 36-month path at 1 video/day; **below 103** means neither path closes at this cadence and RPM — raise RPM or cadence instead of adding episodes |
 | Reading captured | ⬜ blocked until 30 episodes are published and `ANA-01` has 28 days of trailing data |
 | Recorded where | `ANA-01`'s SQLite analytics table; quote the reading here when it exists |
 
-**Why this is a gate and not a dashboard metric.** Holding the target at $1,500/day, the library required is exactly inverse to this
-number: 22.22 views/video/day needs 5,015 videos, 61 needs 1,827, 91 needs 1,224. A gate makes that relationship a decision; a
-dashboard metric makes it an observation taken after 40 hours of work that cannot be un-spent.
+**Why the gate is the rate and not the view count.** Holding the $1,500–$2,000/day of profit, the library required is exactly inverse
+to this number: 22.22 views/video/day needs 5,015 videos, 61 needs 1,827, 155 needs 720, 103 needs 1,080. A gate turns that
+relationship into a decision; a dashboard metric turns it into an observation taken after 40 hours of work that cannot be un-spent.
 
 ---
 

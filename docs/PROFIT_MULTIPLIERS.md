@@ -27,13 +27,20 @@ This guide provides the complete engineering specifications, prompt architecture
 
 | # | Revenue Multiplier | Primary Target Variable | Expected Impact | Implementation File |
 | :--- | :--- | :--- | :--- | :--- |
-| **1** | [Programmed Mid-Roll Transitions](#1-programmed-mid-roll-transitions-in-scenegraph) | Ad Impressions / View | 2.2×–2.8× ad impressions (RPM \$6–\$7 $\to$ \$12–\$16) | `src/script/schema.py`, `src/render/engine.py` |
+| **1** | [Programmed Mid-Roll Transitions](#1-programmed-mid-roll-transitions-in-scenegraph) | Ad Impressions / View | 2.2×–2.8× ad impressions; at the plan's \$10.50 blended RPM that is \$14–\$16, i.e. **+\$390–\$613/day** (the \$6–\$7 starting RPM is the plan's Month 1–6 rate, not the target baseline) | `src/script/schema.py`, `src/render/engine.py` |
 | **2** | [Commercial High-CPM Keyword Seeding](#2-commercial-high-cpm-keyword-seeding) | Auction Bid CPM / RPM | +20% to +35% advertiser bid lift | `src/script/generator.py`, `config/cpm_keywords.json` |
-| **3** | [Competitor Outlier Contrast Detection](#3-competitor-outlier-contrast-detection-for-thumbnails) | Click-Through Rate ($v$) | +20% relative CTR (worth +\$572/day at target) | `src/thumbnail/generator.py`, `src/topics/miner.py` |
-| **4** | [Automated 60s Hook Shorts Extractor](#4-automated-60-second-hook-shorts-extractor) | Long-Form Traffic Funnel | 400–1,000 free long-form views per episode | `src/render/shorts.py`, `src/publish/youtube.py` |
-| **5** | [Closing the 22% Ancillary Revenue Blind Spot](#5-closing-the-22-ancillary-revenue-blind-spot) | Ancillary Revenue Line | Captures \$330–\$510/day assumed in model | `src/analytics/refresh.py`, `src/publish/syndicate.py` |
+| **3** | [Competitor Outlier Contrast Detection](#3-competitor-outlier-contrast-detection-for-thumbnails) | Click-Through Rate ($v$) | +20% relative CTR = **+\$234–\$312/day** (20% of \$1,170–\$1,560/day of ad revenue), and the required library falls 1,827 -> 1,522 | `src/thumbnail/generator.py`, `src/topics/miner.py` |
+| **4** | [Automated 60s Hook Shorts Extractor](#4-automated-60-second-hook-shorts-extractor) | Long-Form Traffic Funnel | 400–1,000 free long-form views per episode = **+\$4.20–\$10.50** at \$10.50 RPM, earned over the Short's lifetime rather than per day | `src/render/shorts.py`, `src/publish/youtube.py` |
+| **5** | [Closing the 22% Ancillary Revenue Blind Spot](#5-closing-the-22-ancillary-revenue-blind-spot) | Ancillary Revenue Line | Captures **\$330–\$440/day** at the \$1,500–\$2,000 goals (22% of revenue); the plan's own \$510 belongs to its \$2,295/day row | `src/analytics/refresh.py`, `src/publish/syndicate.py` |
 | **6** | [Frictionless 2–3 Videos/Day Throughput](#6-frictionless-23-videosday-throughput-for-solo-operator) | Library Growth Rate ($V$) | Reaches target in 20–24 mo instead of 61 mo | `src/orchestrator/runner.py`, `src/qa/approval_bot.py` |
-| **7** | [Day-1 US Tax Withholding & Setup](#7-day-1-us-tax-withholding--dtaa-setup-w-8ben) | Net Cash Retained | Eliminates 15% withholding (worth +\$90/day at target) | `docs/compliance/W8BEN_CHECKLIST.md` |
+| **7** | [Day-1 US Tax Withholding & Setup](#7-day-1-us-tax-withholding--dtaa-setup-w-8ben) | Net Cash Retained | Eliminates 15% withholding: **+\$70/day** on the \$1,170/day AdSense line (the 40% US-origin share is an assumption) | `docs/compliance/W8BEN_CHECKLIST.md` |
+
+**Basis for every $/day figure in this table.** `revenue/day = V x v x RPM / 1000` at the plan's own baseline: V = 1,827 videos,
+v = 61 views/video/day, RPM = $10.50, so ad revenue is $1,170-$1,560/day at the $1,500-$2,000 profit goals
+(`IMPROVEMENT_VALUE_AT_2K.md` 1.1-1.2). A multiplicative lever therefore moves $1,170-$1,560/day: a +20% lift is $234-$312/day,
+not the $572/day that a $2,860/day baseline would give. Three inputs are **assumptions with no measurement in this repository** -
+impressions per view (1.2 -> 2.8), the +20% to +35% advertiser bid lift, and the 40% US-origin share of views. Each is labelled
+where it is used.
 
 ---
 
@@ -43,7 +50,9 @@ This guide provides the complete engineering specifications, prompt architecture
 * On YouTube, videos longer than 8 minutes are eligible for multiple mid-roll ad placements.
 * Standard automated placement often inserts mid-rolls mid-sentence, causing viewer abandonment and low ad completion rates.
 * By structuring the script and visual timeline with natural narrative tension pauses at strategic intervals, YouTube's automated ad insertion engine prioritizes placing high-paying mid-rolls at these exact markers.
-* **Economic Value:** Moves ad impressions per view from ~1.2 to 2.8+, doubling or tripling effective RPM from **$6–$7 to $12–$16+**.
+* **Economic Value:** Moves ad impressions per view from ~1.2 to 2.8+ (an **assumption**, not a measurement), which at the plan's
+  $10.50 blended RPM lands effective RPM at **$14–$16** - +33% to +52%, worth **+$390–$613/day** on the 1,827-video library. The
+  $6–$7 RPM in earlier drafts is the plan's Month 1–6 figure, so quoting a lift "from $6–$7" mixes two baselines.
 
 ### 1.2 Technical Specification & Data Contract
 In `src/script/schema.py`, add a mid-roll anchor specification to the `Scene` Pydantic model:
@@ -130,7 +139,9 @@ class Scene(BaseModel):
 ## 3. Competitor Outlier Contrast Detection for Thumbnails
 
 ### 3.1 Rationale & Economics
-* [`docs/PPM_REVIEW.md`](PPM_REVIEW.md) and [`docs/IMPROVEMENT_VALUE_AT_2K.md`](IMPROVEMENT_VALUE_AT_2K.md) rank `THM-01` as the single highest return-on-effort task in the repository (+20% relative CTR = **+$572/day** at target scale).
+* [`docs/PPM_REVIEW.md`](PPM_REVIEW.md) and [`docs/IMPROVEMENT_VALUE_AT_2K.md`](IMPROVEMENT_VALUE_AT_2K.md) rank `THM-01` as the single highest return-on-effort task in the repository: +20% relative CTR = **+$234–$312/day** at the
+$1,500–$2,000 goals, because it moves 20% of the $1,170–$1,560/day of ad revenue. `PPM_REVIEW.md` prices the same item against
+its own 900-video, $7 RPM base instead, so its figure is not the target-scale one.
 * Thumbnails compete in a dynamic feed. If the top 5 ranking videos for a search term all use saturated red banners with white text, a red thumbnail gets lost in visual noise.
 * By detecting the dominant competitor palette and selecting a complementary contrasting palette, the video achieves visual disruption in the feed.
 
@@ -174,7 +185,9 @@ flowchart LR
 * Direct monetization from YouTube Shorts is negligible ($0.02–$0.04 RPM), which is why Shorts-only production was rejected in [`initialBrainstrom/DECISIONS.md`](initialBrainstrom/DECISIONS.md).
 * However, YouTube provides a native **"Related Video"** feature on all Shorts, allowing mobile viewers to jump to the full long-form documentary with a single tap.
 * A 45–60s vertical cut of the Cold Hook + dynamic chart reveal converts 2%–5% of Short viewers directly into long-form viewers.
-* **Economic Value:** 20,000 views on a Short $\to$ 400–1,000 targeted viewers funnelled to the 4K documentary $\to$ **+$4 to +$15/day of free profit per episode** while accelerating algorithmic discovery.
+* **Economic Value:** 20,000 views on a Short $\to$ 400–1,000 targeted viewers funnelled to the 4K documentary $\to$
+  **+$4.20 to +$10.50 of ad revenue per episode at $10.50 RPM**, earned across the Short's lifetime rather than per day, plus the
+  discovery effect. The 2%–5% conversion rate is an **assumption**.
 
 ### 4.2 Automated FFmpeg Vertical Conversion Pipeline (`src/render/shorts.py`)
 ```python
@@ -224,7 +237,8 @@ def generate_vertical_hook_short(
 ## 5. Closing the 22% Ancillary Revenue Blind Spot
 
 ### 5.1 Rationale & Economics
-* [`docs/IMPROVEMENT_VALUE_AT_2K.md`](IMPROVEMENT_VALUE_AT_2K.md) Section 4(d) highlights an important financial contradiction: the 24–36 month projection assumes **22% ancillary revenue ($330–$510/day)**, but **zero tracker items** currently build it.
+* [`docs/IMPROVEMENT_VALUE_AT_2K.md`](IMPROVEMENT_VALUE_AT_2K.md) Section 4(d) highlights an important financial contradiction: the target assumes **22% ancillary revenue ($330–$440/day at the $1,500–$2,000 goals; the $510 in the plan belongs to its own
+$2,295/day row)**, but **zero tracker items** currently build it.
 * Without active ancillary streams, reaching the $1,500/day profit goal requires **1.28× more YouTube views and videos**.
 * We can close this gap through automated, passive channels that require zero client work, sales, or sponsorships.
 
@@ -301,8 +315,11 @@ Thumbnails (Mobile Preview 168x94):
 * Without submitting a valid US tax form to Google AdSense, Google is legally required to withhold **30% flat on all earnings from US viewers**.
 * For a Tier-1 English data documentary channel, **40% or more of total views originate in the United States**.
 * By filing Form W-8BEN claiming the **India-US Double Tax Avoidance Agreement (DTAA)** under Article 12, the withholding rate on royalties/digital content drops from **30% down to 15%**.
-* **Financial Impact:** On a channel generating $1,500/day with 40% US audience:
-  $$\text{Savings} = \$1,500 \times 40\% \times 15\% = \mathbf{\$90/day \text{ (\$2,700/month derived from } \$90 \times 30\text{)}}$$
+* **Financial Impact:** Withholding applies to the Google AdSense line, which is 78% of revenue (`IMPROVEMENT_VALUE_AT_2K.md` 1.1)
+  = $1,170/day at the $1,500 profit goal:
+  $$\text{Savings} = \$1,170 \times 40\% \times 15\% = \mathbf{\$70/day \text{ (\$2,100/month derived from } \$70 \times 30\text{)}}$$
+* **Assumption:** the 40% US-origin share is measured nowhere in this repository - `PPM_REVIEW.md` lists it as ASSUMED. At 25% or
+  55% the saving is $44 or $97/day.
 * This 2-hour administrative action delivers more cash profit than months of infrastructure tuning.
 
 ### 7.2 Administrative Execution Checklist (`CMP-04`)

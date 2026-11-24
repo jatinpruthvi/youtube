@@ -8,6 +8,12 @@ check_goal.py's, so neither is repeated here. What is checked: the table count,
 month / 30 and profit = revenue - cost, the margins and the +86-128% inventory
 premium, the 2 plan rows, the 5.1 x30 columns, and that 1.5 stays a short
 rejection record.
+
+The same baseline is also what every $/day figure elsewhere in the repo has to
+follow, so this file pins the seven rows in docs/PROFIT_MULTIPLIERS.md and the
+video-30 gate in docs/SPRINT_30_DAYS.md to the 1.1/1.2 numbers it derives here:
+a multiplier moves $1,170-$1,560/day of ad revenue, never a baseline invented
+for the row.
 """
 import os
 import re
@@ -142,5 +148,66 @@ sec15 = text[text.index("### 1.5"):text.index("## 2. Where the target")]
 ck.ck("1.5 short", len(sec15.split()) < 340, f"{len(sec15.split())} words")
 ck.ck("1.5 rejects", "rejected" in sec15.lower())
 ck.ck("1.5 points at revision", "git show 0285821" in sec15)
+
+# ---- the $/day rows elsewhere that quote this memo's baseline ------------
+# Anything multiplying the target revenue must land on the same baseline:
+# ad revenue/day = profit x 78% (1.1) and library x v x RPM / 1000 (1.2).
+AD15 = num(row_by_first(tabs[0], "$1,500/day")[1])
+AD20 = num(row_by_first(tabs[0], "$2,000/day")[1])
+LIB = num(cells(next(r for r in tabs[1] if "10.50" in cells(r)[0]))[2])
+ck.ck("baseline $1,500 ad/day", abs(AD15 - 1170) < 0.5, str(AD15))
+ck.ck("baseline $2,000 ad/day", abs(AD20 - 1560) < 0.5, str(AD20))
+ck.ck("baseline 1,827 videos at $10.50, v=61", abs(LIB - 1827) < 1, str(LIB))
+
+pm_text = read("docs/PROFIT_MULTIPLIERS.md")
+pm = pm_text.split("\n")
+pm_row = lambda n: next(ln for ln in pm if ln.startswith(f"| **{n}** |"))
+
+ctr = (AD15 * 0.20, AD20 * 0.20)  # +20% CTR = 20% of ad revenue/day
+ck.ck("PM3 CTR lo", f"${ctr[0]:,.0f}" in pm_row(3), f"{ctr[0]:.1f}")
+ck.ck("PM3 CTR hi", f"${ctr[1]:,.0f}" in pm_row(3), f"{ctr[1]:.1f}")
+ck.ck("PM3 stale $572 gone", "572" not in pm_row(3), pm_row(3)[:90])
+ck.ck("PM no +$572 claim", "+\\$572" not in pm_text)
+
+rpm_gain = tuple(LIB * 61 * (r - 10.5) / 1000 for r in (14, 16))  # from $10.50, not $6
+ck.ck("PM1 RPM lo", f"${rpm_gain[0]:,.0f}" in pm_row(1), f"{rpm_gain[0]:.1f}")
+ck.ck("PM1 RPM hi", f"${rpm_gain[1]:,.0f}" in pm_row(1), f"{rpm_gain[1]:.1f}")
+ck.ck("PM1 no $6-$7 baseline", "RPM \\$6–\\$7 $\\to$" not in pm_text)
+
+anc = (1500 * 0.22, 2000 * 0.22)  # 22% of the goal, not of the $2,295 row
+ck.ck("PM5 ancillary lo", f"${anc[0]:,.0f}" in pm_row(5), f"{anc[0]:.0f}")
+ck.ck("PM5 ancillary hi", f"${anc[1]:,.0f}" in pm_row(5), f"{anc[1]:.0f}")
+
+short = (400 * 10.5 / 1000, 1000 * 10.5 / 1000)  # views x RPM, once
+ck.ck("PM4 shorts lo", f"${short[0]:.2f}" in pm_row(4), f"{short[0]}")
+ck.ck("PM4 shorts hi", f"${short[1]:.2f}" in pm_row(4), f"{short[1]}")
+
+tax = AD15 * 0.40 * 0.15  # withholding is on the AdSense line
+ck.ck("PM7 withholding", f"${tax:,.0f}" in pm_row(7), f"{tax:.1f}")
+
+memo_row = lambda key: next(ln for ln in lines if ln.startswith(key))
+thm = memo_row("| `THM-01` is worth")
+ck.ck("memo THM-01 lo", f"${ctr[0]:,.0f}" in thm, thm[:80])
+ck.ck("memo THM-01 hi", f"${ctr[1]:,.0f}" in thm, thm[:80])
+lib_after = AD15 * 1000 / (61 * 1.2 * 10.5)  # library at +20% CTR
+ck.ck("memo THM-01 library", f"{lib_after:,.0f}" in thm, f"{lib_after:.0f}")
+ck.ck("memo THM-01 pct", f"-{(1 - lib_after / LIB) * 100:.0f}%" in thm)
+ck.ck("memo CMP-04", f"${tax:,.0f}" in memo_row("| `CMP-04` is worth"))
+
+# ---- the sprint gate is 1.1 read backwards -------------------------------
+sp_text = read("docs/SPRINT_30_DAYS.md")
+sp = sp_text.split("\n")
+for marker, months in (("| **24-month path**", 24), ("| **36-month path**", 36)):
+    ln = next(ln for ln in sp if ln.startswith(marker))
+    for rpm_v in (10.5, 14):
+        want = AD15 * 1000 / (months * 30 * rpm_v)
+        ck.ck(f"SPRINT gate {months}mo v@{rpm_v}", f"{want:,.0f}" in ln, f"{want:.2f} not in {ln[:60]}")
+gate2k = next(ln for ln in sp if ln.startswith("At the $2,000/day end"))
+for months in (24, 36):
+    want = AD20 * 1000 / (months * 30 * 10.5)
+    ck.ck(f"SPRINT gate {months}mo at $2,000", f"{want:,.0f}" in gate2k, f"{want:.2f}")
+ck.ck("SPRINT gate no 'not chosen'", "not chosen" not in sp_text)
+
+ck.ck("4(d) ancillary at the goal", "$330-$440/day" in text)
 
 sys.exit(ck.report())

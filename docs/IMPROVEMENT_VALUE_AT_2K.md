@@ -271,7 +271,7 @@ version, which is exactly what nobody has measured. At the base this is a roundi
 the equation, a -40% blend against +15% views can be net negative. **Do not build `ANA-04` before measuring `PUB-02`'s
 actual RPM effect.** It is the weakest of the twelve priced items and the cheapest to leave unbuilt.
 
-**(d) Ancillary is 22% of the plan's revenue and 0% of the tracker.** $510/day at Month 25, roughly **$330-470/day at the target**,
+**(d) Ancillary is 22% of the plan's revenue and 0% of the tracker.** $510/day at Month 25, which is **$330-$440/day at the $1,500-$2,000 goals** (22% of revenue),
 produced by nothing that is scheduled, estimated, or owned. Either it becomes an item (needs the owner to add one) or the ad-side
 library requirements in 1.2 rise by 1.28x.
 
@@ -280,8 +280,8 @@ library requirements in 1.2 rise by 1.28x.
 | Was (rejected monthly framing, 1.5) | Is now (the daily goal) | Why |
 |---|---|---|
 | `REN-02` throughput is worth **$0** at this scale | **The primary lever.** It is the only thing that moves a row leftwards in 1.3 without improving quality | 1,827 videos is 61 months at 30/month and 24 at 75/month: **37 months** |
-| `THM-01` is worth $418/month | **$572/day** at 1,827 videos and $10.50 RPM - and it cuts the required library 1,827 -> 1,224 (-33%) | It is the only tracker lever that is worth more at the daily goal than at the rejected monthly reading, because it moves both terms at once |
-| `CMP-04` is worth $125/month | **$90/day**: 30% vs 15% withholding on 40% US-origin revenue = 6% of revenue | Bigger than every other item at the base, and it is the only one with an external deadline (before the first AdSense payment) |
+| `THM-01` is worth $418/month | **$234-$312/day** at 1,827 videos and $10.50 RPM - 20% of $1,170-$1,560/day of ad revenue - and it cuts the required library 1,827 -> 1,522 (-17%) | It is the only tracker lever that is worth more at the daily goal than at the rejected monthly reading, because it moves both terms at once |
+| `CMP-04` is worth $125/month | **$70/day**: 30% vs 15% withholding on 40% of the $1,170/day AdSense line = 6% of it | Second only to `THM-01` at the target, and the only item with an external deadline (before the first AdSense payment) |
 | Packaging levers (G1/G2/G3) dominate | They matter **after** the per-video rate is measured, not before | A +20% on an unmeasured 61 is worth less than knowing whether it is 45 or 91 - see the gate in `SPRINT_30_DAYS.md` |
 | Ancillary is undisputed revenue | **22% of the goal that no item produces** | 4(d) |
 

@@ -138,12 +138,15 @@ ck.ck("Phase 4 contains the goal", "contains the goal" in phase4.lower())
 
 # ---------- D. the sprint gate table is per-day only ---------------------
 sprint = read("docs/SPRINT_30_DAYS.md")
-gate = "\n".join(table_after(sprint.split("\n"), "| Threshold | What it means |"))
+gate = "\n".join(table_after(sprint.split("\n"), "| Path | Months at 30/month |"))
+section = sprint[sprint.index("## ✅ Video-30 views/video/day gate"):sprint.index("## Execution Rhythm")]
 ck.ck("sprint gate table found", bool(gate), "header not found")
 ck.ck("sprint gate is per-day only (no money per month)",
-      not re.search(r"\$[\d,]+[^|]{0,10}(?:/|per)\s*(?:mo|month)", gate), gate[:120])
-ck.ck("sprint gate names the daily interim milestone", "$95/day" in gate)
-ck.ck("sprint gate stakes the daily goal", "$1,500/day" in gate)
+      not re.search(r"\$[\d,]+[^|]{0,10}(?:/|per)\s*(?:mo|month)", section), section[:120])
+ck.ck("sprint gate states both paths", "24-month path" in gate and "36-month path" in gate)
+ck.ck("sprint gate names the rate column", "v required at $10.50 RPM" in gate)
+ck.ck("sprint gate stakes the daily goal", "$1,500" in section and "$2,000/day" in section)
+ck.ck("sprint gate is not a blank decision", "not chosen" not in section)
 ck.ck("sprint has no $2,850", "2,850" not in sprint)
 
 sys.exit(ck.report())
