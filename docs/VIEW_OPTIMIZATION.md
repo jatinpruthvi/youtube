@@ -321,7 +321,7 @@ at 30 videos is a launch-cohort number (0.6–17.9), not a library-scale one (10
 | # | Mechanism | Why it moves v | Evidence class | Cost | Already an item? |
 | :--- | :--- | :--- | :--- | :--- | :--- |
 | 1 | **Query selection with a freshness gap** | At zero subscribers, search is the only surface a new channel ranks on, so impressions exist only where the query has volume. Decided before production, free to change | measured on the slate (21/30 were format labels, §1); effect size assumed | 10 min per episode | **No** — `TOP-04` added (`DECISIONS.md` D-10) |
-| 2 | **Topical concentration** | Browse and suggested are where volume lives above search, and they recommend within a cluster. Six pillars is a learning portfolio, not a distribution portfolio | mechanism documented by YouTube; effect assumed | a decision, not work | Partly — `D-03` sets 6 pillars, `D-10` concentrates after Day 90 |
+| 2 | **Topical concentration** | Browse and suggested are where volume lives above search, and they recommend within a cluster. A 5-video pillar reads 32–118 at 90% confidence, so six of them produce six unreadable numbers | mechanism documented by YouTube; the interval is arithmetic | a decision, not work | **Yes** — `D-11`: one cluster, 30 deep, from Day 1 |
 | 3 | **Packaging (title + thumbnail)** | Converts impressions that exist into views. Cannot create impressions, so it is second, not first | +20% relative CTR assumed, never measured here | 3h + 1.5h | Yes — `THM-01`, `THM-02` |
 | 4 | **Satisfaction / retention** | Decides *future* impressions, which is the only compounding term in the system. Bait packaging that spikes CTR and loses AVD is a net loss (§5.4) | mechanism documented; effect assumed | pacing linter 2h | Yes — `SCR-04`, plus the source overlay |
 | 5 | **Surfaces: languages, Shorts, Facebook** | Adds views from a different pool without adding library, so it raises v directly | Shorts 2%–5% conversion assumed; non-EN RPM is an index assumption | `SHR-01` 2.5h, `PUB-02` 3h | Partly — `SHR-01`, `PUB-02`, `ANA-04` |
@@ -331,7 +331,7 @@ at 30 videos is a launch-cohort number (0.6–17.9), not a library-scale one (10
 **Three consequences.**
 
 1. **Most of the tracker cannot move v, by construction.** Rendering, QC, orchestration, audio mastering and the data warehouse
-   protect v (they stop a bad upload or a strike) but they do not raise it. `PPM_REVIEW.md` already says this: 44 of 59 items do not
+   protect v (they stop a bad upload or a strike) but they do not raise it. `PPM_REVIEW.md` already says this: 45 of 60 items do not
    move PPM at all.
 2. **The cheapest v levers are research and decisions, not code** — queries, concentration, refresh. That is why `TOP-04` is a
    gate that costs 10 minutes per episode rather than another pipeline module.

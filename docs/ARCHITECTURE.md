@@ -12,7 +12,7 @@ Every architectural decision is governed by five non-negotiable constraints:
 | :--- | :--- |
 | **~$100/mo Infrastructure Budget** | Zero SaaS bloat. Free public economic APIs, self-hosted GPU TTS (MeloTTS/Kokoro) + WhisperX forced alignment, prompt-cached calls to the current front-tier model through a provider-agnostic adapter (one alternate provider as fallback), hardware NVENC encoding, and a CPU control plane plus on-demand RTX 4090 budget. |
 | **100% Fact-Grounded Data** | LLMs **never** generate statistics from memory. Every number originates from versioned API snapshots (World Bank, FRED, OECD, IMF, OWID, DBnomics, UN Data) stored in the local SQLite warehouse and audited via deterministic post-script verification. |
-| **4K 60FPS Documentary Grade** | Naive single-threaded Manim Cairo renders take 10–20 hours per 15-min 4K60 video. Solved via **atomic scene DAG parallelism**, **static texture caching**, **OpenGL/Skia GPU rasterization**, and **zero-temp-PNG NVENC streaming**. |
+| **4K 60FPS Documentary Grade** *(launch preset 1440p60, `DECISIONS.md` D-12; 4K60 is the post-YPP upgrade)* | Naive single-threaded Manim Cairo renders take 10–20 hours per 15-min 4K60 video. Solved via **atomic scene DAG parallelism**, **static texture caching**, **OpenGL/Skia GPU rasterization**, and **zero-temp-PNG NVENC streaming**. |
 | **High-Retention & Anti-Demonetization** | Built to defeat YouTube's "Repetitious / Mass-Produced Content" filters: deep causal narration, visual template entropy enforcement (new visual every 35–50s), human 3-minute QA gate, and rich sound design. |
 | **Solo Developer Maintainability** | Monolithic Python 3.12 repository, SQLite state store (PostgreSQL when scaling; no heavy K8s/microservices), idempotent resumable pipeline stages, and Telegram/Discord mobile notifications for one-tap approval. |
 
@@ -171,6 +171,11 @@ Documentary authority lives or dies on audio quality and frame-accurate synchron
 ### Module 5: 4K 60FPS GPU Rendering Engine (The Core Technical Differentiator)
 
 #### Solving the 4K 60FPS Performance Bottleneck
+
+> **Launch preset (`DECISIONS.md` D-12):** the pipeline, atomic scene graph, static caching and direct-pipe encoding below are
+> resolution-independent and ship at **1440p60** first — 3.69M pixels/frame against 8.29M, i.e. 2.2x cheaper in render time,
+> bitrate and upload. The **4K60 preset is `REN-10`**, gated behind YPP approval, because the repository holds no evidence that
+> resolution moves CTR or retention for static data charts, and mobile watch time cannot resolve the difference.
 A 15-minute 4K60 video contains **54,000 frames** (`3840 × 2160`). Naive Manim Community (Cairo CPU) rendering takes 10–20 hours and bloats disk I/O. Our architecture reduces this to **20–35 minutes**:
 
 1. **Atomic Scene Graph Splitting:**

@@ -1,8 +1,8 @@
-# Per-item PPM review - all 59 tracker items
+# Per-item PPM review - all 60 tracker items
 
 > **Revision note.** The original review covered the 51 items that existed when it was written. `DECISIONS.md` D-04 added five
 > (`VAL-01`, `DAT-09`, `SHR-01`, `ANC-01`, `CMP-05`), reviewed in their own rows and in **section 9**; `DECISIONS.md` D-10 later added
-> three more (`TOP-04`, `PUB-04`, `ANA-05`), reviewed in section 10. The
+> three more (`TOP-04`, `PUB-04`, `ANA-05`), reviewed in section 10, and D-12 added `REN-10`. The
 > group arithmetic in sections 2-5 is left exactly as derived for the twelve-item package, because none of the five changes a
 > group total: three are $0 levers and two open a new group (G8) that was never additive to the twelve.
 
@@ -13,7 +13,7 @@ Answer for every item in `tracker/items.json`, in tracker order, with the arithm
 
 ## 0. Which inputs are measured, and which are assumed
 
-**This repository contains no measured performance data.** `src/` does not exist, so no pipeline has run; all 59 tracker items
+**This repository contains no measured performance data.** `src/` does not exist, so no pipeline has run; all 60 tracker items
 are `todo`, so no episode has been produced, nothing has been uploaded, and no revenue or analytics row exists anywhere in the
 repo. There is no YouTube Studio export, no CTR log, no RPM history and no invoice in this repository.
 
@@ -21,7 +21,7 @@ So the honest position is: **the revenue side is entirely assumed; the only hard
 
 | Input | Value used | Status | Where it comes from | Plausible range |
 |---|---|---|---|---|
-| Published episodes | 0 | **MEASURED** | tracker: 59/59 items `todo` | 0 |
+| Published episodes | 0 | **MEASURED** | tracker: 60/60 items `todo` | 0 |
 | Revenue earned to date | $0 | **MEASURED** | no channel exists (`CMP-01` todo) | $0 |
 | Library size | 900 videos | ASSUMED | `01-ai-data-documentary-branches.md`, Month 13-16 projection row | 360 - 1,500 |
 | Views per video per day | **40 / 61 / 94** (low / likely / high) | ASSUMED | branches projection rows: 61 at Month 13-16 (55,000 / 900), 94 at Month 25-28 (170,000 / 1,800); 40 is this review's floor | 40 - 94 |
@@ -175,6 +175,7 @@ the same group move the same variable and **cannot be added to each other**.
 | `REN-07` | Implement Template 6: HistoricalLineRace & Template 7: AnimatedBubbleSc... <sub>4h - P1</sub> | a | U | Not quantifiable | Unknown - needs: CTR and AVD of the two new templates vs the bar-chart baseline over 10 videos | Maybe - after 10 videos |
 | `REN-08` | Implement Template 8: DistributionHistogram + Pre-Baked 4K60 Ambient Mo... <sub>3h - P1</sub> | c | - | No impact | $0 - backgrounds are polish, not distribution | No - $0/mo |
 | `REN-09` | Build Scene Concatenator, Master Audio-Video Muxer & YouTube 4K60 Expor... <sub>2.5h - P0</sub> | c | - | No impact | $0 - muxer/export is the last mile of REN-02 | No - $0/mo |
+| `REN-10` | Add the 4K60 (3840x2160) preset to the render engine once the channel is... <sub>2h - P2</sub> | c | - | No impact | $0 - a preset, not a lever. It is 2.2x the pixels and bitrate of 1440p60 for a difference mobile cannot resolve, which is why D-12 defers it behind YPP | No - $0/mo, and it saves ~30h of T06 ahead of the Day-45 gate |
 | `SHR-01` | Build the 60s Shorts hook extractor (climax clip, burned captions, long... <sub>2.5h - P1</sub> | a | G8 | Moves PPM (new group) | 400-1,000 long-form views x $10.50 RPM / 1000 = **+$4.20-$10.50 per episode**, earned once over the Short's life, not per day - priced in full in section 6 | Yes - $1.70-$4.20 per hour, but it is the cheapest new-surface experiment in the plan |
 
 ### T07 - Thumbnail Factory & A/B Packaging
@@ -395,11 +396,11 @@ enough to change the order.
 A low rank is not a reason to skip an item: `REN-02` and `PUB-02` are prerequisites for items above them, and `PUB-02` is the floor
 of G5. `SHR-01` and `ANC-01` are ranked in section 9 instead, because they move variables this table's twelve never touched.
 
-## 5. The 44 items that do not move PPM
+## 5. The 45 items that do not move PPM
 
 Fifteen items move PPM - the twelve in section 4, `SHR-01` and `ANC-01` in group G8 (section 9), and `ANA-05` inside G6. The other
-44 do not, and adding them to a forecast is how the plan's earlier numbers got inflated: 4 with negligible cost savings, 6
-unpriceable, and 34 at exactly $0.
+45 do not, and adding them to a forecast is how the plan's earlier numbers got inflated: 4 with negligible cost savings, 6
+unpriceable, and 35 at exactly $0.
 
 * **Gates - not deltas:** `CMP-01`, `CMP-03`, `PUB-01`, `VAL-01`. The base already assumes they passed, so they cannot be counted twice.
 * **Risk spine - large if a failure happens, $0 until it does:** `DAT-02`, `DAT-03`, `DAT-06`, `DAT-07`, `SCR-03`, `CMP-02`,

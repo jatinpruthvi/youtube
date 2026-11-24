@@ -8,22 +8,24 @@ here, once, with the arithmetic that decided them.
 
 ---
 
-## Summary of the ten decisions
+## Summary of the twelve decisions
 
 | ID | Decision | Consequence in the repo | Evidence class |
 | :--- | :--- | :--- | :--- |
 | **D-01** | Cadence ramps 30 → 45 → 60 → 75 videos/month; 1/day is a *proof sprint*, not the revenue path | `SPRINT_30_DAYS.md` rhythm + `docs/PROFIT_MULTIPLIERS.md` hit-rate target | derived from the sprint gate's own arithmetic |
 | **D-02** | A 6-hour falsification episode (`VAL-01`) ships and is measured **before** any 4K60 render code | `VAL-01` added; `REN-02`, `ORC-02` now depend on it | 0 episodes published today |
-| **D-03** | The 30-video slate is rebuilt as 6 pillars x 5 query-shaped titles; the topic scorer stops paying for production convenience | `TOP-01` reseeded, `SPRINT_30_DAYS.md` slate rewritten, `ARCHITECTURE.md` Module 1 reweighted | measured: 21/30 format-label titles, 24 pillars, 4 near-duplicate pairs |
+| **D-03** | Titles become queries; the topic scorer stops paying for production convenience. **Its 6-pillar spread is superseded by D-11** | `TOP-01` reseeded, `ARCHITECTURE.md` Module 1 reweighted | measured: 21/30 format-label titles, 24 pillars, 4 near-duplicate pairs |
 | **D-04** | Tracker grows 51 → 56 items; every priced lever gets an item | `VAL-01`, `DAT-09`, `SHR-01`, `ANC-01`, `CMP-05` added | two of seven multipliers had no item |
 | **D-05** | Localized metadata ships only for markets that ship captions in the same commit | `PUB-02` acceptance criterion; localization uplift held as ceiling | `VIEW_OPTIMIZATION.md` §7 |
 | **D-06** | Facebook In-Stream is an experiment with an eligibility gate and a kill date, not a revenue line | `PUB-03` gated on confirming eligibility first | eligibility is not under our control |
 | **D-07** | The LLM layer is provider-agnostic; docs stop naming retired models | `SCR-02` builds against an adapter + `config/models.yaml` | named models age in weeks |
 | **D-08** | Contracts and fixtures land before templates: `RenderSpec`, `schema_version`, artifact layout, record/replay cassettes | `REN-01`, `SCR-01`, `ORC-01`, `DAT-09` acceptance criteria | 8 templates x 7 providers otherwise diverge |
 | **D-09** | Anti-demonetization is bought with topical concentration and visible provenance, not with more templates | `D-03` + `ANC-01` dataset page; TTS-vs-human voice decided on `VAL-01` data | the risk is a policy judgement, not a render quality problem |
-| **D-10** | Views per video is bought with **queries, concentration and refresh rates**, never with output volume | `TOP-04`, `PUB-04`, `ANA-05` added; 56 → 59 items; the video-30 gate re-scaled to trend | v is a ratio: adding 30 videos to 900 cuts it 3.3% unless demand grows |
+| **D-10** | Views per video is bought with **queries, concentration and refresh rates**, never with output volume | `TOP-04`, `PUB-04`, `ANA-05` added; the video-30 gate re-scaled to trend | v is a ratio: adding 30 videos to 900 cuts it 3.3% unless demand grows |
+| **D-11** | **One cluster, 30 deep** — not six pillars of five | `SPRINT_30_DAYS.md` slate rebuilt (20 salary + 10 cost-of-living); concentration from Day 1, not Day 90 | a 5-video pillar reads 32–118 at 90% confidence: unmeasurable |
+| **D-12** | **1440p60 is the launch preset; 4K60 is a post-YPP upgrade.** No Facebook, no dubbing, no 4K engine before Day 45 | `REN-02` rescoped, `REN-10` added, sprint rhythm re-cut | 4K60 is 2.2x the pixels and a cost centre; zero evidence it lifts CTR for static charts on mobile |
 
-Total plan effort moves from 142.0h to **164.5h** (0/59 items). The 22.5h increase buys one falsification episode, one test harness,
+Total plan effort moves from 142.0h to **166.5h** (0/60 items). The 22.5h increase buys one falsification episode, one test harness,
 three levers that were priced but never scheduled, and the three views-per-video levers in D-10.
 
 ---
@@ -54,11 +56,11 @@ three levers that were priced but never scheduled, and the three views-per-video
 
 ## D-03 — Six pillars x five query-shaped titles, and the scorer stops paying for convenience
 
-**Decision.** The launch slate is rebuilt as **6 pillars x 5 episodes** — Salaries & Take-Home, Cost of Living & Housing, Macro Wealth & Debt, Taxes & Retirement, Demographics & Labour, US-vs-World — and every title is rewritten as a query a person would type, ≤60 characters, with no format label. The topic scorer becomes **50% proven demand + 25% auction value + 25% angle novelty**, with data verifiability demoted from a 25% weight to a **hard filter**.
+**Decision.** Every title is rewritten as a query a person would type, ≤60 characters, with no format label, and the topic scorer stops paying for production convenience. *(The 6-pillars-x-5 spread this decision originally carried is superseded by D-11 — the title rules below are what survived.)* The topic scorer becomes **50% proven demand + 25% auction value + 25% angle novelty**, with data verifiability demoted from a 25% weight to a **hard filter**.
 
 **Why.** `VIEW_OPTIMIZATION.md` §1 already measured the failure: **21 of 30 titles** were the same "Every Country Ranked by …" template, spread across **24 distinct pillars**, containing **4 near-duplicate thesis pairs**. A format label is not a query, and 24 pillars for 30 videos gives the recommender ~1.25 videos of evidence per topic, which makes every 28-day reading unreadable as a measurement. Paying 25% of the score for "can I make this easily?" is the same error in the ranking layer.
 
-**Consequence.** `TOP-01` seeds the new slate; `SPRINT_30_DAYS.md` carries the rewritten titles; `ARCHITECTURE.md` Module 1 carries the new weights. Nothing in the pipeline code changes — this is a text and scoring decision.
+**Consequence.** `TOP-01` seeds the slate; `ARCHITECTURE.md` Module 1 carries the new weights; `SPRINT_30_DAYS.md` carries the rewritten titles. Nothing in the pipeline code changes — this is a text and scoring decision.
 
 **Rejected.** Keeping the slate as written and relying on visual diversity to dodge the repetition signal. Topical concentration is the lever the platform actually rewards.
 
@@ -182,3 +184,53 @@ prevents a no-demand video from being produced at all — which raises the measu
 
 **Rejected.** Publishing more to "give the algorithm more to work with". At this library size that lowers the metric the whole
 revenue model is built on, and it spends the scarcest resource — the operator's review time — on the lowest-yield work.
+
+---
+
+## D-11 — One cluster, 30 deep (supersedes D-03's six-pillar spread)
+
+**Decision.** The 30-episode sprint is **one cluster**: 20 episodes in salary and take-home pay, 10 in the adjacent
+cost-of-living band. Concentration starts Day 1, not Day 90 (which is what D-10 originally said). A second pillar is only
+considered after the Day-45 read, and then as a *second channel*, not as a wider slate.
+
+**Why.** Two numbers decide it.
+
+```
+a 5-video pillar, log-normal view spread (sigma 0.9), true value 61 v/day
+    -> 90% interval = 32 .. 118       (a 3.7x span)
+    -> the plan's whole 61 -> 94 argument fits inside one pillar's error bar
+```
+
+Six pillars of five therefore produces **six unreadable numbers**, and it spends the only asset that compounds: cluster
+authority. Browse and suggested — the surfaces that carry the volume above search — recommend *within* a cluster, so 30 episodes
+on salary data is a channel the recommender can classify, while five videos on taxes is a channel it cannot.
+
+**Consequence.** The slate is re-cut (`SPRINT_30_DAYS.md`), still 30 episodes, still 1/day, still every title a query. `TOP-01`
+seeds the single-cluster queue with all 30 query candidates. `TOP-04`'s demand verdict now runs on 30 queries inside one cluster,
+which makes the research cumulative instead of scattered across six unrelated subjects.
+
+**Rejected.** Keeping six pillars "for learning". You cannot learn from a five-sample cell, and the leasing cost of that
+non-learning is the cluster depth you did not build.
+
+---
+
+## D-12 — 1440p60 at launch; 4K60 is a post-YPP upgrade, and the deferred spend is real
+
+**Decision.** The launch preset is **1440p60** (`3840x2160` stays the standard from the first post-YPP refresh). The 4K60 NVENC
+preset becomes `REN-10`, scheduled **after** YouTube Partner Program approval (`CMP-03`). Three further deferrals sit behind the
+same Day-45 gate: **no Facebook build** (`PUB-03` eligibility first, D-06), **no multi-language audio dubbing** (`ANA-04` stays in
+Phase 3), and **no 4K render engine work** before the cohort trend exists.
+
+**Why.** 4K60 is **8.29M pixels/frame against 3.69M at 1440p — 2.2x the render time, 2.2x the NVENC bitrate budget and 2.2x the
+upload**, for a difference the majority of the audience cannot see: mobile viewers are the majority of watch time, and phone
+displays are below 1080p. For *static and semi-animated data charts* the visible gain of 4K over 1440p is close to nil, while the
+cost — 31.5h of T06 plus GPU hours — is the largest single block in the plan. There is no evidence in this repository that
+resolution affects CTR or retention; the claim that "4K clarity" earns views is an assumption, and it is an expensive one.
+
+**Consequence.** `REN-02` is rescoped to a 1440p60-first engine (the pipeline, the templates and the NVENC pipe are identical;
+only the preset changes), `REN-10` (2h) holds the 4K60 preset behind YPP, and the sprint rhythm gains a **Days 34–45 gate** in
+which nothing new is built. Roughly 30h of the original T06 spend moves behind evidence, and the episodes ship three weeks
+earlier than they otherwise would.
+
+**Rejected.** Rendering 4K60 from episode one because the mission line says so. The mission's own economics are views x RPM; a
+resolution the viewer cannot resolve is a cost, not a feature. The standard is not abandoned — it is scheduled.

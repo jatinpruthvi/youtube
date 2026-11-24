@@ -448,13 +448,13 @@
       "priority": "P0",
       "status": "todo",
       "effort_hours": 4,
-      "title": "Build Core 4K60 Render Engine (atomic scene worker pool + static texture cache + direct NVENC pipe)",
+      "title": "Build the 1440p60-first render engine (atomic scene worker pool + static texture cache + NVENC pipe)",
       "dependencies": [
         "INF-02",
         "REN-01",
         "VAL-01"
       ],
-      "acceptance_criteria": "Streams raw 3840x2160 60fps RGB frames directly to hevc_nvenc/h264_nvenc with zero intermediate PNG bloat; benchmark >=25fps. The engine is benchmarked on the VAL-01 thin slice's scene set first, because that slice already proved the format is worth rendering at 4K60."
+      "acceptance_criteria": "Streams raw 2560x1440 60fps RGB frames directly to hevc_nvenc/h264_nvenc with zero intermediate PNG bloat; benchmark >=25fps. The same pipeline renders 4K60 through REN-10's preset, so this item changes resolution, not architecture (DECISIONS.md D-12: 2.2x the pixels for a difference a mobile viewer cannot resolve, held until YPP)."
     },
     {
       "id": "REN-03",
@@ -549,7 +549,7 @@
         "REN-05",
         "REN-06"
       ],
-      "acceptance_criteria": "Assembles full 10-18 min 4K60 MP4 with faststart atom, 0ms AV drift, and verified playback in VLC/YouTube."
+      "acceptance_criteria": "Assembles full 10-18 min 4K60 MP4 with faststart atom, 0ms AV drift, and verified playback in VLC/YouTube. Master export defaults to a 1440p60 preset at ~12-16 Mbps; the 4K60 preset is REN-10 (D-12)."
     },
     {
       "id": "SHR-01",
@@ -563,6 +563,20 @@
         "REN-09"
       ],
       "acceptance_criteria": "Renders a 9:16 60s cut from the episode's strongest DataBrief contrast with burned captions and uploads it as a Short carrying the long-form link in the description; long-form click-through per Short is logged in SQLite. Profit Multiplier 4 is worth $4.20-$10.50 per episode at $10.50 RPM, earned over the Short's lifetime rather than per day."
+    },
+    {
+      "id": "REN-10",
+      "track": "T06",
+      "phase": "P2_OPT_MONTHS_2_6",
+      "priority": "P2",
+      "status": "todo",
+      "effort_hours": 2,
+      "title": "Add the 4K60 (3840x2160) preset to the render engine once the channel is monetized",
+      "dependencies": [
+        "REN-09",
+        "CMP-03"
+      ],
+      "acceptance_criteria": "The engine renders 3840x2160 at 60fps through the same NVENC pipe with no code path change beyond the preset, and the upgrade is applied to the top-performing episodes before new output. Gated behind YPP approval (DECISIONS.md D-12): 4K60 is 2.2x the pixels, render time and bitrate budget of 1440p60, and the repository holds no evidence that resolution moves CTR or retention for static data charts."
     },
     {
       "id": "THM-01",

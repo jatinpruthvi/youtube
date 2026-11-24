@@ -2,7 +2,7 @@
 
 > **Project:** Automated Data Documentary Network  
 > **Mission:** $1,500-$2,000/day ($45k-$60k/month) of profit from pure platform ad revenue in 24-36 months  
-> **Progress:** **0/59 items (0%)** · **164.5h remaining** of **164.5h total**
+> **Progress:** **0/60 items (0%)** · **166.5h remaining** of **166.5h total**
 
 <!-- Generated from tracker/items.json via `python3 scripts/track.py sync-md` -->
 
@@ -22,7 +22,7 @@ python3 scripts/track.py set INF-01 done  # Mark item done & auto-sync this Mark
 | :--- | :---: | :---: |
 | **Phase 0: Pipeline MVP (Days 1–10)** | 0 / 36 | 103.0h |
 | **Phase 1: Launch Sprint, 30 episodes (Days 11–33)** | 0 / 16 | 38.5h |
-| **Phase 2: Monetization & Retention Optimization (Months 2–6)** | 0 / 5 | 14.0h |
+| **Phase 2: Monetization & Retention Optimization (Months 2–6)** | 0 / 6 | 16.0h |
 | **Phase 3: Multi-Channel Network Scale (Months 7–36)** | 0 / 2 | 9.0h |
 
 ### By Architecture Track
@@ -33,7 +33,7 @@ python3 scripts/track.py set INF-01 done  # Mark item done & auto-sync this Mark
 | **T03** | [Topic Intelligence & Editorial Queue](#t03-topic-intelligence--editorial-queue) | 0 / 4 | 9.0h |
 | **T04** | [Claude Narrative Script & Fact-Audit Engine](#t04-claude-narrative-script--fact-audit-engine) | 0 / 4 | 12.0h |
 | **T05** | [Voiceover, Forced Alignment & Audio Mastering](#t05-voiceover-forced-alignment--audio-mastering) | 0 / 5 | 12.0h |
-| **T06** | [4K 60FPS GPU Rendering & Visual Template Library](#t06-4k-60fps-gpu-rendering--visual-template-library) | 0 / 10 | 34.0h |
+| **T06** | [4K 60FPS GPU Rendering & Visual Template Library](#t06-4k-60fps-gpu-rendering--visual-template-library) | 0 / 11 | 36.0h |
 | **T07** | [Thumbnail Factory & A/B Packaging](#t07-thumbnail-factory--ab-packaging) | 0 / 2 | 4.5h |
 | **T08** | [Automated QA Gate & Mobile Approval Bot](#t08-automated-qa-gate--mobile-approval-bot) | 0 / 2 | 5.5h |
 | **T09** | [Localization & Multi-Platform Publishing](#t09-localization--multi-platform-publishing) | 0 / 5 | 15.5h |
@@ -158,26 +158,27 @@ python3 scripts/track.py set INF-01 done  # Mark item done & auto-sync this Mark
 </details>
 
 ## T06: 4K 60FPS GPU Rendering & Visual Template Library
-*Design system, 8 core animated chart templates, atomic scene parallelism, static caching, and direct NVENC encoding.* (**0/10 complete**)
+*Design system, 8 core animated chart templates, atomic scene parallelism, static caching, and direct NVENC encoding.* (**0/11 complete**)
 
 | Status | ID | Priority | Phase | Est. | Dependencies | Item & Acceptance Criteria |
 | :---: | :--- | :---: | :--- | :---: | :--- | :--- |
 | ⬜ Todo | `REN-01` | `P0` | `P0` | 3h | `INF-03` | **Establish 4K 60FPS Documentary Visual Design System (palette, typography, safe margins, source footer)**<br/><sub>✓ style_guide.yaml + font/flag/Natural Earth GeoJSON asset pack verified legible at both 4K TV and 360px mobile sizes. It also publishes the single `RenderSpec` Pydantic contract (scene_id, template, data bindings, camera move, safe zones, SFX cues, duration) plus one golden fixture, so all 8 templates bind data the same way instead of embedding their own binding logic.</sub> |
-| ⬜ Todo | `REN-02` | `P0` | `P0` | 4h | `INF-02`, `REN-01`, `VAL-01` | **Build Core 4K60 Render Engine (atomic scene worker pool + static texture cache + direct NVENC pipe)**<br/><sub>✓ Streams raw 3840x2160 60fps RGB frames directly to hevc_nvenc/h264_nvenc with zero intermediate PNG bloat; benchmark >=25fps. The engine is benchmarked on the VAL-01 thin slice's scene set first, because that slice already proved the format is worth rendering at 4K60.</sub> |
+| ⬜ Todo | `REN-02` | `P0` | `P0` | 4h | `INF-02`, `REN-01`, `VAL-01` | **Build the 1440p60-first render engine (atomic scene worker pool + static texture cache + NVENC pipe)**<br/><sub>✓ Streams raw 2560x1440 60fps RGB frames directly to hevc_nvenc/h264_nvenc with zero intermediate PNG bloat; benchmark >=25fps. The same pipeline renders 4K60 through REN-10's preset, so this item changes resolution, not architecture (DECISIONS.md D-12: 2.2x the pixels for a difference a mobile viewer cannot resolve, held until YPP).</sub> |
 | ⬜ Todo | `REN-03` | `P0` | `P0` | 4h | `REN-02` | **Implement Template 1: BarChartRace (interpolated rankings, flags, rolling year counter, spotlight glow)**<br/><sub>✓ Renders buttery-smooth 4K60 Top-15 bar race synchronized to WhisperX word highlights.</sub> |
 | ⬜ Todo | `REN-04` | `P0` | `P0` | 4.5h | `REN-02` | **Implement Template 2: WorldChoroplethMap (Natural Earth vectors, camera zoom/pan, animated color scale)**<br/><sub>✓ Renders crisp vector world map with smooth zoom onto target regions and animated country callout pins.</sub> |
 | ⬜ Todo | `REN-05` | `P0` | `P0` | 3h | `REN-02` | **Implement Template 3: SpotlightCountryCard & Template 4: ChapterTitleCard**<br/><sub>✓ High-contrast KPI card with animated rolling counters, sparkline, rank badge, plus 3-second kinetic chapter transition.</sub> |
 | ⬜ Todo | `REN-06` | `P0` | `P0` | 3.5h | `REN-02` | **Implement Template 5: DualSplitComparison (e.g., Nominal vs PPP or Country A vs Country B)**<br/><sub>✓ Animated split-screen comparison with synced delta callout and zero label overlap.</sub> |
 | ⬜ Todo | `REN-07` | `P1` | `P1` | 4h | `REN-02` | **Implement Template 6: HistoricalLineRace & Template 7: AnimatedBubbleScatter**<br/><sub>✓ Multi-line time series with historical event pins + multi-axis animated bubble scatter with trails.</sub> |
 | ⬜ Todo | `REN-08` | `P1` | `P1` | 3h | `REN-02` | **Implement Template 8: DistributionHistogram + Pre-Baked 4K60 Ambient Motion Backgrounds**<br/><sub>✓ Bell-curve percentile visualizer + 3 reusable 4K60 subtle dark-mode animated backdrop loops.</sub> |
-| ⬜ Todo | `REN-09` | `P0` | `P0` | 2.5h | `AUD-05`, `REN-03`, `REN-04`, `REN-05`, `REN-06` | **Build Scene Concatenator, Master Audio-Video Muxer & YouTube 4K60 Export Preset**<br/><sub>✓ Assembles full 10-18 min 4K60 MP4 with faststart atom, 0ms AV drift, and verified playback in VLC/YouTube.</sub> |
+| ⬜ Todo | `REN-09` | `P0` | `P0` | 2.5h | `AUD-05`, `REN-03`, `REN-04`, `REN-05`, `REN-06` | **Build Scene Concatenator, Master Audio-Video Muxer & YouTube 4K60 Export Preset**<br/><sub>✓ Assembles full 10-18 min 4K60 MP4 with faststart atom, 0ms AV drift, and verified playback in VLC/YouTube. Master export defaults to a 1440p60 preset at ~12-16 Mbps; the 4K60 preset is REN-10 (D-12).</sub> |
 | ⬜ Todo | `SHR-01` | `P1` | `P1` | 2.5h | `REN-09` | **Build the 60s Shorts hook extractor (climax clip, burned captions, long-form link)**<br/><sub>✓ Renders a 9:16 60s cut from the episode's strongest DataBrief contrast with burned captions and uploads it as a Short carrying the long-form link in the description; long-form click-through per Short is logged in SQLite. Profit Multiplier 4 is worth $4.20-$10.50 per episode at $10.50 RPM, earned over the Short's lifetime rather than per day.</sub> |
+| ⬜ Todo | `REN-10` | `P2` | `P2` | 2h | `REN-09`, `CMP-03` | **Add the 4K60 (3840x2160) preset to the render engine once the channel is monetized**<br/><sub>✓ The engine renders 3840x2160 at 60fps through the same NVENC pipe with no code path change beyond the preset, and the upgrade is applied to the top-performing episodes before new output. Gated behind YPP approval (DECISIONS.md D-12): 4K60 is 2.2x the pixels, render time and bitrate budget of 1440p60, and the repository holds no evidence that resolution moves CTR or retention for static data charts.</sub> |
 
 <details>
-<summary>Checklist View — T06 (0/10)</summary>
+<summary>Checklist View — T06 (0/11)</summary>
 
 - [ ] **`REN-01`** (P0, 3h) — Establish 4K 60FPS Documentary Visual Design System (palette, typography, safe margins, source footer)
-- [ ] **`REN-02`** (P0, 4h) — Build Core 4K60 Render Engine (atomic scene worker pool + static texture cache + direct NVENC pipe)
+- [ ] **`REN-02`** (P0, 4h) — Build the 1440p60-first render engine (atomic scene worker pool + static texture cache + NVENC pipe)
 - [ ] **`REN-03`** (P0, 4h) — Implement Template 1: BarChartRace (interpolated rankings, flags, rolling year counter, spotlight glow)
 - [ ] **`REN-04`** (P0, 4.5h) — Implement Template 2: WorldChoroplethMap (Natural Earth vectors, camera zoom/pan, animated color scale)
 - [ ] **`REN-05`** (P0, 3h) — Implement Template 3: SpotlightCountryCard & Template 4: ChapterTitleCard
@@ -186,6 +187,7 @@ python3 scripts/track.py set INF-01 done  # Mark item done & auto-sync this Mark
 - [ ] **`REN-08`** (P1, 3h) — Implement Template 8: DistributionHistogram + Pre-Baked 4K60 Ambient Motion Backgrounds
 - [ ] **`REN-09`** (P0, 2.5h) — Build Scene Concatenator, Master Audio-Video Muxer & YouTube 4K60 Export Preset
 - [ ] **`SHR-01`** (P1, 2.5h) — Build the 60s Shorts hook extractor (climax clip, burned captions, long-form link)
+- [ ] **`REN-10`** (P2, 2h) — Add the 4K60 (3840x2160) preset to the render engine once the channel is monetized
 
 </details>
 
