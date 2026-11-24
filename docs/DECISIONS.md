@@ -8,7 +8,7 @@ here, once, with the arithmetic that decided them.
 
 ---
 
-## Summary of the twelve decisions
+## Summary of the thirteen decisions
 
 | ID | Decision | Consequence in the repo | Evidence class |
 | :--- | :--- | :--- | :--- |
@@ -24,6 +24,7 @@ here, once, with the arithmetic that decided them.
 | **D-10** | Views per video is bought with **queries, concentration and refresh rates**, never with output volume | `TOP-04`, `PUB-04`, `ANA-05` added; the video-30 gate re-scaled to trend | v is a ratio: adding 30 videos to 900 cuts it 3.3% unless demand grows |
 | **D-11** | **One cluster, 30 deep** — not six pillars of five | `SPRINT_30_DAYS.md` slate rebuilt (20 salary + 10 cost-of-living); concentration from Day 1, not Day 90 | a 5-video pillar reads 32–118 at 90% confidence: unmeasurable |
 | **D-12** | **1440p60 is the launch preset; 4K60 is a post-YPP upgrade.** No Facebook, no dubbing, no 4K engine before Day 45 | `REN-02` rescoped, `REN-10` added (2h deferred), sprint rhythm re-cut | 4K60 is 2.25x the pixels for ~6–10 GPU-hours a month; zero evidence it lifts CTR for static charts on mobile |
+| **D-13** | **Every input is tiered in a register, and the decisions are pre-registered** | `BASELINE.md` added; `RPM_ad` named; GPU metered; σ retired; rules R1–R12 locked | nine inputs were guesses, and a guess plus a late decision is how a plan rationalises itself |
 
 Total plan effort moves from 142.0h to **166.5h** (0/60 items). The 22.5h increase buys one falsification episode, one test harness,
 three levers that were priced but never scheduled, and the three views-per-video levers in D-10.
@@ -154,6 +155,7 @@ automated, at roughly $700 of labour cost per month (an assumption, not a quote)
 | Acceptance criteria on `TOP-01`, `REN-01`, `SCR-01`, `ORC-01`, `DAT-02`, `PUB-02`, `PUB-03` | D-03, D-05, D-06, D-08 |
 | `docs/SPRINT_30_DAYS.md` rhythm table and slate | D-01, D-03 |
 | `TOP-04`'s refusal rule in the editorial queue; the cohort-trend gate in `SPRINT_30_DAYS.md` | D-10 |
+| `scripts/check_baseline.py` — tiers, bands, retirement instruments and rules R1–R12 | D-13 |
 | `python3 scripts/track.py validate` and `python3 scripts/check_docs.py` | D-04 and every figure in this file |
 
 ---
@@ -246,3 +248,29 @@ stops being trustworthy.
 
 **Rejected.** Rendering 4K60 from episode one because the mission line says so. The mission's own economics are views x RPM; a
 resolution the viewer cannot resolve is a cost, not a feature. The standard is not abandoned — it is scheduled.
+
+---
+
+## D-13 — Foundation data is a register, and its decisions are pre-registered
+
+**Decision.** Every input the plan depends on now lives in `docs/BASELINE.md` in one of three tiers — **M** measured in this
+repository, **D** derived here with a band and a formula, **U** unmeasured with a named retirement instrument. No naked point
+estimate is allowed. Three specific corrections follow, and twelve decision rules are locked **before** any data arrives.
+
+**Why.** `DECISION_AUDIT.md` proved the arithmetic and left nine inputs as guesses. A guess is only dangerous when a decision is
+allowed to be rationalised against it afterwards; the fix is not better guessing, it is (a) banding every input, and (b) writing
+the decision rule down in advance. The three corrections found while doing it:
+
+| Correction | What was wrong | What it changes |
+| :--- | :--- | :--- |
+| **"RPM" meant two things** | the memo's $10.50 is **ad-side**, `ARCHITECTURE.md`'s "$8–$16" reads as **total** — a 28% difference hidden inside one word | $10.50 is registered as `RPM_ad` at the **68th percentile** of the band, so the base case is mid-band, not conservative |
+| **The GPU line paid for a window the pipeline does not use** | $20–35 of cost per month provisioned 60 GPU-hours; the SLA implies **5.4–9.8h** at 1440p60 | the worker is **metered per episode**: $2.20–$3.88 of cost per month, $6.60–$11.64 even at 3x retries. The saving funds the approval/QA hire at the cadence ramp instead |
+| **σ = 0.9 was itself an assumption** | `D-11`'s "5 videos cannot be read" rested on an assumed log-normal spread | replaced by the **exact Mann-Whitney** bound: significance needs **23 of 25** cross-pairs ordered correctly. Same conclusion, no distributional assumption |
+
+**Consequence.** Twelve rules (R1–R12) now cover Day 3, Day 17, Day 45, YPP approval and two standing checks, each with the action
+fixed in advance — including R4 (under 10 v/day: stop the sprint, one retry permitted) and R7 (replace the assumed 61 with the
+measured value in every table rather than debating it). Four conditions that would abandon the plan are written down too. The
+register is checked by `scripts/check_baseline.py`, so a band cannot quietly become a point estimate again.
+
+**Rejected.** Collecting "better estimates" first. There is no better estimate available without publishing, and the register makes
+that fact operational instead of hidden.

@@ -279,7 +279,7 @@ Two proven deployment topologies that respect the **~$100/month** constraint:
 | Component | Specification / Provider | Est. Monthly Cost |
 | :--- | :--- | :---: |
 | **Control Plane VPS** | Hetzner CPX41 (8 vCPU, 16 GB RAM, 240 GB NVMe) — cron, SQLite, FastMCP data server, Python scripts, RSS parser, uploader | $27 |
-| **On-Demand GPU Worker** | RunPod / Vast.ai RTX 4090 (24 GB) provisioned by API for ~2 h/day (≈60 h/mo) — TTS, alignment, 4K60 render | $20–35 |
+| **On-Demand GPU Worker** | RunPod / Vast.ai RTX 4090 (24 GB) provisioned by API for ~2 h/day (≈60 h/mo) — TTS, alignment, 1440p60 render — **provisioned as a ceiling; billed per episode** (`D-13`, `BASELINE.md` §3): the SLA implies 5.4–9.8 GPU-hours a month at the launch preset, i.e. $2.18–$3.91 of cost, so the line below is the cap and not the forecast | $20–35 |
 | **Script LLM (front-tier model + caching)** | ~30 scripts + scene graphs + de/fr/ja metadata; a cost of ~$0.15–$0.30 per video with the audit retries | $10 |
 | **Voiceover** | Self-hosted MeloTTS / Kokoro on the GPU worker, Azure Neural fallback | $5 |
 | **Economic Data APIs** | World Bank, FRED, OECD, IMF, OWID, DBnomics, UN Data | $0 |

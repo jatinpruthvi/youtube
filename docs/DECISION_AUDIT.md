@@ -7,8 +7,11 @@
 Reproduce the whole audit with:
 
 ```bash
-python3 scripts/check_decisions.py
+python3 scripts/check_decisions.py      # the decisions, re-derived
+python3 scripts/check_baseline.py       # the inputs, banded and re-derived
 ```
+
+Round 2 (below, §6) audits the *inputs* the decisions rest on, and is what produced [`BASELINE.md`](BASELINE.md).
 
 That script is not a description of this file — it is the check this file reports on, wired into `scripts/check_docs.py` and CI.
 
@@ -107,3 +110,25 @@ is the reason `VAL-01`, `TOP-04` and the Day-45 gate exist. The first three item
 | `scripts/check_goal.py` (184 assertions) | a monthly figure restated as a target; an unqualified daily band |
 | `scripts/track.py validate` | a dependency gate that stops being a gate (D-02, D-12) |
 | `scripts/selftest_track.py` / `selftest_goal.py` | those checks going quiet — a planted violation must still fail |
+
+---
+
+## 6. Round 2 — auditing the inputs, not just the arithmetic
+
+The first five rounds audited claims about numbers. They could not audit the numbers themselves, because nine of them were guesses.
+Round 2 turned each guess into a tier in [`BASELINE.md`](BASELINE.md), and found three defects in the process.
+
+| Defect | What was wrong | Consequence |
+| :--- | :--- | :--- |
+| **"RPM" carried two meanings** | the memo's `RPM` is **ad-side** (it divides by 0.78 afterwards); `ARCHITECTURE.md`'s "$8–$16 RPM" reads as **total**. 28% apart, same word | `RPM_ad` is now the named quantity, banded **$6.24–$12.48**; $10.50 is registered at the **68th percentile**, i.e. mid-band, not conservative |
+| **The GPU line paid for a window the pipeline does not use** | $20–35 of cost per month provisioned 2 h/day = 60 GPU-hours; the SLA implies **5.4–9.8h** at 1440p60 | the worker is metered per episode: **$2.18–$3.91** of cost per month, $6.53–$11.73 at 3x retries. The provisioned line was 6–11x the need |
+| **σ = 0.9 was an assumption inside an argument about assumptions** | `D-11`'s "five videos cannot be read" rested on an assumed log-normal spread | **σ is retired.** The exact Mann-Whitney bound is distribution-free: significance needs **23 of 25** cross-pairs ordered correctly (U ≤ 2, p = 0.0317; U ≤ 3 gives 0.0556 and is not significant) |
+
+**What the audit still cannot do.** No procedure inside this repository can validate v, `RPM_ad`, the US share, the render minutes
+or the word rate. Round 2's contribution is not that those are now known — it is that each one is **tiered, banded, given a
+retirement instrument, and wired to a decision rule (R1–R12) written before the data arrives**. A guess with a pre-registered
+decision attached is a manageable business; a guess with a decision made afterwards is a rationalisation.
+
+**Two numbers the register changed.** The reachable library is **1,830** videos at (v = 61, `RPM_ad` = $10.50) but **4,186** at the
+band's floor (40, $7) — 2.3x the library, 56 months at 75 videos a month rather than 24. And the ~$100/month cap now has
+**$16–$31 of headroom** of cost, which is earmarked in `BASELINE.md` §3 for the approval/QA hire rather than a bigger GPU window.

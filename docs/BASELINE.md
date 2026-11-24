@@ -1,0 +1,146 @@
+# Baseline Register — the inputs every decision rests on
+
+> **Purpose.** `DECISION_AUDIT.md` proved the arithmetic is sound. This register fixes the *other* half: which inputs are
+> measured, which are derived with a band, and which are still guesses — and what decision each one triggers. No number in this
+> repository is allowed to be a naked point estimate any more.
+>
+> **Tier key:** **M** = measured in this repository · **D** = derived here, with a band and a formula · **U** = unmeasured, with a
+> retirement instrument and a pre-registered rule.
+
+Checked by `python3 scripts/check_baseline.py` (wired into `scripts/check_docs.py`).
+
+---
+
+## 1. The register
+
+| Input | Symbol | Used as | Band | Tier | Derivation or retirement |
+| :--- | :--- | :--- | :--- | :---: | :--- |
+| Published episodes | — | 0 | 0 | **M** | `tracker/items.json`: 60/60 items `todo` |
+| Revenue earned | — | $0 | $0 | **M** | no channel exists (`CMP-01` todo) |
+| Plan effort | — | 166.5h | 166.5h | **M** | sum of `effort_hours` over 60 items |
+| Docs arithmetic | — | all checks green | 7 check scripts | **M** | `check_docs.py` runs the band and decision checks on every push (the count is deliberately not written here: it drifts) |
+| Views per video per day | v | 61 | 22–94 | **D** | the plan's own projection rows: 10,000/450 = 22 … 170,000/1,800 = 94; projected, not measured. Retired by `ANA-01` |
+| Ad-side RPM | **RPM_ad** | $10.50 | $6.24–$12.48 | **D** | the plan's stated total-RPM band is $8–$16; at a 78% ad share the ad-side band is 0.78 × that. $10.50 sits at the **68th percentile**, so the base is *not* conservative. Retired by the AdSense report |
+| Total RPM (the same word, other meaning) | RPM_total | $13.46 | $8–$16 | **D** | `RPM_ad / 0.78`. Naming fixed by this register — see §2 |
+| Ad share of revenue | a | 78% | 78–100% | **D** | the plan's own Month 25–28 row: $510 of $2,295 = 22.2% ancillary. If ancillary never ships, ad revenue rises 1.28x |
+| US-origin share | — | 40% | 25–55% | **U** | appears nowhere in the repo as a measured value. Retired by Analytics geography |
+| Withholding rate | — | 15% under DTAA | 15–30% | **U** | statutory, conditional on `CMP-05` filing. Retired by the first payout statement |
+| Facebook lift | — | 0 (base) | 0–30% | **U** | removed from the base by `D-06`. Retired by the `PUB-03` eligibility answer |
+| GPU hours per month | — | 5.4–9.8h at 1440p | 5.4–29h | **D** | 30 episodes × 11–20 GPU-min (render 9–16 + TTS/alignment 2–4). See §3 |
+| GPU rate | — | $0.40/h | $0.33–$0.58 | **D** | the plan's own GPU line: $20–35 for ~60h |
+| Script cost per episode | — | $0.15–$0.30 | $0.15–$0.30 | **D** | `D-07`; 30 episodes = $9 of cost against the plan's $10 line |
+| Word rate for hired voice | — | $0.02–$0.05 | $0.02–$0.10 | **U** | market band, no quote. Retired by one quote |
+| Approval/QA hire | — | $700 of cost per month | $400–$1,000 | **U** | India part-time VA band, no offer. Retired by one offer |
+| Log-normal view spread | σ | **retired** | — | — | replaced by the distribution-free bound in §4 |
+| 4K60 render minutes | — | 20–35 min | 20–35 min | **U** | architecture target, no benchmark. Retired by `REN-02` |
+| CTR lift from packaging | — | 0 (base) | 0–20% | **U** | `PPM_REVIEW` calls it the weakest claim. Retired by Test & Compare |
+
+**Nothing in the revenue line is Tier M.** That is the honest state of the business, and it is why `VAL-01` exists.
+
+---
+
+## 2. Correction 1 — "RPM" was doing two jobs
+
+`IMPROVEMENT_VALUE_AT_2K.md` computes `ad revenue = views × RPM / 1000` and then divides by 0.78 to reach total revenue, so its
+$10.50 is an **ad-side** RPM. `ARCHITECTURE.md` Module 1 advertises **"$8–$16 RPM"** for Tier-1 finance, which reads as a **total**
+RPM. Same word, two meanings, and the difference is 28%.
+
+| Reading | Value | Consistent? |
+| :--- | :--- | :--- |
+| `RPM_ad` $10.50 ÷ 0.78 | $13.46 total | inside $8–$16, at the 68th percentile |
+| `RPM_total` $10.50 → `RPM_ad` | $8.19 | inside $6.24–$12.48, at the 33rd percentile |
+
+**Decision taken:** keep $10.50 as `RPM_ad` (the memo's convention, all gates and tables are built on it) and **record it as a
+mid-band value, not a conservative one**. The plan's risk is symmetric here; there is no cushion to spend.
+
+---
+
+## 3. Correction 2 — the GPU line pays for a window the pipeline does not use
+
+`ARCHITECTURE.md` provisions **~2h/day = 60 GPU-hours** at $20–35 of cost per month. The pipeline's own SLA implies far less:
+
+| Preset | GPU-min per episode | 30 episodes | Cost at $0.40/h |
+| :--- | :---: | :---: | :---: |
+| 1440p60 (launch, `D-12`) | 11–20 | **5.4–9.8h** | $2.18–$3.91 |
+| 1440p60 with 3x retries | 33–60 | 16.2–29.4h | $6.53–$11.73 |
+| 4K60 (post-YPP, `REN-10`) | 22–39 | 11.0–19.5h | $4.40–$7.80 |
+
+**Decision taken:** the GPU line is **metered per episode, not reserved as a daily window**. The provisioned $20–35 was **6–11x**
+the implied 1440p need and 3–5x the 4K need, which is what made the on-demand-worker topology look expensive; billed per minute the
+launch preset costs $2.18–$3.91 of GPU time per month, and even a 3x retry rate stays under $12. The ~$100/month cap therefore has real headroom — which
+should be spent on *(a)* the approval/QA hire at the cadence ramp and *(b)* re-renders after the Day-45 read, not on a bigger GPU
+window.
+
+---
+
+## 4. Correction 3 — σ is gone; detectability is now distribution-free
+
+`D-11` argued a five-video pillar cannot be read using a log-normal spread of σ = 0.9, which was itself an assumption. It is not
+needed. A Mann-Whitney comparison of 5 videos against 5 videos has an exact null distribution with no distributional assumption at
+all:
+
+| Cross-pairs out of order (of 25) | Exact two-sided p | Read at 5%? |
+| :---: | :---: | :---: |
+| 0 (U ≤ 0) | 0.0079 | yes |
+| ≤ 2 (U ≤ 2) | 0.0317 | **yes — the boundary** |
+| ≤ 3 (U ≤ 3) | 0.0556 | no |
+| ≤ 5 (U ≤ 5) | 0.1508 | no |
+
+**A five-vs-five comparison is only significant when at least 23 of 25 cross-pairs are already ordered correctly** — that is,
+when one pillar beats the other almost completely. Any decision that needs to separate two pillars by 20–30% is out of reach at
+five episodes each, and that conclusion no longer depends on an assumed view distribution.
+
+---
+
+## 5. The library the goal actually needs — `v` × `RPM_ad` grid
+
+Replacing the single breakeven number with the grid it was hiding. Each cell is the published-video count needed for $1,500/day of
+profit at a 78% ad share and $2.64/day of infrastructure cost:
+
+| | v = 40 | v = 61 (plan) | v = 94 |
+| :--- | :---: | :---: | :---: |
+| **RPM_ad $7** | 4,186 | 2,745 | 1,781 |
+| **RPM_ad $10.50** | 2,791 | **1,830** | 1,187 |
+| **RPM_ad $14** | 2,093 | 1,372 | 891 |
+
+The plan's **1,827** is correct at exactly one point in this grid — the plan's own (61, $10.50). The reachable cell decides the
+calendar, and the corner case (40, $7) needs **2.3x** the library, which at 75 videos a month is 56 months rather than 24.
+
+---
+
+## 6. Pre-registered decision rules
+
+Locked **before** any data arrives, so the reading cannot be rationalised afterwards. Each rule names the input, the threshold,
+and the action — including the action that ends the project.
+
+| # | When | Reading | Threshold | Action, fixed in advance |
+| :---: | :--- | :--- | :--- | :--- |
+| **R1** | Day 3 | `VAL-01` published | live within 3 days of the demand research | If not published, the constraint is production, not demand: cut scope to one template before anything else |
+| **R2** | Day 17 | 14-day views on `VAL-01` | ≥ 20 v/day | keep the format, release `REN-02` and the 1/day cadence |
+| **R3** | Day 17 | same | 10–20 v/day | keep the format, **hold 4K60 and Facebook**, publish 30 episodes before any further tooling |
+| **R4** | Day 17 | same | < 10 v/day | **stop the 33-day sprint**, re-cut the slate with `TOP-04`, and re-run `VAL-01` once — one retry, not two |
+| **R5** | Day 45 | cohort trend, latest 5 uploads vs previous 5 | flat or rising | scale: hire the approval/QA role, ramp to 45/month |
+| **R6** | Day 45 | same | falling > 25% | stop publishing; the topic shape is wrong, and more episodes cannot fix it |
+| **R7** | Day 45 | measured v (30 videos, 28 days) | any value | record it and **replace the 61 in every table** with the measured figure; the calendar is re-derived, not debated |
+| **R8** | Day 45 | measured v | < 22 | the plan's own floor is already exceeded downward: reset the goal horizon to 5 years or change the niche, and say which |
+| **R9** | YPP approval | AdSense `RPM_ad` | < $6.24 | the ad-side band is broken: cut the localization set, raise price-tier keywords, and re-price the goal before scaling cadence |
+| **R10** | YPP approval | AdSense `RPM_ad` | > $12.48 | the band's top is beaten: scale cadence aggressively, and the library requirement falls by up to 40% |
+| **R11** | any time | ancillary revenue share | < 5% of total after 60 episodes | `ANC-01` is not working: drop it to a monthly batch job and delete the 22% assumption from the model |
+| **R12** | any time | a decision contradicts a rule | — | the rule wins until the register is edited **and** re-audited; an exception is a document change, not a conversation |
+
+**What is *not* pre-registered, deliberately:** the *content* of the re-cut in `R4`. Demand research is the input to that
+decision and inventing its answer now would be the same error as inventing a number.
+
+---
+
+## 7. What would make us abandon the plan
+
+Stated once, so it is not negotiated under pressure:
+
+1. **`VAL-01` reads under 10 views/video/day twice** (the original and the one permitted retry) — the format has no demand.
+2. **The cohort trend falls at Day 45** and the top-5 pillars cannot be re-cut to fix it — the slate shape is wrong.
+3. **`RPM_ad` lands under $6.24 at YPP** while v is under 61 — both terms of `V × v × RPM` miss their band at once, and no
+   cadence closes a 2.3x library gap inside four years.
+4. **Ancillary stays under 5%** and v is under 40 — the revenue side is then a pure advertising business at the bottom of its band.
+
+Any one of those is a pivot signal. Two together is a stop signal.
