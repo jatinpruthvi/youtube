@@ -197,10 +197,10 @@ for rid in ("R19", "R20"):
     ck.ck(f"rule {rid} exists", any(rid in " ".join(r) for r in rule_rows), rid)
 ck.ck("R19 binds the calendar to a capacity profile",
       any("R19" in " ".join(r) and "hours per day" in " ".join(r) for r in rule_rows), "R19 missing")
-ck.ck("R20 gates cadence on both RPM and limited ads",
-      any("R20" in " ".join(r) and "RPM_ad" in " ".join(r) and "exposure" in " ".join(r) for r in rule_rows), "R20 missing")
+ck.ck("R20 gates cadence on both RPM and coverage",
+      any("R20" in " ".join(r) and "RPM_ad" in " ".join(r) and "coverage" in " ".join(r) for r in rule_rows), "R20 missing")
 ck.ck("R15's instrument admits the API gap",
-      "does not return a limited-ads flag" in DOC, "R15 still assumes an instrument that does not exist")
+      "returns no limited-ads flag" in DOC, "R15 still assumes an instrument that does not exist")
 ck.ck("R18 is a restore drill, not a second channel",
       "recovery drill" in DOC and "INF-04" in DOC, "R18 unchanged")
 
@@ -223,6 +223,72 @@ ck.ck("D-01 no longer ramps on a calendar",
       "ramped on a calendar; `D-17` replaced the calendar with a trigger" in DECISIONS, "D-01 still time-based")
 ck.ck("the strategy bet is named in the record",
       "commodity production" in DECISIONS and "editorial finance" in DECISIONS, "D-17 missing")
+
+# ---- 10. round 4: every threshold has to be derived ----------------------
+def rule_cell(rid, idx):
+    return next(r[idx] for r in rule_rows if r[0].strip() == f"**{rid}**")
+
+
+def rule(rid):
+    return next(" ".join(r) for r in rule_rows if r[0].strip() == f"**{rid}**")
+
+c_of = lambda v: SUBS / (EPISODES * 30 * v)
+ck.ck("YPP conversion identity c* = 1.111/v", abs(c_of(111) - 0.01) < 1e-4, f"{c_of(111):.4f}")
+ck.ck("at v=61 the gate needs 1.82%, not 1%", abs(c_of(61) - 0.0182) < 5e-4, f"{c_of(61):.4%}")
+ck.ck("R13 uses the identity, not a fixed 0.5%",
+      "1.111 / v" in rule("R13") and "0.5%" in rule("R13"), "R13 still fixed")
+ck.ck("0.5% conversion implies v=222",
+      abs(SUBS / (0.005 * EPISODES * 30) - 222) < 1, str(SUBS / (0.005 * EPISODES * 30)))
+
+BREAKEVEN = 1827 * 10.50 / 2700
+ck.ck("36-month break-even RPM_ad is $7.11", abs(BREAKEVEN - 7.107) < 0.01, f"{BREAKEVEN:.2f}")
+ck.ck("R20 uses the derived $7.11", "$7.11" in rule("R20") and "$8.24" not in rule("R20"), "R20 not derived")
+ck.ck("R9 uses $7.11 as the viability line", "$7.11" in rule("R9"), "R9 keys off 6.24 alone")
+floor_lib = 1827 * 10.50 / 6.24
+ck.ck("band floor needs 3,074 videos = 41 months",
+      abs(floor_lib - 3074) < 1 and abs(floor_lib / 75 - 41) < 0.1, f"{floor_lib:.0f} / {floor_lib/75:.1f}")
+ck.ck("register states the 41 months", "41 months" in DOC, "floor consequence missing")
+
+fall = 1 - 10.50 / 12.48
+ck.ck("top of band cuts the library 15.9%, not 40%", abs(fall - 0.1587) < 0.002, f"{fall:.3f}")
+ck.ck("R10 states 15.9%", "15.9%" in rule("R10"), "R10 still says 40%")
+
+lib22 = 1827 * 61 / 22
+ck.ck("v=22 needs 5,066 videos = 5.6 years", abs(lib22 - 5066) < 2 and abs(lib22 / 75 / 12 - 5.6) < 0.05,
+      f"{lib22:.0f} / {lib22/75/12:.2f}y")
+ck.ck("R8 resets to 6 years", "6 years" in rule("R8"), "R8 still says 5")
+
+ck.ck("R14 is capacity-relative", "45% of available hours" in rule("R14"), "R14 still absolute")
+ck.ck("R14's action cuts cadence rather than doubling it",
+      rule_cell("R14", 4).count("cut cadence to 20/month") == 1, rule_cell("R14", 4)[:60])
+
+mde = (16 * 0.04 * 0.96 / 22500) ** 0.5
+n5 = 16 * 0.04 * 0.96 / (0.05 * 0.04) ** 2
+ck.ck("45k impressions resolve 13% relative", abs(mde / 0.04 - 0.131) < 0.005, f"{mde/0.04:.1%}")
+ck.ck("5% relative needs 153,600 per arm", abs(n5 - 153600) < 100, f"{n5:,.0f}")
+ck.ck("R17 states the 13% floor and the sample", "13% relative" in rule("R17") and "153,600" in rule("R17"),
+      "R17 still asserts 5%")
+ck.ck("R17 names the minimum impressions", "10,000 impressions per arm" in rule("R17"), "no sample floor")
+
+ck.ck("R15 measures coverage as an exact ratio",
+      "playbackBasedCpm / cpm" in rule("R15") and "0.80" in rule("R15"), "R15 proxy still analogical")
+ck.ck("R16 requires a second ASR pass", "second ASR pass" in rule("R16"), "R16 still zero-tolerance")
+ck.ck("R5 no longer buys cadence before AdSense", "not** unlocked here" in rule("R5"), "R5 still ramps to 45/month")
+ck.ck("no rule points at the retired 33-day sprint",
+      not any("33-day sprint" in " ".join(r) for r in rule_rows), "stale sprint reference in a rule")
+ck.ck("R3 and R2 no longer overlap at 20", "10–19 v/day" in rule("R3"), "boundary duplicated")
+
+# ---- 11. round 4 is documented, and the count did not drift ---------------
+ck.ck("round-4 self-audit section exists", "## 9. Round 4" in DOC, "section 9 missing")
+ck.ck("it records twelve defects", "**twelve defects in the rules" in DOC, "defect count missing")
+ck.ck("it separates what passed from what failed", "survived the same audit" in DOC, "no pass list")
+ck.ck("section 8 cross-references the 1.82% correction", "1.82%** subscribe rate" in DOC, "cross-ref missing")
+ck.ck("DECISIONS records eighteen decisions", "eighteen decisions" in DECISIONS and "## D-18" in DECISIONS, "D-18 missing")
+ck.ck("D-18 names both behavioural corrections",
+      "1.82%" in DECISIONS and "20/month" in DECISIONS, "D-18 silent on R13/R14")
+ck.ck("no doc still promises 33 days to 30 episodes",
+      "30 episodes in 33 days" not in DOC + SPRINT + read("README.md") + read("docs/IMPROVEMENT_VALUE_AT_2K.md"),
+      "stale sprint promise")
 
 ck.ck("README links the baseline register", "BASELINE.md" in read("README.md"), "not linked")
 ck.ck("AGENTS links the baseline register", "BASELINE.md" in read("AGENTS.md"), "not linked")

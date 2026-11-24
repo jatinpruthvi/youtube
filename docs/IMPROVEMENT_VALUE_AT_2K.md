@@ -219,7 +219,7 @@ the goal. The rejected monthly reading (1.5) mistook that milestone for the targ
 ## 3. The binding constraint is throughput, and the sprint is 2.5x under it
 
 The plan reaches 1,800 videos at Month 25 from 450 at Month 9 - that is **50/month ramping to 84/month**. `SPRINT_30_DAYS.md`
-committed to **30 videos in 30 days, 1/day** - now **30 episodes in 33 days**, because the first three days are the `VAL-01` slice (`DECISIONS.md` D-01, D-02); the rate is unchanged at 1/day. Section 1.3 prices that difference:
+committed to **30 videos in 30 days, 1/day** - now **30 episodes on a capacity-set calendar (29-97 days, `DECISIONS.md` D-16)**. The 1/day rate is unchanged; the *calendar* is derived from the operator's available hours, because the 33-day version assumed 7-8.8h/day and could never have been met. Section 1.3 prices that difference:
 
 ```
 1,827 videos at 30/month = 61 months
@@ -245,7 +245,8 @@ nothing in this repository acknowledges it.
 
 ## 4. The four contradictions that decide which cell you land in
 
-**(a) The repo contains two different publishing rates.** `SPRINT_30_DAYS.md` says 30 episodes in 33 days (1/day). The plan's library column
+**(a) The repo contained two different publishing rates.** `SPRINT_30_DAYS.md` used to promise a fixed 33-day window at 1/day; it now sets the
+calendar from available hours (`DECISIONS.md` D-16) and keeps the 1/day rate, so the *length* moved and the *rate* did not. The plan's library column
 says 450 by month 9 - 50-64/month - and `REN-02`'s own claim in `PPM_REVIEW.md` is "3 vs 2 episodes/day", i.e. 60-90/month. The
 sprint is the conservative one, and at 30/month the $1,500/day target cannot arrive before month 61.
 

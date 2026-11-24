@@ -122,7 +122,8 @@ for label, ids in added.items():
     running += sum(HOURS[i] for i in ids)
     ck.ck(f"{label} items exist in the tracker", all(i in HOURS for i in ids), str(ids))
 ck.ck("effort chain lands on the tracker total", abs(running - TOTAL_HOURS) < 0.01, f"{running} vs {TOTAL_HOURS}")
-ck.ck("item chain 51 + 9 = 60", len([i for v in added.values() for i in v]) + 51 == TOTAL_ITEMS, str(TOTAL_ITEMS))
+ck.ck(f"item chain 51 + {sum(len(v) for v in added.values())} = {TOTAL_ITEMS}",
+      len([i for v in added.values() for i in v]) + 51 == TOTAL_ITEMS, str(TOTAL_ITEMS))
 has(DECISIONS, f"142.0h to **{TOTAL_HOURS:.1f}h**", "DECISIONS states the effort chain")
 has(DECISIONS, f"(0/{TOTAL_ITEMS} items)", "DECISIONS states the item chain")
 has(DECISIONS, "51 → 56", "D-04 states its own count")

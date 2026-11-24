@@ -117,14 +117,14 @@ and the action — including the action that ends the project.
 | :---: | :--- | :--- | :--- | :--- |
 | **R1** | Day 3 | `VAL-01` published | live within 3 days of the demand research | If not published, the constraint is production, not demand: cut scope to one template before anything else |
 | **R2** | Day 17 | 14-day views on `VAL-01` | ≥ 20 v/day | keep the format, release `REN-02` and the 1/day cadence |
-| **R3** | Day 17 | same | 10–20 v/day | keep the format, **hold 4K60 and Facebook**, publish 30 episodes before any further tooling |
-| **R4** | Day 17 | same | < 10 v/day | **stop the 33-day sprint**, re-cut the slate with `TOP-04`, and re-run `VAL-01` once — one retry, not two |
-| **R5** | Day 45 | cohort trend, latest 5 uploads vs previous 5 | flat or rising | scale: hire the approval/QA role, ramp to 45/month |
+| **R3** | Day 17 | same | 10–19 v/day | keep the format, **hold 4K60 and Facebook**, publish 30 episodes before any further tooling |
+| **R4** | Day 17 | same | < 10 v/day | **stop the sprint** (whatever its length — `D-16` sets that, not this rule), re-cut the slate with `TOP-04`, and re-run `VAL-01` once — one retry, not two |
+| **R5** | Day 45 | cohort trend, latest 5 uploads vs previous 5 | flat or rising | scale **within the pre-YPP ceiling**: 30/month stands, and the hour freed by a 5-video cohort is reinvested in the editor's desk. The 45/month step is **not** unlocked here — `D-17` moved it to `R20`, and a Day-45 reading with no AdSense data cannot buy cadence |
 | **R6** | Day 45 | same | falling > 25% | stop publishing; the topic shape is wrong, and more episodes cannot fix it |
 | **R7** | Day 45 | measured v (30 videos, 28 days) | any value | record it and **replace the 61 in every table** with the measured figure; the calendar is re-derived, not debated |
-| **R8** | Day 45 | measured v | < 22 | the plan's own floor is already exceeded downward: reset the goal horizon to 5 years or change the niche, and say which |
-| **R9** | YPP approval | AdSense `RPM_ad` | < $6.24 | the ad-side band is broken: cut the localization set, raise price-tier keywords, and re-price the goal before scaling cadence |
-| **R10** | YPP approval | AdSense `RPM_ad` | > $12.48 | the band's top is beaten: scale cadence aggressively, and the library requirement falls by up to 40% |
+| **R8** | Day 45 | measured v | < 22 | the plan's own floor is already exceeded downward: at v=22 the goal needs **5,066 videos = 67.5 months at 75/month**, so reset the horizon to **6 years** (not 5 — that was the earlier row's arithmetic error) or change the niche, and say which |
+| **R9** | YPP approval | AdSense `RPM_ad` | < $7.11 | **two steps, because the band floor is not the viability line.** Below **$7.11** the 36-month timetable is unreachable at *any* cadence ≤ 75/month (2,698 videos needed): re-derive the horizon before anything else. Below **$6.24** the band itself is broken: also cut the localization set, raise price-tier keywords, and re-price the goal |
+| **R10** | YPP approval | AdSense `RPM_ad` | > $12.48 | the band's top is beaten: scale cadence aggressively — the library requirement falls **15.9%** (1,827 → 1,537), not the 40% an earlier version claimed; 40% needs $17.50 |
 | **R11** | any time | ancillary revenue share | < 5% of total after 60 episodes | `ANC-01` is not working: drop it to a monthly batch job and delete the 22% assumption from the model |
 | **R12** | any time | a decision contradicts a rule | — | the rule wins until the register is edited **and** re-audited; an exception is a document change, not a conversation |
 
@@ -164,7 +164,8 @@ YPP requires **1,000 subscribers + 4,000 public watch hours**. Nobody has priced
 | 1,000 subs at 3% conversion | — | 33,333 | 1,111 (hours bind) |
 
 **Watch hours are easy; subscribers are the gate.** At a normal 1% conversion the subscriber requirement is 3,333 views per video,
-i.e. **v ≈ 111 over 30 days — 1.8x the plan's assumed 61.** The subscriber gate and the v gate (`SPRINT_30_DAYS.md`) are the same
+i.e. **v ≈ 111 over 30 days — 1.8x the plan's assumed 61.** Read the other way it is worse, not better: at the plan's own v=61 the
+gate needs a **1.82%** subscribe rate (§9, R13), so 1% is the optimistic end of this identity, not the middle. The subscriber gate and the v gate (`SPRINT_30_DAYS.md`) are the same
 number, and the plan quoted neither. Subscriber *conversion* is also the most controllable variable in the whole model: end
 screens, series structure and the `PUB-04` session bridge move it, whereas v is decided by demand we do not control.
 
@@ -173,7 +174,7 @@ screens, series structure and the `PUB-04` session bridge move it, whereas v is 
 | Work | Load |
 | :--- | :--- |
 | Review at 2–4h per episode, 30 episodes a month | 60–120h of labour per month |
-| The 33-day sprint at 1/day | 2–4h per day of review, on top of |
+| The sprint at 1/day (`D-16` sets its length) | 2–4h per day of review, on top of |
 | 170.5h of build across 45 days | 3.8h per day |
 | **Sustained total** | **5.8–7.8h per day for 45 days, no days off** |
 
@@ -222,11 +223,45 @@ rule is to seed a second channel — even a small one — before the library is 
 
 | # | When | Reading | Threshold | Action, fixed in advance |
 | :---: | :--- | :--- | :--- | :--- |
-| **R13** | after 15 episodes | subscribers per view | < 0.5% | the packaging or the series structure is the problem, not the cadence: fix end screens and series order before adding a single episode |
-| **R14** | any 5 consecutive days | operator review hours | > 3h per day | drop to 60 videos a month; never skip `QAG-02`, and never let `AUD-06` slide to save time |
-| **R15** | YPP approval + 28 days | limited-ad exposure, measured **two ways** | Studio sample > 20% **or** revenue per 1,000 views more than 25% below `playbackBasedCpm` | the mass-production/RPM combination is broken: cut cadence, raise editorial quality, and re-derive the library before scaling. **The instrument has to be honest:** the Analytics API does not return a limited-ads flag per video, so this is a 20-video Studio sample (`Monetization → limited ads`) plus the revenue-per-1,000-views vs CPM divergence, which is the only API-side proxy |
-| **R16** | every episode | spoken-numeral mismatches from `AUD-06` | any | blocker. Nothing publishes; fix the pronunciation lexicon or the number formatter first |
-| **R17** | monthly, from 10 videos with impressions | back-catalogue CTR after `ANA-06` repackage | < 5% relative gain in 28 days | stop the pass, it is costing an hour for nothing; revisit at 100 videos |
+| **R13** | after 15 episodes | subscribers per view `c`, against measured `v` | `c` < **1.111 / v** | YPP needs 1,000 subscribers, and 30 episodes × 30 days × `v` views gives **c\* = 1,000 / (900 v) = 1.111 / v**. Run the trajectory past 1,000: if it misses by more than one quarter, the packaging or the series structure is the problem, not the cadence — fix end screens and series order before adding a single episode. **The earlier fixed 0.5% threshold was wrong in both directions:** at 0.5% the channel needs v=222, which is 2.4x the best cell in the grid, so the rule would only have fired after the plan was already unreachable |
+| **R14** | any 5 consecutive days | review hours as a share of the `R19` capacity profile | > 45% of available hours | **cut cadence to 20/month (5 a week), not 60.** Never skip `QAG-02`, and never let `AUD-06` slide to save time. **Two earlier errors fixed here:** an absolute 3h threshold ignored the 8h/day profile where 4h of review is fully affordable, and the action "drop to 60/month" was an *increase* from the 30/month sprint — it would have doubled the load it was written to relieve |
+| **R15** | YPP approval + 28 days | ad coverage = `playbackBasedCpm / cpm`, cross-checked against a Studio sample | coverage **< 0.80** (equivalently > 20% of playbacks unmonetised) or Studio sample > 20% | the mass-production/RPM combination is broken: cut cadence, raise editorial quality, and re-derive the library before scaling. **The instrument took three attempts and this is the one that is algebra rather than analogy:** the API returns no limited-ads flag, and comparing revenue-per-1,000-*views* against `playbackBasedCpm` compares views to playbacks — it measures the views-vs-plays gap, not ad coverage. Since `cpm` is revenue per 1,000 **monetised playbacks** and `playbackBasedCpm` is revenue per 1,000 **playbacks**, their ratio *is* the share of playbacks carrying ads. Coverage 1.0 means every playback was monetised; 0.8 means a fifth were not. Cross-check on 20 videos in Studio (`Monetization → limited ads`) |
+| **R16** | every episode | spoken-numeral mismatches from `AUD-06` | any **after a second ASR pass confirms it** | blocker. Nothing publishes; fix the pronunciation lexicon or the number formatter first. **The second pass is not a loophole:** ASR on synthetic speech is accurate but not perfect, and `R12` makes this rule win, so an unconfirmed mismatch would stop the channel on a misheard "fifteen". `AUD-06` re-transcribes the scene with a different model or a slower decode, and only an agreed mismatch blocks |
+| **R17** | monthly, pooled across the repackaged videos | back-catalogue CTR after `ANA-06` repackage | < **13% relative** gain, or fewer than **10,000 impressions per arm** | the pass is not paying for its hour: batch it to quarterly and revisit at 100 videos. **A 5% relative threshold was undetectable:** at a 4% CTR, 5% relative (0.2pp) needs **153,600 impressions per arm**, and 45,000 pooled impressions only resolve **13.1%**. State the sample before the test, not after |
 | **R18** | month 6 | channel-loss recovery drill | never rehearsed | run the restore: rebuild one episode end to end from the R2 archive (`INF-04`) and the frozen snapshots alone. A second channel is the expensive insurance and it competes with focus; a rehearsed restore is the cheap one, and it is the only version that survives a strike |
 | **R19** | Day 1 | available hours per day | 3 / 5 / 8 | the sprint calendar is set by the profile table in `SPRINT_30_DAYS.md`; every later date derives from it. Nobody negotiates the calendar again |
-| **R20** | YPP approval + 90 days | `RPM_ad` and limited-ad exposure together | `RPM_ad` ≥ $8.24 and exposure ≤ 20% | **scale**: cadence goes to 60–75/month and the hire becomes permanent. Below $6.24 **or** exposure above 30%, **switch strategy**: hold at 30/month and spend the marginal hour on editorial quality, not volume — the commodity bet and the $10.50 RPM bet cannot both be true (`D-17`) |
+| **R20** | YPP approval + 90 days | `RPM_ad` and ad coverage together | `RPM_ad` ≥ **$7.11** and coverage ≥ 0.80 | **scale**: cadence goes to 60–75/month and the hire becomes permanent. $7.11 is the derived break-even, not a round number: the goal needs 2,700 videos in 36 months at 75/month, and the library requirement scales as 1/`RPM_ad` from 1,827 at $10.50, so 1,827 × 10.50 / 2,700 = $7.11. At the band floor ($6.24) the goal needs **3,074 videos = 41 months at 75/month** — the floor is not a viable business on this timetable. Below $7.11 or coverage under 0.70, **switch strategy**: hold at 30/month and spend the marginal hour on editorial quality, not volume — the commodity bet and the $10.50 RPM bet cannot both be true (`D-17`) |
+
+---
+
+## 9. Round 4 — the rules audited against their own arithmetic
+
+Round 3 added R13–R20 in one sitting. Auditing them the way the *numbers* were audited turned up **twelve defects in the rules
+themselves**, including two that would have made a rule actively harmful. The rule that matters here is not any single row: it is
+that **a threshold is a derived quantity, not a round number**. Every one below was a round number that nobody derived.
+
+| # | Rule | What it said | What is true | Why it mattered |
+| :---: | :--- | :--- | :--- | :--- |
+| 1 | **R13** | subscriber rate < **0.5%** is the alarm | YPP needs 1,000 subs, and 30 episodes × 30 days × `v` views gives **c\* = 1.111 / v**. At the plan's own v=61 that is **1.82%**; at 0.5% the channel needs **v=222**, 2.4x the best grid cell | the alarm sat *below the death line* — it would only fire after the plan was already unreachable, and it silently assumed 1% when the plan's own numbers require 1.82% |
+| 2 | **R14** | review > **3h/day** ⇒ "drop to **60** videos a month" | at 4h review, 30/month already *is* 4h/day, and 60/month is **8h/day** | the remedy **doubled the load it was written to relieve**, and an absolute threshold ignored the 8h/day capacity profile |
+| 3 | **R5** | flat/rising cohort ⇒ "hire, ramp to **45/month**" | `D-17` moved every cadence step behind `R20` | a Day-45 reading with no AdSense data cannot buy cadence: the rule contradicted the decision, and `R12` says the rule wins |
+| 4 | **R9** | fires below the band floor, **$6.24** | the timetable's viability line is **$7.11** | the whole **$6.24–$7.11** zone fired nothing, which is exactly where "within the band" hides an unviable business |
+| 5 | **R20** | scale if `RPM_ad` ≥ **$8.24** | **$7.11** = 1,827 × 10.50 / 2,700 — the memo's own library figures | an invented threshold by a 16% margin, in the one rule that decides whether to scale |
+| 6 | **R10** | top of band cuts the library "**up to 40%**" | 10.50 → 12.48 is **15.9%**; 40% needs $17.50 | overstated the best case by 2.5x in the rule that authorises aggressive scaling |
+| 7 | **R8** | reset the horizon to "**5 years**" | v=22 needs 5,066 videos = **67.5 months = 5.6 years** | the escape hatch was itself too optimistic, by seven months |
+| 8 | **R15** | revenue per 1,000 *views* vs `playbackBasedCpm` | `cpm` is revenue per 1,000 **monetised playbacks** and `playbackBasedCpm` per 1,000 **playbacks**, so **coverage = playbackBasedCpm / cpm** | the first fix measured the views-vs-playbacks gap, not limited ads — the same class of error as the rule it replaced |
+| 9 | **R17** | < **5%** relative CTR gain ⇒ stop | at a 4% CTR, 5% relative needs **153,600 impressions per arm**; 45,000 pooled resolves **13.1%** | the rule would have killed a working pass on noise, every month |
+| 10 | **R16** | *any* ASR mismatch is a blocker | ASR on synthetic speech is good, not perfect, and `R12` makes this rule win | one misheard "fifteen" would have stopped the channel permanently, with no appeal |
+| 11 | **R3 / R2** | ≥ 20 v/day keeps the format; 10–**20** holds 4K60 | both rows fired at exactly 20 | a boundary with two answers is not a boundary |
+| 12 | **R4** | "< 10 v/day ⇒ stop the **33-day** sprint" | `D-16` retired the 33-day sprint the same day | a rule pointing at a schedule that no longer exists |
+
+**What survived the same audit unchanged**, so the pass was not just fault-finding: the exact Mann–Whitney table (all four rows
+reproduce, including 23-of-25 at U ≤ 2), the five-vs-five power conclusion, the capacity profiles (76.8–96.8 / 46.1–58.1 /
+28.8–36.3 days), the `v` × `RPM_ad` grid identity, the 68th-percentile band read, the 170.5h effort chain, and the GPU
+6–11x ceiling. Those are now asserted in `check_baseline.py` alongside the corrections, so a threshold cannot drift back.
+
+**The pattern worth remembering.** Every defect in this section is the same defect: **a number that looked reasonable in a
+sentence and was never divided by anything.** The register's arithmetic was audited in rounds 2 and 3; its *thresholds* never
+were. Rule `R12` is what makes that dangerous — the rule wins — so a wrong threshold cannot be argued with at the moment it
+fires, only pre-empted. That is why the fix is structural: `check_baseline.py` now re-derives each threshold from the same
+constants the forecast uses, and a rule whose number does not reproduce is a test failure rather than a matter of opinion.

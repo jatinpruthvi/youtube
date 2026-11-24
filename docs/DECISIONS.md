@@ -8,7 +8,7 @@ here, once, with the arithmetic that decided them.
 
 ---
 
-## Summary of the seventeen decisions
+## Summary of the eighteen decisions
 
 | ID | Decision | Consequence in the repo | Evidence class |
 | :--- | :--- | :--- | :--- |
@@ -29,6 +29,7 @@ here, once, with the arithmetic that decided them.
 | **D-15** | **Monetization and the operator's calendar are the real constraints; the back catalogue is free inventory** | `ANA-06` added; rules R13–R18 locked | YPP needs **v ≈ 111** at a 1% sub conversion — 1.8x the plan's 61 — and a 40% limited-ad rate needs 1.7x the library |
 | **D-16** | **The sprint calendar is a function of available hours, and subscriber conversion is P0** | `SPRINT_30_DAYS.md` gains a capacity table (77–97 / 46–58 / 29–36 days); `PUB-04` promoted to P0 | 230–290h of work cannot fit a fixed 33-day window at any plausible capacity |
 | **D-17** | **Cadence is measurement-gated, and the commodity-versus-editorial bet is chosen explicitly** | `D-01`'s time-based ramp becomes conditional on R9/R10/R15/R20 | the plan assumes mass-production cost *and* editorial RPM; that pair cannot both be true |
+| **D-18** | **Every threshold in the rule set must be derived and machine-checked — twelve of them were not** | R2–R5, R8–R10, R13–R17, R20 corrected; `check_baseline.py` re-derives each | round 3 audited the arithmetic and left the thresholds unaudited; two of them were harmful |
 
 Total plan effort moves from 142.0h to **170.5h** (0/62 items). The 22.5h increase buys one falsification episode, one test harness,
 three levers that were priced but never scheduled, and the three views-per-video levers in D-10.
@@ -162,6 +163,7 @@ automated, at roughly $700 of labour cost per month (an assumption, not a quote)
 | `scripts/check_baseline.py` — tiers, bands, retirement instruments and rules R1–R18 | D-13 |
 | `AUD-06` blocking every publish; `ANA-06` on the monthly cron; rules R13–R18 in `BASELINE.md` | D-14, D-15 |
 | The capacity table in `SPRINT_30_DAYS.md`; `PUB-04` at P0; rules R19–R20 | D-16, D-17 |
+| Every derived threshold re-computed in `check_baseline.py` §10; the conversion identity and the coverage ratio | D-18 |
 | `python3 scripts/track.py validate` and `python3 scripts/check_docs.py` | D-04 and every figure in this file |
 
 ---
@@ -380,3 +382,29 @@ than a date. That is deliberate: a plan that cannot be wrong early costs three y
 
 **Rejected.** Choosing the strategy now, on paper. There is no evidence in this repository for either side of it — the choice belongs
 to the first month of AdSense data, and R20 is the smallest possible test of it.
+
+---
+
+## D-18 — Thresholds are derived quantities; twelve of mine were not
+
+**Decision.** Every threshold in R1–R20 is now computed from the same constants the forecast uses, and `check_baseline.py` §10
+re-derives each one. A rule whose number does not reproduce is a **test failure**, not a matter of judgement. Twelve rules were
+corrected (`BASELINE.md` §9); two of the corrections change what the operator does:
+
+- **R13** now measures subscriber conversion against the break-even **c\* = 1.111 / v** rather than a fixed 0.5%. At the plan's own
+  v=61 the YPP gate needs **1.82%**, not the 1% round 3 used — so the plan's subscriber requirement was understated by 82%.
+- **R14** now cuts to **20/month** at 45% of the recorded capacity, where it previously said "drop to 60" — an *increase* from a
+  30/month sprint, i.e. a remedy that doubled the load it existed to relieve.
+
+**Why.** Rounds 2 and 3 audited the *arithmetic* — the band, the p-values, the grid, the GPU multiple, the cost line. Nobody
+audited the *thresholds*, which were written in the same sitting as the numbers they refer to and were all round numbers: 0.5%, 3h,
+$8.24, 5%, 40%, 5 years. Each looked reasonable in a sentence and none was divided by anything. The one that would have done real
+damage is R12's own design: the rule wins at the moment of conflict, so a wrong threshold cannot be argued with later — only
+pre-empted. That asymmetry is why thresholds now get the same treatment as forecasts.
+
+**Consequence.** The rule set is 20 rules with 20 derivations, and `check_baseline.py` grows from 117 to 141 assertions including
+the conversion identity, the $7.11 break-even, the 41-month band-floor horizon, the 15.9% library fall, the 13.1% minimum
+detectable CTR effect, and the coverage ratio. The register now says what it can *prove*, not what sounded right.
+
+**Rejected.** Leaving the corrections in prose ("R13 was actually 1.82%") without changing the rule. A rule that is wrong in the
+document and right in a paragraph is still wrong where it is read — at the moment it fires.
